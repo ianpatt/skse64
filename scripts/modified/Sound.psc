@@ -1,0 +1,1 @@
+SoundDescriptor Function GetDescriptor() native

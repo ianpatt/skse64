@@ -1,0 +1,1 @@
+Location Function GetParent() native

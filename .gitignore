@@ -1,0 +1,34 @@
+# visual studio
+*.sdf
+*.opensdf
+*.suo
+.vs
+*.VC.db
+*.VC.opendb
+*.ncb
+*.user
+*.aps
+*.vspscc
+
+# build output
+*.tlog
+*.lastbuildstate
+*.unsuccessfulbuild
+*.lib
+*.log
+*.obj
+*.idb
+*.pdb
+*.res
+*.cache
+BuildLog.htm
+*.exe
+*.dll
+*.exp
+*.ilk
+
+# scripts
+scripts/build_bin
+scripts/build_src
+scripts/compiler
+scripts/merged

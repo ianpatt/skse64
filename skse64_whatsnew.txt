@@ -1,0 +1,514 @@
+2.0.18
+- made PapyrusArgs.h not rely on MSVC extensions (thanks to matzibeater)
+- added trampoline interface for plugins to request a memory block for hooks within SKSE's 64kb * 2 block
+	- please use this space wisely, do not request more space than you need!
+	- skse.log will print how much space a plugin requested
+- added GetPluginInfo to SKSEInterface to query other plugin's info by name
+- co-saves with the same name will now be deleted before written
+- fixed serialization bug when resolving handles
+- added Location.GetParent
+
+2.0.17
+- support for runtime 1.5.97
+- fix Game.GetNthLightModDependency
+- HeadPart.GetPartName
+- dispatch SKSECrosshairRefEvent when defocusing an object
+
+2.0.16
+- support for runtime 1.5.80
+- fix potential crash in ReferenceAlias.ForceRefToWornItem
+
+2.0.15
+- re-enable crosshair ref hook (fixed underlying problem)
+- fixed Game.GetModByName, GetLightModByName crashing if a requested mod is not installed
+
+2.0.14
+- temporarily disabling crosshair ref hook (problems)
+
+2.0.13
+- support for runtime 1.5.73
+- fixed LeveledItem.SetNthLevel/SetNthCount to clamp at 0xFFFF rather than 0xFF
+- fixed light plugin support for Game.GetModByName and similar
+- added PLGN structure to cosave containing list of loaded mods
+- misc BSHandleRef refcount fixes
+- tArray::Push correctly uses placement new instead of operator=
+
+2.0.12
+- fix backcompat on task interface
+
+2.0.11
+- support for runtime 1.5.62
+- various definition fixes
+
+2.0.10
+- fix lock usage
+- esl mods now load translations
+
+2.0.9
+- support for runtime 1.5.53
+- use game implementations of lock functions so they can be hooked
+- add itemId to favorites menu before calling inventory plugins
+- cleaned up base script warnings
+
+2.0.8
+- support for runtime 1.5.50
+- fixed lock implementations
+- added missing vanilla functions
+- fixed other stuff I forgot
+
+2.0.7:
+- support for runtime 1.5.39
+- fixed SimpleLock/BSReadWriteLock implementation
+- fixed Ammo functions
+
+2.0.6:
+- support for runtime 1.5.23
+
+2.0.5:
+- support for runtime 1.5.16
+- fix crash in GetLeftHandSlot (could show up in Actor.EquipItemById, GetEquipSlotById, EquipItemEx, UnequipItemEx)
+- fix GetFormWeight return type
+- many internal definition fixes/additions
+- hooks for tint texture size
+- unified internal tasks
+- handle lookup for 'light' mods, serialized in cosave
+
+2.0.4:
+- fix DataHandler layout changes from Creation Club
+- fix occasional crash on save
+- proper reporting of current beta/release runtime version
+
+2.0.3:
+- support for runtime 1.5.3
+- update Armor and Actor scripts for new functions added in 1.5.3
+- FastTravelEnd event sink (internal)
+
+2.0.2:
+- fixed scaleform ShowOnMap
+
+2.0.1:
+- fixed missing save hook (skse cosave wasn't being written when triggered from papyrus)
+
+2.0.0:
+- ported to Special Edition
+- some of the previously-mentioned items are no longer relevant, please ignore
+
+1.7.3:
+- added SpawnerTask for batch PlaceAtMe with positioning (see SpawnerTask.psc for details)
+- fixed chance of ModEvent/UICallback instances failing if the game was saved+loaded between their creation and execution
+- added Spell.GetEffectMagnitudes/GetEffectAreas/GetEffectDurations/GetMagicEffects
+- added ObjectReference.GetContainerForms/GetReferenceAliases
+- added WornObject.GetReferenceAliases
+- added Form.GetKeywords
+- added StringUtil.Split
+- added Utility.ResizeArray
+- added Actor.ResetAI (similar to console function)
+- fixed ActorBase.GetIndexOf*
+- fixed Utility.CreateArray initialization with empty Forms/Aliases
+- added support for skse.ExtendData(true) to enchanting/alchemy/smithing/crafting menus
+- added Ingredient/Potion/Scroll/Spell.GetIsNthEffectKnown/Magnitudes/Areas/Durations/MagicEffects
+- added Quest.GetAliasById/GetAliases
+- fixed Armor.ModArmorRating to disallow underflow
+- added FormList.ToArray/AddForms
+- added experimental GameData functions
+- TreeObject and Flora accept general forms as produce
+- added diagnostic messages that help detecting the cause of common crashes or problems.
+	(1) Shows which masterfile is missing when the game CTDs on startup.
+	(2) Lists the missing files in the removed content dialog when loading a save.
+	Both are disabled by default; to enable them add this to \Data\SKSE\skse.ini:
+	[General]
+	EnableDiagnostics=1
+
+1.7.2:
+- renamed Tree -> TreeObject, avoids conflicts with vanilla scripts
+- container weight count takes stack size in to account
+- added Actor.GetFactions
+- added Cell.GetWaterLevel
+- added Faction functions
+- added ActorValueInfo.GetCurrent/Base/MaximumValue
+- added Game.GetCurrentConsoleRef
+- added many node manipulation functions to NetImmerse
+- fixed SetHarvested to update the visual model as well as the object state
+- added kMessage_NewGame to SKSEMessagingInterface
+- added Enchantment.Get/SetKeywordRestrictions
+- initial implementation of array return types
+- fix crash caused by many simultaneous key tap/press/release commands
+- add OnNiNodeUpdate event to ActiveMagicEffect, Alias, Form
+- added experimental support for creating arrays larger than 128 entries
+- added Game.SetPlayerLevel. Works analogously to console command SetLevel called on the player
+
+1.7.1:
+- fixed IsValidRace for armor races
+- added MagicEffect.GetCasting/DeliveryType
+- fixed crash when calling UpdateWeight on non-facegen Actors
+- GetTotalItemWeight computed correctly for non-players
+- added Potion.IsPoison, GetUseSound
+- added Weapon.GetTemplate
+- added Ammo.IsBolt, GetProjectile, GetDamage
+- added Game.GetDialogueTarget
+- added SKSETaskInterface::AddUITask
+- serialization understands deleted forms
+- added SKSEMessagingInterface
+- plugin messages sent on save, preload, postload, delete
+- WornObject.GetDisplayName returns base form name if no display name is present
+- added WornObject, ObjectReference.GetPoison
+- DirectX SDK now required for compilation
+- fixed WornObject slot/mask lookup
+- added NetImmerse.SetNodePosition
+- added Actor.GetFurnitureReference
+- added Game.GetCurrentCrosshairRef
+- added NetImmerse.GetRelativeNodePositionX/Y/Z
+- added Actor.Set/ResetExpressionPhoneme/Modifier
+- added Form.HasWorldModel, Get/SetWorldModelPath/NumTextureSets/NthTextureSet/SetWorldModelNthTextureSet
+- added HeadPart.IsExtraPart
+- added Form.IsPlayable
+- added ObjectReference.GetAllForms
+
+1.7.0:
+- added Game.GetFormEx that works for formIds >= 0x80000000
+- added UI.Open/CloseCustomMenu
+- added Actor.ReplaceHeadPart, ActorBase.GetNumOverlayHeadParts, GetNthOverlayHeadPart, GetIndexOfOverlayHeadPartByType
+- added Math.Log
+- added Ingredient.GetIsNthEffectKnown
+- fixed SetPlayerTintMaskColor alpha
+- enabled previously-temporary Papyrus plugin API - it isn't what I wanted it to be, but I don't think I have the time to do it the right way
+- added ActiveMagicEffect.GetMagnitude
+- added Art.Get/SetModelPath
+- added many MagicEffect and Tree functions
+- added ModEvent and UICallback, see associated .psc for details
+- added ObjectReference.Get/SetDisplayName
+- added Enchantment.SetNthEffectMagnitude/Area/Duration
+- added Form.SetPlayerKnows
+- added Enchantment.GetBaseEnchantment
+- added Perk.GetNextPerk
+- added ActorValueInfo, see ActorValueInfo.psc for details
+- added LeveledActor/Item/Spell, see associated .psc for details
+- added Game.Get/SetPlayerExperience, GetExperienceForLevel
+- added ObjectReference.GetEnableParent, Get/Set/CreateEnchantment, GetNumReferenceAliases, GetNthReferenceAlias
+- fixed Get/SetGoldValue for AlchemyItems
+- added DefaultObjectManager
+- thanks to sheson: added configuration of some initial pool sizes
+	[Memory]
+	DefaultHeapInitialAllocMB= <default heap initial allocation size in megabytes, vanilla size is 512>
+	ScrapHeapSizeMB= <scrap heap size in megabytes, vanilla size is 256>
+
+1.6.16:
+- fixed EquipItemById not properly handling stacks of items
+- fixed crash when retrieving magic favorites
+
+1.6.15:
+- fixed EquipItemEx bug causing two items of the same type with different enhancements unable to be equipped in both left and right
+- fixed Game.UnbindObjectHotkey/GetHotkeyBoundObject/IsObjectFavorited (Could only be used once until the hotkey was manually re-bound)
+- bound all of the existing Scroll functions (They were defined but never natively bound)
+- added Scroll.GetCastTime
+- changed ActorAction slot value to match other functions 0-left 1-right 2-voice
+- added Actor.EquipItemById/GetEquippedItemId/GetWornItemId
+
+1.6.14:
+- TESCombatStyle now properly cloned by TempClone (uses our implementation instead of bethesda's)
+- minidump reporting ignores 'known' crash on exit (a bug in the game engine) to avoid creating useless minidumps
+- added ObjectReference.IsOffLimits, fixed Actor.GetNthSpell (generic Actor::SpellArray access), thanks to himika
+- hook up plugin serialization API
+- added Actor.GetEquippedObject, returns the base form of the object equipped in the left, right, and voice slots
+- HasKeywordString returns false when the keyword is not found
+- added Game.IsObjectFavorited/UnbindObjectHotkey/GetHotkeyBoundObject to check if an item/spell has been favorited by the player, unbind a hotkeyed item/spell, or get the hotkeyed item/spell
+- added ActionScript functions StoreIndices/LoadIndices to keep state-related indices between menu sessions
+- tweaked ActionScript function GetActivePlayerEffects to ignore hidden and inactive effects
+- added SKSE.GetPluginVersion
+- added Actor IsSwimming/SheatheWeapon/IsAIEnabled
+- added Game.GetPlayerMovementMode (Control mode)
+- added ActorBase.GetTemplate (Returns the root template of the ActorBase)
+- added Race/ActorBase.Get/SetSkin/Far
+- added ActorAction events (see Form.psc for full list)
+- added Weapon.Get/SetEquipType/Skill/Resist/CritEffect/CritEffectOnDeath/CritMultiplier/EnchantmentValue/EquippedModel
+- hook up plugin task API (For processing heavy NetImmerse tasks)
+
+1.6.13:
+- fix crash in UpdateHairColor
+
+1.6.12:
+- support for beta runtime 1.9.32
+- translations no longer treat characters like 0x4E0A as a newline terminator
+- added Game.Get/SetSkillLegendaryLevel
+
+1.6.11:
+- fixed bug that would prevent sleep event registrations from being saved
+- add Book.IsTakeable
+- support for beta runtime 1.9.29 (later released as a final version)
+
+1.6.10:
+- support for beta runtime 1.9.26
+- HeadPart.GetHeadPart, Actor.ChangeHeadPart
+- Game.SetPlayersLastRiddenHorse
+- fixed result of ColorComponent.Set* functions
+- ClearInvalidRegistrations now cleans OnUpdateGameTime registrations as well
+
+1.6.9:
+- properly updated NetImmerse papyrus functions, make sure to update RaceMenu at the same time
+- ActorBase.Get/SetVoiceType
+
+1.6.8:
+- back out partially committed change to NetImmerse papyrus functions, fixes RaceMenu
+
+1.6.7:
+- removed Game.GetMiscStat (use vanilla badly-named QueryStat)
+- add console command ClearInvalidRegistrations to remove invalid OnUpdate() registrations
+	This prevents orphaned OnUpdate() events and the resulting bloated/broken saves when removing certain mods.
+	When applied to an already bloated save, it will stop growing further and instead shrink over time
+	as the game processes all queued events. This may take hours depending on the amount of bloat.
+	To execute automatically after each reload, add this to \Data\SKSE\skse.ini:
+	[General]
+	ClearInvalidRegistrations=1
+- add Spell.GetEffectiveMagickaCost to get actual spell cost after applying perk modifiers etc.
+- loader can set runtime's processor affinity: pass "-affinity <mask>" as a command line argument
+- add Actor.Equip/UnequipItemEx to equip/unequip an item in a specific hand
+- add Form/Alias/ActiveMagicEffect.RegisterForCameraState to receive OnPlayerCameraState events
+- add Form/Alias/ActiveMagicEffect.RegisterForCrosshairRef to receive OnCrosshairRefChange events
+- add ActionScript functions: ShowOnMap, EnableMapMenuMouseWheel
+- fixed SKSE key events not being generated until a game had been loaded at least once
+- fixed TESModelTextureSwap structure (solves a crash in Get/SetModelNthTexture when requesting swaps past the first)
+- added SKSE.GetScriptVersionRelease, a function stored in the psc/pex returning the current release version. this may be used to detect if a user has mismatched scripts and runtime.
+- ActorBase.GetIndexOfHeadPartsByType
+- fixed crashdump logger
+- fixed Book.IsRead
+- moved tintmask update handler to increase stability
+- add Game.GetCameraState
+- add Flora.Get/SetIngredient/SoundDescriptor
+- added Perk functions (see Perk.psc)
+
+1.6.6:
+- fix Potion.IsFood
+- fix crash in Actor.GetNthSpell when called on actors with no spells
+- cosaves are deleted properly when overwriting existing saves
+- cosave path now respects sLocalSavePath config setting
+- steam_loader no longer uses current working directory
+- automatic translation loader correctly derives current language
+- set [Debug] WriteMinidumps=1 in the .ini file to write a minidump to <My Documents>\My Games\Skyrim\SKSE\Minidumps\ when the game crashes
+- set [Display] iTintTextureResolution=<number> to pick the size of dynamically built tint textures (default is 256)
+- ActiveEffects may now register for and send events
+- Alias.SendModEvent
+- Game.Get/SetMiscStat
+- Race.GetRace, Race.Get/SetDefaultVoiceType
+- Game.UpdateTintMaskColors, UpdateHairColor
+- TextureSet.Get/SetNthTexturePath
+- ActorBase.Get/SetFaceTextureSet
+- Book.IsRead
+- added NetImmerse class with various NiNode manipulation functions
+
+1.6.5:
+- add ActionScript function GetLastKeycode to return the last pressed/released SKSE keycode
+- disabled non-delayed execution for UI.Get/Set/IsMenuOpen because of stability issues
+- updated Game.psc and Actor.psc scripts to include new 1.8.151 functions
+- ObjectReference.GetNiNodePositionX/Y/Z, Get/SetNiNodeScale
+
+1.6.4:
+- fix crash on startup when a line in plugins.txt does not contain a period
+- some other stuff
+
+1.6.3:
+- support for runtime version 1.8.151
+- fix co-save files not being removed when deleting savegames with the in-game interface
+- enabled non-delayed execution for several functions (Math, UI, Utility, StringUtil, ...)
+- some other stuff
+
+1.6.2:
+- add Input.GetMappedControl to return name of control bound to given keycode
+- fix Game.Save/LoadGame
+- fix UI.Invoke* stability issues when called during menu open/close
+- add Form/Alias.RegisterForControl to receive OnControlDown/Up events
+	For a list of valid control names, see Data/Scripts/Source/Input.psc
+- add ActionScript function GetLastControl to return the name of the last pressed/released control
+- support for runtime version 1.8.145
+
+1.6.1:
+- corrected build error; I forgot to sync to latest before releasing 1.6.0
+
+1.6.0:
+- fix RemoveSlotFromMask
+- add UI.IsTextInputEnabled, ObjectReference.SetHarvested, Book.GetSkill, Game.Save/LoadGame, ObjectReference.ResetInventory
+- add UI.Get*/Set* for direct UI data manipluation
+- add UI.Invoke* to call ActionScript functions
+- add Form/Alias.RegisterForMenu etc to receive menu open/close events
+- add Form/Alias.RegisterForModEvent etc, Form/Alias.SendModEvent
+	Mods can register callbacks for custom events:
+		RegisterForModEvent("MYPREFIX_myCustomEvent", "MyModEventCallback")
+	Prefix your event names if you want them to be unique!
+	See Form.psc for more details
+- add Form/Alias.RegisterForKey to receive OnKeyDown/Up events
+	For a list of keycodes, see
+		http://fose.silverlock.org/fose_command_doc.html#DirectX_Scancodes
+	Supported GamePad buttons:
+		266: DPAD_UP
+		267: DPAD_DOWN
+		268: DPAD_LEFT
+		269: DPAD_RIGHT
+		270: START
+		271: BACK
+		272: LEFT_THUMB
+		273: RIGHT_THUMB
+		274: LEFT_SHOULDER
+		275: RIGHT_SHOULDER
+		276: A
+		277: B
+		278: X
+		279: Y
+		280: LT
+		281: RT
+- support for additional interface translation files (same as Translate_ENGLISH.txt)
+	If your mod is named MyMod.esp, place files in Data/Interface/Translations/MyMod_<LANGUAGE>.txt,
+		i.e. MyMod_RUSSIAN.txt
+	Files must use the same encoding as the original Translate_*: UTF16 LE with BOM aka UCS-2 LE
+		and contain $key<TAB>value pairs. Loading them from .BSA files is supported, too
+- introduced co-save to hold event registrations for SKSE-added event types
+- add ActionScript functions: SendModEvent, RequestActivePlayerEffects, ExtendForm, RequestActorValue, GetMappedKey, StartRemapMode
+	see skse_docs.txt for details
+- Form.TempClone. Not all types support this - you may get back a valid form with initialized data rather than data copied from the source.
+- add Input.GetMappedKey to return keycode bound to given control and device
+- locked out some unsafe scaleform functions from being called while the game is loading/reloading (crash avoidance)
+
+1.5.11
+- BGSBipedObjectForm changed size in 1.7.7, fixed TESRace, TESObjectARMO/ARMA functions
+- moved SetGameSetting functions to Game from Utility to match 
+- more item/spell data exposed to scaleform
+- fix crash when pushing data to scaleform variables that have no data yet
+- updated docs for UI/Form functions
+
+1.5.10
+- show SKSE version in system menu
+- SKSE version/runtime/release idx table added to skse_docs.txt
+- add more weapon data to Scaleform
+- add race flag functions
+- add ModInfo functions to Game.psc
+- add SetGameSettingFloat/Int/Bool/String
+- log files written to <My Documents>\My Games\Skyrim\SKSE\
+- support for runtime 1.7.7.0
+
+1.5.9
+- hook up Race functions.
+- support for runtime 1.6.89.0
+
+1.5.8:
+- Fix size of enchantable class so that Weapon and Armor functions work again.
+- Fix other various bugs in previous version.
+- Temporarily add missing native function definitions in Actor.psc, ObjectReference.psc, Spell.psc and Game.psc.
+
+1.5.7:
+- Fix bugs with SetName and really hook up Input.GetNumKeysPressed and GetNthKeyPressed
+- support for runtime 1.6.87.0
+
+1.5.6:
+- Add Form.HasKeywordString(string)
+- Add Weapon IsBattleaxe and similar functions
+- Add Armor: IsCuirass, IsLight/HeavyArmor, IsClothing, IsClothingBody and similar functions
+- Add Armor: Get/Set Model/Icon/MessageIcon paths
+- Properly hook up Armor functions
+- Fix sundry typos and bugs
+
+1.5.5:
+- Add Book functions (thanks PurpleLunchbox)
+- Add Input: GetNumKeysPressed, GetNthKeyPressed
+- Add Weapon: Get/SetCritDamage, Get/SetMin/MaxRange
+
+1.5.4:
+- Add ability to pass, return strings.
+- Add Form.Get/SetName, Keyword.GetString, Weapon.Get/Set Model/Icon/MessageIcon paths
+- Add Armor SlotMask functions (Get/SetSlotMask, AddTo/RemoveFromSlotMask, GetMaskForSlot)
+- Add StringUtil.psc (Find, Substring, GetLength, GetNthChar, Char-functions: IsDigit, IsLetter etc.)
+
+1.5.3:
+- fix all Actor.psc functionality, Add GetWornForm
+- add Potion.psc and Spell.psc along with magicitem effect walking code
+
+1.5.2:
+- additional papyrus functionality (Input, SKSE version functions, IsHarvested)
+
+1.5.1:
+- loader is now compatible with the windows 8 exe loader
+- papyrus support!
+
+1.4.15:
+- support for runtime 1.5.26.0
+
+1.4.14:
+- support for runtime 1.5.24.0
+
+1.4.13:
+- more info reported to the UI for objects (see skse_docs.txt)
+- accidentally left some debug code on in 1.4.12 that would cause mouse problems, fixed
+
+1.4.12:
+- support for runtime 1.4.27.0
+- more papyrus
+
+1.4.11:
+- hooked favorites menu item list
+- loader can retrieve name of runtime from .ini
+	add \Data\SKSE\skse.ini containing:
+	[Loader]
+	RuntimeName=TESV.exe
+- support for runtime 1.4.26.0
+- pass -launchsteam to the loader to attempt to launch steam
+- initial papyrus hooks
+
+1.4.10:
+- fix GFxValue destruction (this was causing the instability)
+- fix GetConfigOption (makes .ini configuration work)
+
+1.4.9:
+- forced container categorization now configurable via .ini
+	add \Data\SKSE\skse.ini containing:
+	[Interface]
+	EnableContainerCategorization=1
+- possible refcounting fix for scaleform objects
+- cache GFxFunctionHandler objects
+
+1.4.8:
+- scaleform ForceContainerCategorization
+- support for runtime 1.4.21.0
+
+1.4.7:
+- support for runtime 1.4.20.0
+
+1.4.6:
+- added optional extensions for item cards (see skse_docs.txt for details)
+
+1.4.5
+- support for runtime 1.4.15.0
+
+1.4.4:
+- additional form docs
+
+1.4.3:
+- when running a Steam-wrapped executable, make sure Steam is running
+- fix conflict with logging system and UAC
+
+1.4.2:
+- scaleform: GetINISetting
+- support for runtime 1.3.10.0
+
+1.4.1:
+- more docs
+- scaleform: CloseMenu
+- preliminary scaleform plugin API
+
+1.4.0:
+- hooked scaleform vm
+- scaleform: AllowTextInput, Log, SetINISetting, OpenMenu, skse.version
+
+1.3.0:
+- support for runtime 1.3.7.0
+- hooked classic script interpreter
+
+1.2.1:
+- fix the new bug in runtime 1.2.12.0 regarding spell resistance
+
+1.2.0:
+- lots of form docs
+- support for runtime 1.2.12.0
+
+1.1.0:
+- everything!
+- plugin manager
+- lots of scaleform docs
+- some papyrus docs
+- the obscript code is pretty much the same so there isn't much interesting there yet. will get to patching the runtime table if there are reasons to not use papyrus all the time
