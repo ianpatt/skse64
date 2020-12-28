@@ -26,7 +26,8 @@ bool BranchTrampoline::Create(size_t len, void * module)
 	// search backwards from module base
 	uintptr_t moduleBase = uintptr_t(module);
 	uintptr_t addr = moduleBase;
-	uintptr_t lowestOKAddress = moduleBase - 0x80000000 + (1024 * 1024 * 128);	// largest 32-bit displacement with 128MB scratch space
+	uintptr_t maxDisplacement = 0x80000000 - (1024 * 1024 * 128); // largest 32-bit displacement with 128MB scratch space
+	uintptr_t lowestOKAddress = (moduleBase >= maxDisplacement) ? moduleBase - maxDisplacement : 0;
 	addr--;
 
 	while (!m_base)
