@@ -1,0 +1,17 @@
+name: testbuild
+on: [push]
+jobs:
+    run-testbuild:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                path: skse64
+            - uses: actions/checkout@v2
+              with:
+                path: common
+                repository: ianpatt/common
+            - run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern common
+            - run: cmake --build common/build --config Release --target install
+            - run: cmake -B skse64/build -S skse64 -DCMAKE_INSTALL_PREFIX=extern skse64
+            - run: cmake --build skse64/build --config Release
