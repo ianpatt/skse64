@@ -1,0 +1,3 @@
+set(sources
+	main.cpp
+)

@@ -32,3 +32,6 @@ scripts/build_bin
 scripts/build_src
 scripts/compiler
 scripts/merged
+
+# cmake
+build/*
