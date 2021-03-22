@@ -146,6 +146,11 @@ bool IsUPXImage(const UInt8 * base)
 	return GetImageSection(base, "UPX0") != NULL;
 }
 
+bool IsWinStoreImage(const UInt8 * base)
+{
+	return GetImageSection(base, ".xbld") != NULL;
+}
+
 bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
 {
 	// open and map the file in to memory
@@ -167,6 +172,7 @@ bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
 			// scan for packing type
 			bool	isSteam = IsSteamImage(fileBase);
 			bool	isUPX = IsUPXImage(fileBase);
+			bool	isWinStore = IsWinStoreImage(fileBase);
 
 			if(isUPX)
 			{
@@ -175,6 +181,10 @@ bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
 			else if(isSteam)
 			{
 				hookInfo->procType = kProcType_Steam;
+			}
+			else if(isWinStore)
+			{
+				hookInfo->procType = kProcType_WinStore;
 			}
 			else
 			{
@@ -238,11 +248,12 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 
 	switch(hookInfo->procType)
 	{
-	case kProcType_Steam:	_MESSAGE("steam exe"); break;
-	case kProcType_Normal:	_MESSAGE("normal exe"); break;
-	case kProcType_Packed:	_MESSAGE("packed exe"); break;
+	case kProcType_Steam:		_MESSAGE("steam exe"); break;
+	case kProcType_Normal:		_MESSAGE("normal exe"); break;
+	case kProcType_Packed:		_MESSAGE("packed exe"); break;
+	case kProcType_WinStore:	_MESSAGE("winstore exe"); break;
 	case kProcType_Unknown:
-	default:				_MESSAGE("unknown exe type"); break;
+	default:					_MESSAGE("unknown exe type"); break;
 	}
 
 	bool result = false;
@@ -288,6 +299,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 		{
 		case kProcType_Steam:
 		case kProcType_Normal:
+		case kProcType_WinStore:
 			*dllSuffix = "";
 
 			result = true;
@@ -306,6 +318,13 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 		case kProcType_Steam:
 		case kProcType_Normal:
 			*dllSuffix = "1_5_97";
+
+			result = true;
+
+			break;
+
+		case kProcType_WinStore:
+			*dllSuffix = "1_5_97_winstore";
 
 			result = true;
 

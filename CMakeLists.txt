@@ -37,3 +37,11 @@ endif()
 if (NOT TARGET skse64_steam_loader)
 	add_subdirectory(skse64_steam_loader)
 endif()
+
+if (NOT TARGET skse64_msstore_loader)
+	add_subdirectory(skse64_msstore_loader)
+endif()
+
+if (NOT TARGET skse64_msstore_stub)
+	add_subdirectory(skse64_msstore_stub)
+endif()
