@@ -378,9 +378,15 @@ namespace papyrusObjectReference
 			UInt8 formType = pProduceRef->baseForm->formType;
 			if (formType == kFormType_Tree || formType == kFormType_Flora) {
 				if(isHarvested)
+				{
 					pProduceRef->flags |= TESObjectREFR::kFlag_Harvested;
+					pProduceRef->MarkChanged(TESObjectREFR::kChange_IsEmpty);
+				}
 				else
+				{
 					pProduceRef->flags &= ~TESObjectREFR::kFlag_Harvested;
+					pProduceRef->ClearChanged(TESObjectREFR::kChange_IsEmpty);
+				}
 			}
 
 			TaskInterface::UpdateHarvestModel(pProduceRef);

@@ -124,6 +124,8 @@ public:
 	enum
 	{
 		kFlag_Harvested = 0x2000,
+
+		kChange_IsEmpty = 0x00200000,
 	};
 
 	// currently none of these have been analyzed

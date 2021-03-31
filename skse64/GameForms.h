@@ -357,7 +357,7 @@ public:
 	enum {
 		kFlagIsDeleted = 0x20,
 		kFlagPlayerKnows = 0x40,
-		kFlagUnk_0x800 = 0x800
+		kFlagUnk_0x800 = 0x800,
 	};
 
 	virtual void			Unk_04(void);		// reset/init? would leak pointers if called on a live object
@@ -366,8 +366,8 @@ public:
 	virtual bool			Unk_07(UInt32 arg);
 	virtual bool			Unk_08(UInt32 arg);	// calls LoadForm
 	virtual TESForm *		Unk_09(UInt32 arg1, void * arg2);
-	virtual bool			MarkChanged(UInt32 changed);	// mark as changed?
-	virtual void			Unk_0B(UInt32 arg);
+	virtual bool			MarkChanged(UInt32 changed);
+	virtual void			ClearChanged(UInt32 changed);
 	virtual bool			Unk_0C(UInt32 arg);
 	virtual void			Unk_0D(UInt32 arg);
 	virtual void			Unk_0E(UInt32 arg);
