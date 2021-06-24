@@ -7,6 +7,7 @@
 - co-saves with the same name will now be deleted before written
 - fixed serialization bug when resolving handles
 - added Location.GetParent
+- fix setting process priority in loader
 
 2.0.17
 - support for runtime 1.5.97
