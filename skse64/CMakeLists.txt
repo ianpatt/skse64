@@ -45,6 +45,7 @@ source_group(
 	${PROJECT_NAME}
 	FILES
 		skse64.cpp
+		skse64.def
 )
 
 source_group(
@@ -370,6 +371,7 @@ add_library(
 	SHARED
 	${headers}
 	${sources}
+	skse64.def
 	${skse64_common_SOURCE_DIR}/skse_version.rc
 )
 

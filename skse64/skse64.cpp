@@ -130,7 +130,6 @@ extern "C" {
 		{
 		case DLL_PROCESS_ATTACH:
 			g_moduleHandle = (void *)hDllHandle;
-			SKSE64_Initialize();
 			break;
 
 		case DLL_PROCESS_DETACH:

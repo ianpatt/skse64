@@ -18,8 +18,6 @@ BOOL WINAPI DllMain(HANDLE procHandle, DWORD reason, LPVOID reserved)
 	if(reason == DLL_PROCESS_ATTACH)
 	{
 		g_dllHandle = procHandle;
-
-		OnAttach();
 	}
 
 	return TRUE;
@@ -103,5 +101,30 @@ static void HookMain(void * retAddr)
 	g_dllPath = GetRuntimeDirectory() + dllPrefix + dllSuffix + ".dll";
 	_MESSAGE("dll = %s", g_dllPath.c_str());
 
-	LoadLibrary(g_dllPath.c_str());
+	HMODULE dll = LoadLibrary(g_dllPath.c_str());
+	if(dll)
+	{
+		typedef void (* EntryPoint)(void);
+		EntryPoint entryPoint = (EntryPoint)GetProcAddress(dll, "StartSKSE");
+		if(entryPoint)
+		{
+			entryPoint();
+		}
+		else
+		{
+			_ERROR("entry point not found");
+		}
+	}
+	else
+	{
+		_ERROR("couldn't load DLL");
+	}
+}
+
+extern "C"
+{
+	void InitSKSESteamLoader()
+	{
+		OnAttach();
+	}
 }

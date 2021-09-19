@@ -278,14 +278,7 @@ int main(int argc, char ** argv)
 		break;
 
 	case kProcType_Normal:
-#if 0
-		if(InjectDLL(&procInfo, dllPath.c_str(), &procHookInfo))
-		{
-			injectionSucceeded = true;
-		}
-#else
 		injectionSucceeded = InjectDLLThread(&procInfo, dllPath.c_str(), true, g_options.m_noTimeout);
-#endif
 		break;
 
 	default:

@@ -44,6 +44,7 @@ source_group(
 	FILES
 		${headers}
 		${sources}
+		skse64_steam_loader.def
 )
 
 # ---- Create library ----
@@ -53,6 +54,7 @@ add_library(
 	SHARED
 	${headers}
 	${sources}
+	skse64_steam_loader.def
 	${skse64_common_SOURCE_DIR}/skse_version.rc
 )
 
