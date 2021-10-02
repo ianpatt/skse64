@@ -1,3 +1,11 @@
+2.0.20
+- mark changed flags for SetHarvested
+- process priority loader command line argument now actually works
+- loader change: dll main functions are called outside LoadLibrary
+
+2.0.19
+- fix custom menus
+
 2.0.18
 - made PapyrusArgs.h not rely on MSVC extensions (thanks to matzibeater)
 - added trampoline interface for plugins to request a memory block for hooks within SKSE's 64kb * 2 block
