@@ -1,18 +1,18 @@
 #include "GameSettings.h"
 #include "GameAPI.h"
 
-// 298D0E3E3DDD7D2333475E0B20F931E2ED6A0355+5A
-RelocPtr<SettingCollectionList*> g_iniSettingCollection(0x0301D758);
-// 5C8EA66C14C47204F60C72DE345DC6B22BB929B4+52
-RelocPtr<SettingCollectionList*> g_iniPrefSettingCollection(0x02F6BA48);
-// FE086A335E2EB844894F7D900623A149B381723F+6B
-RelocPtr<SettingCollectionMap*>  g_gameSettingCollection(0x02EC58B0);
+// 91546BBAE6D61CD8C6D2021DD28BEB01C32E7178+30
+RelocPtr<SettingCollectionList*> g_iniSettingCollection(0x030B82D8);
+// see ??_7INIPrefSettingCollection@@6B@
+RelocPtr<SettingCollectionList*> g_iniPrefSettingCollection(0x030065D0);
+// CC0A0629D6A4756EA7CC1819A40AE77FB941F585+14
+RelocPtr<SettingCollectionMap*>  g_gameSettingCollection(0x02F60000);
 
 // ### we can just look these up
 // D1E741E48E0181F5A2371C8E8BD02C1F0810BADF+0
-RelocPtr<float> g_mapLocalHeight(0x01DB3ED8);	// fMapLocalHeight:MapMenu
-// C7928A7F7ACB94729DA4D4011E03D5ADC79160F3+186
-RelocPtr<float> g_localMapMinFrustumWidth(0x01DF5430);
+RelocPtr<float> g_mapLocalHeight(0x01E47F48);	// fMapLocalHeight:MapMenu
+// 2267F2663E2F5F55835C7541D7851DF11A53F787+1A2
+RelocPtr<float> g_localMapMinFrustumWidth(0x01E89870);
 
 UInt32 Setting::GetType(void) const
 {

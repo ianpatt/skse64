@@ -146,9 +146,11 @@ bool TESObjectARMA::isValidRace(TESRace * sourceRace) const
 
 BSShaderTextureSet * BSShaderTextureSet::Create()
 {
-	BSShaderTextureSet * textureSet = (BSShaderTextureSet*)Heap_Allocate(sizeof(BSShaderTextureSet));
-	CALL_MEMBER_FN(textureSet, ctor)();
-	return textureSet;
+	typedef BSShaderTextureSet * (* _BSShaderTextureSet_Create)(void);
+	// 898A3CAF8F24D9FDC30B00DA3DC5BDF182682C1C+63
+	static RelocAddr <_BSShaderTextureSet_Create> BSShaderTextureSet_Create(0x0140A880);
+
+	return BSShaderTextureSet_Create();
 }
 
 void TESNPC::SetFaceTexture(BGSTextureSet * textureSet)

@@ -69,16 +69,16 @@
 #include "xbyak/xbyak.h"
 
 typedef void(*_RegisterPapyrusFunctions)(VMClassRegistry ** registry);
-RelocAddr<_RegisterPapyrusFunctions> RegisterPapyrusFunctions(0x00980190);
-RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x009204A0 + 0xC7F);
+RelocAddr<_RegisterPapyrusFunctions> RegisterPapyrusFunctions(0x009A8A90);
+RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x0094CA80 + 0xCC3);
 
-RelocAddr<uintptr_t> UnregisterFromSleep_Enter(0x00925180 + 0x31);
-RelocAddr<uintptr_t> RevertGlobalData_Enter(0x0092B8A0 + 0x22);
-RelocAddr<uintptr_t> RevertGlobalData_Enter2(0x0092BDE0 + 0x190);
-RelocAddr<uintptr_t> SaveRegsSleep_Enter(0x0092E290 + 0x110);
-RelocAddr<uintptr_t> LoadRegsSleep_Enter(0x0092F030 + 0x1E6);
+RelocAddr<uintptr_t> UnregisterFromSleep_Enter(0x00951C90 + 0x14B);
+RelocAddr<uintptr_t> RevertGlobalData_Enter(0x00958C60 + 0x22);
+RelocAddr<uintptr_t> RevertGlobalData_Enter2(0x009591A0 + 0x288);
+RelocAddr<uintptr_t> SaveRegsSleep_Enter(0x0095B6E0 + 0x390);
+RelocAddr<uintptr_t> LoadRegsSleep_Enter(0x0095C7C0 + 0x2FB);
 
-RelocAddr<uintptr_t> kDFQueueHook_Base(0x00931470);
+RelocAddr<uintptr_t> kDFQueueHook_Base(0x0095ED70);
 uintptr_t  kDFQueueHook_HookAddr = kDFQueueHook_Base + 0x6E;
 uintptr_t kDFQueueHook_Entry_retn = kDFQueueHook_Base + 0x73;
 
@@ -354,7 +354,7 @@ void Hooks_Papyrus_Commit()
 			DelayFunctorQueue_Entry_Code(void * buf) : Xbyak::CodeGenerator(4096, buf)
 			{
 				// Need timeBudget as parameter
-				movss(xmm0, ptr[rsp + 0xC0]);
+				movss(xmm0, ptr[rsp + 0xB0]);
 				mov(rax, (uintptr_t)DelayFunctorQueue_Hook);
 				call(rax);
 

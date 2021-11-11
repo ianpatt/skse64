@@ -2,7 +2,7 @@
 
 BSTaskPool *	BSTaskPool::GetSingleton(void)
 {
-	// B474410E5F15240DC8FB7ABE11650955666F7775+91
-	static RelocPtr<BSTaskPool*> g_taskPool(0x02F38978);
+	// 7D1E14E40FFCA18609B3FAAD0A5750A26162D096+90
+	static RelocPtr<BSTaskPool*> g_taskPool(0x02FD3650);
 	return *g_taskPool;
 }

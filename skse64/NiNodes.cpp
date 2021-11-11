@@ -1,22 +1,12 @@
 #include "skse64/NiNodes.h"
 #include "skse64/GameObjects.h"
 
-const _GetBoneNames GetBoneNames = (_GetBoneNames)0x00000000; // Builds the skeleton node name list if it doesn't exist
-const _GetNodeByName GetNodeByName = (_GetNodeByName)0x00000000;
-const _GetNodeNameByWeaponType GetNodeNameByWeaponType = (_GetNodeNameByWeaponType)0x00000000;
-const _GetInternalNode GetInternalNode = (_GetInternalNode)0x00000000;
-const _SwapNodeParent SwapNodeParent = (_SwapNodeParent)0x00000000;
-
 NiBoneNames * NiBoneNames::GetSingleton(void)
 {
-	return (NiBoneNames *)0x00000000;
+	// 33EBA690BF2A27ACE16840951CA740822F8A4756+9A
+	static RelocAddr <NiBoneNames *> addr(0x01F58C90);
+	return addr;
 }
-
-NiWeaponNodes * NiWeaponNodes::GetSingleton(void)
-{
-	return (NiWeaponNodes *)0x00000000;
-}
-
 
 NiNode * NiNode::Create(UInt32 arrBufLen)
 {

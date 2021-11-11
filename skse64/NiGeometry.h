@@ -39,8 +39,8 @@ public:
 class NiTriBasedGeom : public NiGeometry
 {
 public:
-	// 2280019D608FD35C9B8EB465875A37FBCC37C462+E4
-	DEFINE_MEMBER_FN_1(ctor, NiTriBasedGeom *, 0x00C91440, NiTriShapeData * geometry);
+	// 9D070CBFB7F7B861F270D5D29E210A479261131B+C2
+	DEFINE_MEMBER_FN_1(ctor, NiTriBasedGeom *, 0x00CBC810, NiTriShapeData * geometry);
 };
 
 class NiTriShape : public NiTriBasedGeom
@@ -129,8 +129,8 @@ public:
 	UInt32		unk178;			// 178
 	UInt32		unk17C;			// 17C
 
-	// C33CC4D0EB586CB83500C260EE681221A345C5AE+FF
-	DEFINE_MEMBER_FN_0(ctor, BSDynamicTriShape *, 0x00C72300);
+	// 
+	DEFINE_MEMBER_FN_0(ctor, BSDynamicTriShape *, 0x00C9AB70);
 };
 STATIC_ASSERT(sizeof(BSDynamicTriShape) == 0x180);
 
@@ -397,8 +397,6 @@ public:
 	NiTransform		m_kRootParentToSkin;	// 0C
 	BoneData		* m_pkBoneData;			// 40
 	UInt32			m_uiBones;				// 44
-
-	// ctor - AD4780
 };
 
 STATIC_ASSERT(sizeof(NiSkinData::BoneVertData) == 0x08);
@@ -427,8 +425,8 @@ public:
 	NiSkinInstance * Clone();
 
 	MEMBER_FN_PREFIX(NiSkinInstance);
-	DEFINE_MEMBER_FN(Copy, NiSkinInstance*, 0x00C52750);
-	DEFINE_MEMBER_FN(ctor, NiSkinInstance *, 0x00C7EB60);
+	DEFINE_MEMBER_FN(Copy, NiSkinInstance*, 0x00C79E60);
+	DEFINE_MEMBER_FN(ctor, NiSkinInstance *, 0x00CA7BA0);
 };
 STATIC_ASSERT(offsetof(NiSkinInstance, lock) == 0x60);
 STATIC_ASSERT(sizeof(NiSkinInstance) == 0x88);
@@ -445,7 +443,6 @@ public:
 
 	static BSDismemberSkinInstance * Create();
 
-	MEMBER_FN_PREFIX(BSDismemberSkinInstance);
-	DEFINE_MEMBER_FN(ctor, BSDismemberSkinInstance *, 0x00C6BC70);
+	// standalone constructor was inlined
 };
 STATIC_ASSERT(sizeof(BSDismemberSkinInstance) == 0xA0);

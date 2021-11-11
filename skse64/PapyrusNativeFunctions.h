@@ -117,14 +117,14 @@ public:
 	virtual bool				Run(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunctionBase);
-	DEFINE_MEMBER_FN(Impl_dtor, void, 0x01250ED0);
+	DEFINE_MEMBER_FN(Impl_dtor, void, 0x01379E60);
 	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 6
-	DEFINE_MEMBER_FN(Impl_GetParam, UInt64 *, 0x01250670, UInt32 idx, BSFixedString * nameOut, UInt64 * typeOut);
-	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x012507F0, UInt64 unk0, UInt64 unk1, VMClassRegistry * registry, VMState * unk3);
+	DEFINE_MEMBER_FN(Impl_GetParam, UInt64 *, 0x01379530, UInt32 idx, BSFixedString * nameOut, UInt64 * typeOut);
+	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x01379730, UInt64 unk0, UInt64 unk1, VMClassRegistry * registry, VMState * unk3);
 	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x10
-	DEFINE_MEMBER_FN(Impl_Fn10, BSFixedString *, 0x01250750);
+	DEFINE_MEMBER_FN(Impl_Fn10, BSFixedString *, 0x01379610);
 	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x12
-	DEFINE_MEMBER_FN(Impl_Fn12, bool, 0x01250770, UInt32 idx, UInt64 out);
+	DEFINE_MEMBER_FN(Impl_Fn12, bool, 0x01379630, UInt32 idx, UInt64 out);
 
 	DEFINE_STATIC_HEAP(Heap_Allocate, Heap_Free);
 
@@ -156,8 +156,8 @@ public:
 	virtual bool				Run(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunction);
-	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x01250C80, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
-	DEFINE_MEMBER_FN(Impl_dtor, void, 0x01250ED0);
+	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x01379C10, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
+	DEFINE_MEMBER_FN(Impl_dtor, void, 0x01379E60);	// same as NativeFunctionBase dtor
 
 	void	DebugRunHook(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state);
 

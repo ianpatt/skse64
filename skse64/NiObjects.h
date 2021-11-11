@@ -9,8 +9,6 @@
 // generally other children should go in other files
 // especially if they can be grouped
 
-// SE notice: all definitions updated except BSRenderTargetGroup
-
 class NiCloningProcess;
 class NiStream;
 class NiObjectGroup;
@@ -125,7 +123,7 @@ public:
 
 	
 	MEMBER_FN_PREFIX(NiObject);
-	DEFINE_MEMBER_FN(DeepCopy, NiStream *, 0x00C529A0, NiObject ** result);
+	DEFINE_MEMBER_FN(DeepCopy, NiStream *, 0x00C7A050, NiObject ** result);
 };
 STATIC_ASSERT(sizeof(NiObject) == 0x10);
 
@@ -220,8 +218,8 @@ public:
 	UInt8		pad10A[6];				// 10A
 
 	MEMBER_FN_PREFIX(NiAVObject);
-	// 3239A102C6E8818F0FBFEF58A1B6EA724A237258+26
-	DEFINE_MEMBER_FN(UpdateNode, void, 0x00C56B50, ControllerUpdateContext * ctx);
+	// A5B2FC7D42E72BA4F6A679BAC0BAE17C12A4AFE1+E3
+	DEFINE_MEMBER_FN(UpdateNode, void, 0x00C7DF40, ControllerUpdateContext * ctx);
 };
 STATIC_ASSERT(offsetof(NiAVObject, m_localTransform) == 0x48);
 STATIC_ASSERT(offsetof(NiAVObject, m_worldTransform) == 0x7C);
@@ -243,11 +241,6 @@ public:
 	UInt32	unk28;							// 28
 	UInt32	unk2C;							// 2C inited to FFFFFFFF
 	NiRenderedTexture * renderedTexture[4];	// 30
-
-	static BSRenderTargetGroup *	GetPlayerFaceMask(void)
-	{
-		return *((BSRenderTargetGroup **)0x00000000);
-	}
 };
 
 // 20
@@ -269,10 +262,10 @@ public:
 	UInt32	pad1C;		// 1C
 
 	MEMBER_FN_PREFIX(BSFaceGenModel);
-	DEFINE_MEMBER_FN(ctor, void, 0x003D4070);
-	DEFINE_MEMBER_FN(CopyFrom, void, 0x003D4150, BSFaceGenModel * other);
-	DEFINE_MEMBER_FN(SetModelData, bool, 0x003D47C0, const char * meshPath, void * unk1, UInt8 unk2);
-	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003D4630, BSFixedString * morphName, TESModelTri * triModel, NiAVObject ** headNode, float relative, UInt8 unk1);
+	DEFINE_MEMBER_FN(ctor, void, 0x003EC230);
+	DEFINE_MEMBER_FN(CopyFrom, void, 0x003EC2D0, BSFaceGenModel * other);
+	DEFINE_MEMBER_FN(SetModelData, bool, 0x003ECA50, const char * meshPath, void * unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EC8B0, BSFixedString * morphName, TESModelTri * triModel, NiAVObject ** headNode, float relative, UInt8 unk1);
 };
 
 // 18
@@ -283,7 +276,7 @@ public:
 	
 
 	MEMBER_FN_PREFIX(BSFaceGenMorphData);
-	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003D7860, const char ** morphName, NiAVObject * faceTrishape, float relative, UInt8 unk2);
+	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EF750, const char ** morphName, NiAVObject * faceTrishape, float relative, UInt8 unk2);
 };
 
 // 20

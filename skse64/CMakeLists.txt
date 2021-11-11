@@ -46,6 +46,7 @@ source_group(
 	FILES
 		skse64.cpp
 		skse64.def
+		skse_version.rc
 )
 
 source_group(
@@ -75,6 +76,7 @@ source_group(
 		GameMenus.h
 		GameObjects.cpp
 		GameObjects.h
+		GamePathing.cpp
 		GameReferences.cpp
 		GameReferences.h
 		GameResources.cpp
@@ -115,6 +117,8 @@ source_group(
 		Hooks_Gameplay.h
 		Hooks_Handlers.cpp
 		Hooks_Handlers.h
+		Hooks_Memory.cpp
+		Hooks_Memory.h
 		Hooks_NetImmerse.cpp
 		Hooks_NetImmerse.h
 		Hooks_ObScript.cpp
@@ -170,6 +174,8 @@ source_group(
 		NiExtraData.h
 		NiGeometry.cpp
 		NiGeometry.h
+		NiInterpolators.cpp
+		NiInterpolators.h
 		NiLight.cpp
 		NiLight.h
 		NiMaterial.cpp

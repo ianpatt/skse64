@@ -99,7 +99,7 @@ typedef bool (* ObScript_Parse)(UInt32 numParams, const ObScriptParam* paramInfo
 typedef bool (* ObScript_Eval)(TESObjectREFR* thisObj, void* arg1, void* arg2, double& result);
 
 typedef bool(* _ObScript_ExtractArgs)(const ObScriptParam * paramInfo, ScriptData * scriptData, UInt32& opcodeOffsetPtr, TESObjectREFR * thisObj, TESObjectREFR* containingObj, Script* scriptObj, ScriptLocals* locals, void* args1, void* args2);
-extern RelocAddr<_ObScript_ExtractArgs> ObjScript_ExtractArgs;
+extern RelocAddr<_ObScript_ExtractArgs> ObScript_ExtractArgs;
 
 // 02E8400
 

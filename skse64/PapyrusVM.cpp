@@ -1,8 +1,8 @@
 #include "PapyrusVM.h"
 #include "GameAPI.h"
 
-// 34E44118D2A6FDD3472D1A6D43002360FBDE4EA4+15
-RelocPtr <SkyrimVM*> g_skyrimVM(0x01EC3B78);
+// 3740B7AD44E615CF1BB4401806BB6F9DB42DA46D+12
+RelocPtr <SkyrimVM*> g_skyrimVM(0x01F5E378);
 
 void VMClassInfo::AddRef(void)
 {

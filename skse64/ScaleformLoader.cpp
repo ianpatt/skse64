@@ -4,7 +4,7 @@
 
 GFxLoader * GFxLoader::GetSingleton()
 {
-	// 4E9F39D1066653EF254B38406212E476F80A6C9B+AE
-	RelocPtr<GFxLoader*> g_GFxLoader(0x02F257A0);
+	// D73FE972523296E269125B9E6F076AD967D7970C+F9
+	RelocPtr<GFxLoader*> g_GFxLoader(0x02FBFD80);
 	return *g_GFxLoader;
 }

@@ -1,3 +1,6 @@
+2.1.0
+- support for 1.6.317 (anniversary edition)
+
 2.0.20
 - mark changed flags for SetHarvested
 - process priority loader command line argument now actually works

@@ -78,10 +78,10 @@ public:
 	void	Release(void);
 
 	MEMBER_FN_PREFIX(VMClassInfo);
-	DEFINE_MEMBER_FN(Destroy, void, 0x01237240);
-	DEFINE_MEMBER_FN(GetVariable, SInt32, 0x012385B0, BSFixedString * name);
-	// 1673D04F90861710999A3DC0514282C538D25FCA+187
-	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x0123C760, const char * fnName);
+	DEFINE_MEMBER_FN(Destroy, void, 0x013617D0);
+	DEFINE_MEMBER_FN(GetVariable, SInt32, 0x01362A60, BSFixedString * name);
+	// 
+	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x013661A0, const char * fnName);
 };
 
 // This type is not fully decoded or correctly sized, just enough to use the functor
@@ -138,7 +138,6 @@ class VMUnlinkedClassList
 	void	* unk40;	// 40
 	UInt32	unk44;		// 44
 };
-
 
 // 044
 class VMStackInfo
@@ -391,16 +390,16 @@ public:
 	MEMBER_FN_PREFIX(SkyrimVM);
 
 	// Used by Hooks_Papyrus
-	// 7B34FD8669F3B7848943EE6F26F783A154F6A336+31
-	DEFINE_MEMBER_FN(UnregisterFromSleep_Internal, void, 0x009247E0, UInt64 handle);
-	DEFINE_MEMBER_FN(RevertGlobalData_Internal, bool, 0x0092DAE0);
-	// E79F47684196468F785E6950402DBDAA5A668FAA+110
-	DEFINE_MEMBER_FN(SaveRegSleepEventHandles_Internal, bool, 0x0092EB50, void * handleReaderWriter, void * saveStorageWrapper);
-	// ECCDB3740458A9BB07FA958498C66F04CE14F94C+1E6
-	DEFINE_MEMBER_FN(LoadRegSleepEventHandles_Internal, bool, 0x0092FD80, void * handleReaderWriter, void * loadStorageWrapper);
+	// 
+	DEFINE_MEMBER_FN(UnregisterFromSleep_Internal, void, 0x00951240, UInt64 handle);	// AE: using one function earlier due to inlining
+	DEFINE_MEMBER_FN(RevertGlobalData_Internal, bool, 0x0095AF30);
+	// 4DF4B0288419C72FBF262CE2DBBAAFE7D9713C51+390
+	DEFINE_MEMBER_FN(SaveRegSleepEventHandles_Internal, bool, 0x0095C2F0, void * handleReaderWriter, void * saveStorageWrapper);
+	// 4F9ECB23ABD5935D4160213D8A06DB7A94E6B988+2FB
+	DEFINE_MEMBER_FN(LoadRegSleepEventHandles_Internal, bool, 0x0095D590, void * handleReaderWriter, void * loadStorageWrapper);	// AE: using one function earlier due to inlining
 
-	// 00011FEFBFDA69F253C84165B45736A4F0AF02B8+204
-	DEFINE_MEMBER_FN(QueueDelayFunctor_Internal, bool, 0x009252C0, void** pFunctor);
+	// 96B4034421813AABF0DBF8B2B00A84CC25FB9CA0+112
+	DEFINE_MEMBER_FN(QueueDelayFunctor_Internal, bool, 0x009520B0, void** pFunctor);
 
 	bool QueueDelayFunctor(void** pFunctor)
 	{
@@ -438,7 +437,7 @@ public:
 		VMValue	* Get(UInt32 idx)	{ return (idx < m_size) ? &m_data[idx] : NULL; }
 
 		MEMBER_FN_PREFIX(Output);
-		DEFINE_MEMBER_FN(Resize, bool, 0x00920360, UInt32 len);
+		DEFINE_MEMBER_FN(Resize, bool, 0x0094C950, UInt32 len);
 	};
 
 	virtual bool	Copy(Output * dst) = 0;

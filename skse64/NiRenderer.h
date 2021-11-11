@@ -31,8 +31,9 @@ public:
 	UInt64						unk2788[(0x2788 - 0x90) >> 3];
 	CRITICAL_SECTION			lock;				// 2790
 
-	// 1412F0390 - CreateRenderTargets
-	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00D6DBC0, UInt32 width, UInt32 height);
+	// 141415050 - CreateRenderTargets
+
+	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00DA9610, UInt32 width, UInt32 height);
 };
 
 extern RelocPtr <BSRenderManager> g_renderManager;

@@ -10,7 +10,7 @@ UInt32 DataHandler::LoadScripts_Hook()
 	return ret;
 }
 
-RelocAddr<uintptr_t>  LoadScripts_Enter(0x005B0120 + 0x3E8);
+RelocAddr<uintptr_t>  LoadScripts_Enter(0x005D6C90 + 0x3EB);
 
 void Hooks_Data_Commit(void)
 {

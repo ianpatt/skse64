@@ -1,4 +1,4 @@
 #include "skse64/PapyrusInterfaces.h"
 
-// 82677E39AC1FFB7F2E1C28FBABC2FC971DB49882+F7
-RelocPtr <IObjectHandlePolicy*> g_objectHandlePolicy(0x031D07A8);
+// B085C9577FC3BACF4719EF79E3613E2327537C10+4F
+RelocPtr <IObjectHandlePolicy*> g_objectHandlePolicy(0x0326A930);

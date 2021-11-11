@@ -2,7 +2,8 @@
 #include "skse64_common/Relocation.h"
 
 typedef void * (* _Runtime_DynamicCast_Internal)(void * srcObj, UInt32 arg1, const void * fromType, const void * toType, UInt32 arg4);
-RelocAddr <_Runtime_DynamicCast_Internal> Runtime_DynamicCast_Internal(0x0134BDB0);	// __RTDynamicCast
+// 09ECDC875A847989BA08B9E8A23656EDFE1F380C+A8
+RelocAddr <_Runtime_DynamicCast_Internal> Runtime_DynamicCast_Internal(0x014775AA);	// __RTDynamicCast
 
 void * Runtime_DynamicCast(void * srcObj, const void * fromType, const void * toType)
 {

@@ -67,10 +67,10 @@ public:
 	void GetEquipItemData(EquipData& stateOut, SInt32 itemId, SInt32 baseCount) const;
 
 	MEMBER_FN_PREFIX(InventoryEntryData);
-	DEFINE_MEMBER_FN(GenerateName, const char *, 0x001D73C0);
-	DEFINE_MEMBER_FN(GetValue, SInt32, 0x001D66E0);
-	DEFINE_MEMBER_FN(IsOwnedBy, bool, 0x001D7510, TESForm * actor, bool unk1);
-	DEFINE_MEMBER_FN(GetSoulLevel, UInt32, 0x001D6860);
+	DEFINE_MEMBER_FN(GenerateName, const char *, 0x001E2C10);
+	DEFINE_MEMBER_FN(GetValue, SInt32, 0x001E1F60);
+	DEFINE_MEMBER_FN(IsOwnedBy, bool, 0x001E2D50, TESForm * actor, bool unk1);
+	DEFINE_MEMBER_FN(GetSoulLevel, UInt32, 0x001E20E0);
 };
 
 typedef tList<InventoryEntryData> EntryDataList;
@@ -98,8 +98,8 @@ public:
 		void GetEquipItemData(InventoryEntryData::EquipData& stateOut, TESForm * item, SInt32 itemId) const;
 
 		MEMBER_FN_PREFIX(Data);
-		DEFINE_MEMBER_FN(SetUniqueID, void, 0x001ECC60, BaseExtraList* itemList, TESForm * oldForm, TESForm * newForm);
-		DEFINE_MEMBER_FN(TransferItemUID, void, 0x001ECE20, BaseExtraList * extraList, TESForm * oldForm, TESForm * newForm, UInt32 unk1);
+		DEFINE_MEMBER_FN(SetUniqueID, void, 0x001F8600, BaseExtraList* itemList, TESForm * oldForm, TESForm * newForm);
+		DEFINE_MEMBER_FN(TransferItemUID, void, 0x001F88B0, BaseExtraList * extraList, TESForm * oldForm, TESForm * newForm, UInt32 unk1);
 	};
 
 	Data * data;
@@ -552,8 +552,8 @@ public:
 	static ExtraTextDisplayData* Create();
 
 	MEMBER_FN_PREFIX(ExtraTextDisplayData);
-	DEFINE_MEMBER_FN(SetName_Internal, void, 0x0013C870, const char * name);
-	DEFINE_MEMBER_FN(GenerateName_Internal, const char*, 0x0013C740, TESForm * form, float extraHealthValue);
+	DEFINE_MEMBER_FN(SetName_Internal, void, 0x00143D00, const char * name);
+	DEFINE_MEMBER_FN(GenerateName_Internal, const char*, 0x00143BD0, TESForm * form, float extraHealthValue);
 };
  //	ExtraAlphaCutoff
 

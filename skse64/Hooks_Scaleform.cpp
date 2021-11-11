@@ -1148,13 +1148,13 @@ public:
 	UInt8						unk30[0x10];	// 30 
 
 	MEMBER_FN_PREFIX(StandardItemData);
-	DEFINE_MEMBER_FN(ctor_data, StandardItemData *, 0x00854E40, GFxMovieView ** movieView, InventoryEntryData * objDesc, UInt64 unk);
+	DEFINE_MEMBER_FN(ctor_data, StandardItemData *, 0x00881E20, GFxMovieView ** movieView, InventoryEntryData * objDesc, UInt64 unk);
 
 	StandardItemData * ctor_Hook(GFxMovieView ** movieView, InventoryEntryData * objDesc, UInt64 unk);
 
 	static uintptr_t GetCtorHookAddress()
 	{
-		static RelocAddr<uintptr_t> kCtorHookAddress(0x00856050 + 0x97);
+		static RelocAddr<uintptr_t> kCtorHookAddress(0x00882DF0 + 0x97);
 		return kCtorHookAddress.GetUIntPtr();
 	}
 };
@@ -1203,11 +1203,11 @@ public:
 
 
 	MEMBER_FN_PREFIX(MagicItemData);
-	DEFINE_MEMBER_FN(ctor_data, MagicItemData *, 0x0089E730, GFxMovieView ** movieView, TESForm * pForm, int unk); // unk is ignored by ctor
+	DEFINE_MEMBER_FN(ctor_data, MagicItemData *, 0x008CE810, GFxMovieView ** movieView, TESForm * pForm, int unk); // unk is ignored by ctor
 
 	static uintptr_t GetCtorHookAddress()
 	{
-		static RelocAddr<uintptr_t> kCtorHookAddress(0x0089FB00 + 0x97);
+		static RelocAddr<uintptr_t> kCtorHookAddress(0x008CFE30 + 0x97);
 		return kCtorHookAddress.GetUIntPtr();
 	}
 
@@ -1241,14 +1241,15 @@ namespace favMenuDataHook
 	struct FavData
 	{
 		GFxMovieView	** movieView;	// 00
-		UInt32			unk04;			// 04
-		GFxValue		* entryList;	// 08
+		void			* unk04;		// 08
+		GFxValue		* entryList;	// 10
 	};
 
 	// 1 - Item
 
-	RelocAddr<uintptr_t> kSetItemData_Base(0x00878850);
-	uintptr_t kSetItemData_retn = kSetItemData_Base + 0xCA;
+	RelocAddr<uintptr_t> kSetItemData_Base(0x008A71C0);
+	uintptr_t kSetItemData_hook = kSetItemData_Base + 0xC2;
+	uintptr_t kSetItemData_retn = kSetItemData_Base + 0xC8;
 
 	void SetItemData(IMenu * menu, GFxValue * dataContainer, InventoryEntryData * objDesc)
 	{
@@ -1275,8 +1276,10 @@ namespace favMenuDataHook
 	};
 
 	// 2 - Magic
-	RelocAddr<uintptr_t> kSetMagicData_Base(0x00879770);
-	uintptr_t kSetMagicData_retn = kSetMagicData_Base + 0xA1;
+
+	RelocAddr<uintptr_t> kSetMagicData_Base(0x008A81D0);
+	uintptr_t kSetMagicData_hook = kSetMagicData_Base + 0x6B;
+	uintptr_t kSetMagicData_retn = kSetMagicData_Base + 0x71;
 
 	void SetMagicData(GFxMovieView * movieView, GFxValue * dataContainer, TESForm * form)
 	{
@@ -1298,7 +1301,9 @@ namespace favMenuDataHook
 	};
 
 	// 3 - VampireLord
-	RelocAddr<uintptr_t> kSetVampireData_Base(0x00879B40);
+
+	RelocAddr<uintptr_t> kSetVampireData_Base(0x008A8460);
+	uintptr_t kSetVampireData_hook = kSetVampireData_Base + 0x92;
 	uintptr_t kSetVampireData_retn = kSetVampireData_Base + 0x98;
 }
 
@@ -1306,8 +1311,9 @@ namespace favMenuDataHook
 
 namespace enchantMenuDataHook
 {
-	RelocAddr<uintptr_t> kSetData_Base(0x00864C50);
-	uintptr_t kSetData_retn = kSetData_Base + 0xDF;
+	RelocAddr<uintptr_t> kSetData_Base(0x0089B410);
+	uintptr_t kSetData_hook = kSetData_Base + 0x4A1;
+	uintptr_t kSetData_retn = kSetData_Base + 0x4A6;
 }
 
 // SE: this function has been moved out of the class, so that its address can be obtained 
@@ -1384,24 +1390,16 @@ void EnchantConstructMenu_CategoryListEntry_SetData_Extended(EnchantConstructMen
 
 namespace smithingMenuDataHook
 {
-	RelocAddr<uintptr_t> kSetData_Base(0x00864B00);
+	RelocAddr<uintptr_t> kSetData_Base(0x00891D00);
+	uintptr_t kSetData_hook = kSetData_Base + 0xD6;
+	uintptr_t kSetData_retn = kSetData_Base + 0xDB;
 
-	typedef void (__cdecl * _SetData_Hooked)(GFxValue * dataContainer, InventoryEntryData ** pObjDesc, SmithingMenu * menu);
-	
-	void SetData_Hooked(GFxValue * dataContainer, InventoryEntryData ** pObjDesc, SmithingMenu * menu)
+	const char * SetData_Hook(GFxValue * dataContainer, InventoryEntryData ** pObjDesc, SmithingMenu * menu)
 	{
-		static RelocAddr<uintptr_t> SetData_Hooked_Address(0x00870700);
-		((_SetData_Hooked)(SetData_Hooked_Address.GetUIntPtr())) (dataContainer, pObjDesc, menu);
-	}
+		InventoryEntryData * objDesc = *pObjDesc;
 
-	void SetData_Hook(GFxValue * dataContainer, InventoryEntryData ** pObjDesc, SmithingMenu * menu)
-	{
-		SetData_Hooked(dataContainer, pObjDesc, menu);
-
-		if (s_bExtendData && pObjDesc && menu && menu->view)
+		if(s_bExtendData && objDesc && menu && menu->view)
 		{
-			InventoryEntryData * objDesc = *pObjDesc;
-
 			scaleformExtend::CommonItemData(dataContainer, objDesc->type);
 			scaleformExtend::ItemInfoData(dataContainer, objDesc);
 			scaleformExtend::StandardItemData(dataContainer, objDesc->type);
@@ -1414,6 +1412,9 @@ namespace smithingMenuDataHook
 					(*iter)(menu->view, dataContainer, objDesc);
 			}
 		}
+
+		// original code
+		return CALL_MEMBER_FN(objDesc, GenerateName)();
 	}
 }
 
@@ -1421,25 +1422,17 @@ namespace smithingMenuDataHook
 
 namespace craftingMenuDataHook
 {
-	// 80050DF3D298FB230378FF3D7BC6F6D7BBAA21FB+22D
-	RelocAddr<uintptr_t> kSetData_Base(0x00864EF0);
+	// 
+	RelocAddr<uintptr_t> kSetData_Base(0x00892230);
+	uintptr_t kSetData_hook = kSetData_Base + 0xC4;
+	uintptr_t kSetData_retn = kSetData_Base + 0xC9;
 
-	typedef void (__cdecl * _SetData_Hooked)(GFxValue * dataContainer, ConstructibleObjectMenu::EntryData * entry, ConstructibleObjectMenu * menu);
-	
-	void SetData_Hooked(GFxValue * dataContainer, ConstructibleObjectMenu::EntryData * entry, ConstructibleObjectMenu * menu)
+	const char * SetData_Hook(GFxValue * dataContainer, ConstructibleObjectMenu::EntryData * entry, ConstructibleObjectMenu * menu)
 	{
-		static RelocAddr<uintptr_t> SetData_Hooked_Address(0x00870390);
-		((_SetData_Hooked)(SetData_Hooked_Address.GetUIntPtr())) (dataContainer, entry, menu);
-	}
-
-	void SetData_Hook(GFxValue * dataContainer, ConstructibleObjectMenu::EntryData * entry, ConstructibleObjectMenu * menu)
-	{
-		SetData_Hooked(dataContainer, entry, menu);
-
-		if (s_bExtendData && entry && entry->object && menu && menu->view)
+		if(s_bExtendData && entry && entry->object && menu && menu->view)
 		{
-			BGSConstructibleObject* object = entry->object;
-			TESForm* form = object->createdObject;
+			BGSConstructibleObject * object = entry->object;
+			TESForm * form = object->createdObject;
 
 			InventoryEntryData entryData(form, 0);
 
@@ -1453,8 +1446,12 @@ namespace craftingMenuDataHook
 			{
 				if(*iter)
 					(*iter)(menu->view, dataContainer, &entryData);
-			}			
+			}
 		}
+
+		// original code
+		TESFullName * fullName = DYNAMIC_CAST(entry->object->createdObject, TESForm, TESFullName);
+		return fullName ? fullName->GetName() : "";
 	}
 }
 
@@ -1462,25 +1459,16 @@ namespace craftingMenuDataHook
 
 namespace alchemyMenuDataHook
 {
-	// Item data
-	// 33BD5B22D8D665F5A8DB6AB3EC6EB874A57E3E53+263
-	RelocAddr<uintptr_t> kSetData_Base(0x00864DA0);
+	// 
+	RelocAddr<uintptr_t> kSetData_Base(0x00891F40);
+	uintptr_t kSetData_hook = kSetData_Base + 0xC6;
+	uintptr_t kSetData_retn = kSetData_Base + 0xCB;
 
-	typedef void (__cdecl * _SetData_Hooked)(GFxValue * dataContainer, AlchemyMenu::EntryData * entry, AlchemyMenu * menu);
-	
-	void SetData_Hooked(GFxValue * dataContainer, AlchemyMenu::EntryData * entry, AlchemyMenu * menu)
+	const char * SetData_Hook(GFxValue * dataContainer, AlchemyMenu::EntryData * entry, AlchemyMenu * menu)
 	{
-		static RelocAddr<uintptr_t> SetData_Hooked_Address(0x008704F0);
-		((_SetData_Hooked)(SetData_Hooked_Address.GetUIntPtr())) (dataContainer, entry, menu);
-	}
-
-	void SetData_Hook(GFxValue * dataContainer, AlchemyMenu::EntryData * entry, AlchemyMenu * menu)
-	{
-		SetData_Hooked(dataContainer, entry, menu);
-
-		if (s_bExtendData && entry && entry->data && menu && menu->view)
+		if(s_bExtendData && entry && entry->data && menu && menu->view)
 		{
-			InventoryEntryData* entryData = entry->data;
+			InventoryEntryData * entryData = entry->data;
 
 			scaleformExtend::CommonItemData(dataContainer, entryData->type);
 			scaleformExtend::ItemInfoData(dataContainer, entryData);
@@ -1490,24 +1478,30 @@ namespace alchemyMenuDataHook
 			{
 				if(*iter)
 					(*iter)(menu->view, dataContainer, entryData);
-			}			
+			}
 		}
-	}
 
+		// original code
+		TESFullName * fullName = DYNAMIC_CAST(entry->data->type, TESForm, TESFullName);
+		return fullName ? fullName->GetName() : "";
+	}
 
 	// Category arguments 
 	// (note: this passes data in arguments to SetCategoriesList. makes it more difficult to extend)
 
-	RelocAddr<uintptr_t> kExtendCategoryArgs_Base(0x00871700);
-	uintptr_t kExtendCategoryArgs_retn = kExtendCategoryArgs_Base + 0x59D;
+	RelocAddr<uintptr_t> kExtendCategoryArgs_Base(0x0089F8A0);
+	uintptr_t kExtendCategoryArgs_hook = kExtendCategoryArgs_Base + 0x564;
+	uintptr_t kExtendCategoryArgs_retn = kExtendCategoryArgs_Base + 0x569;
 
 	class GFxInvokeHook
 	{
 	public:
 		// effectArray is added parameter to signature of GFxValue Invoke
 		// SE: effectArray moved to the end of parameters, for x64 specific efficiency reasons
-		bool Invoke(void * obj, GFxValue * result, const char * name, GFxValue * args, UInt32 numArgs, bool isDisplayObj, AlchemyEffectCategory* effectArray)
+		bool Invoke(void * obj, GFxValue * result, AlchemyEffectCategory * effectArray, GFxValue * args, UInt32 numArgs, bool isDisplayObj)
 		{
+			const char * name = "SetCategoriesList";
+
 			if (s_bExtendAlchemyCategories)
 				scaleformExtend::AlchemyCategoryArgs(effectArray, args, numArgs);
 
@@ -1516,19 +1510,11 @@ namespace alchemyMenuDataHook
 			return p->Invoke(obj, result, name, args, numArgs, isDisplayObj);
 		}	
 	};
-
-	// Extra unused args explanation:
-	// This functions hooks Invoke, which uses rcx-r9, and 3 stack parameters (rsp+20, 28 and 30 before the call instruction)
-	// Our wanted extra parameter, the effectsArray, happened to be at rsp+0x48, so we can add two extra dummy parms for rsp+38 and 40, and then we can access the effectArray
-	bool ExtendCategoryArgs_Entry_Intermediate(GFxInvokeHook *pthis, void * obj, GFxValue * result, const char * name, GFxValue * args, UInt32 numArgs, bool isDisplayObj, void *, void *, AlchemyEffectCategory* effectArray)
-	{
-		return pthis->Invoke(obj, result, name, args, numArgs, isDisplayObj, effectArray);
-	}
 }
 
 namespace GFxLoaderHook
 {
-	RelocPtr<UInt64> kCtor_Base(0x005AE010 + 0xA08);
+	RelocPtr<UInt64> kCtor_Base(0x005D41A0 + 0xE72);	// WinMain+15
 
 	GFxLoader *ctor_Hook(GFxLoader * loader)
 	{
@@ -1626,7 +1612,7 @@ void InstallHooks(GFxMovieView * view)
 	globals.SetMember("skse", &skse);
 }
 
-RelocAddr <uintptr_t> kInstallHooks_Enter(0x00ECE790 + 0x1D9);
+RelocAddr <uintptr_t> kInstallHooks_Enter(0x00F10E00 + 0x1DD);
 
 void InstallHooks_Entry(GFxMovieView *pthis, UInt32 unk)
 {
@@ -1692,30 +1678,27 @@ void Hooks_Scaleform_Commit(void)
 		SetItemDataEntry_Code code(codeBuf);
 		g_localTrampoline.EndAlloc(code.getCurr());
 
-		g_branchTrampoline.Write5Branch(favMenuDataHook::kSetItemData_Base.GetUIntPtr() + 0xC4, uintptr_t(code.getCode()));
-		SafeWrite8(favMenuDataHook::kSetItemData_Base.GetUIntPtr() + 0xC4 + 5, 0x90);
+		g_branchTrampoline.Write5Branch(favMenuDataHook::kSetItemData_hook, uintptr_t(code.getCode()));
+		SafeWrite8(favMenuDataHook::kSetItemData_hook + 5, 0x90);
 	}
 
 	{
 		struct SetMagicData_Entry_Code : Xbyak::CodeGenerator {
 			SetMagicData_Entry_Code(void * buf) : Xbyak::CodeGenerator(4096, buf)
 			{
-				// r15: FavData* (not this, because this function was inlined in the above one)
-				// rbp-9: data container
-				// rsi: TESForm*
 				// The hooked call (overwritten code)  movieView->CreateObject(containerObj,0,0,0)
 				call(ptr[rax + 0x68]);
 
 				// insert call to our data extend function
-				mov(rcx, ptr[r15]);
-				mov(rcx, ptr[rcx]);
-				lea(rdx, ptr[rbp - 0x9]);
-				mov(r8, rsi);
+				mov(rcx, ptr[rdi]);
+				mov(rcx, ptr[rcx]);			// GFxMovieView * view
+				lea(rdx, ptr[rbp - 0x30]);	// GFxValue * dataContainer
+				mov(r8, rbx);				// TESForm * form
 				mov(rax, (uintptr_t)favMenuDataHook::SetMagicData);
 				call(rax);
 
 				// The other overwritten instruction and return to original code
-				mov(rcx, rsi);
+				mov(rcx, rbx);
 				jmp(ptr[rip]);
 				dq(favMenuDataHook::kSetMagicData_retn);
 			}
@@ -1725,8 +1708,8 @@ void Hooks_Scaleform_Commit(void)
 		SetMagicData_Entry_Code code(codeBuf);
 		g_localTrampoline.EndAlloc(code.getCurr());
 
-		g_branchTrampoline.Write5Branch(favMenuDataHook::kSetMagicData_Base.GetUIntPtr() + 0x9B, uintptr_t(code.getCode()));
-		SafeWrite8(favMenuDataHook::kSetMagicData_Base.GetUIntPtr() + 0x9B + 5, 0x90);
+		g_branchTrampoline.Write5Branch(favMenuDataHook::kSetMagicData_hook, uintptr_t(code.getCode()));
+		SafeWrite8(favMenuDataHook::kSetMagicData_hook + 5, 0x90);
 	}
 
 	{
@@ -1758,8 +1741,8 @@ void Hooks_Scaleform_Commit(void)
 		SetVampireData_Entry_Code code(codeBuf);
 		g_localTrampoline.EndAlloc(code.getCurr());
 
-		g_branchTrampoline.Write5Branch(favMenuDataHook::kSetVampireData_Base.GetUIntPtr() + 0x92, uintptr_t(code.getCode()));
-		SafeWrite8(favMenuDataHook::kSetVampireData_Base.GetUIntPtr() + 0x92 + 5, 0x90);
+		g_branchTrampoline.Write5Branch(favMenuDataHook::kSetVampireData_hook, uintptr_t(code.getCode()));
+		SafeWrite8(favMenuDataHook::kSetVampireData_hook + 5, 0x90);
 	} 
 	// end of fav menu data hooks
 
@@ -1783,14 +1766,91 @@ void Hooks_Scaleform_Commit(void)
 		SetDataEntry_Code code(codeBuf);
 		g_localTrampoline.EndAlloc(code.getCurr());
 
-		g_branchTrampoline.Write5Branch(enchantMenuDataHook::kSetData_Base.GetUIntPtr() + 0xDA, uintptr_t(code.getCode()));		
+		g_branchTrampoline.Write5Branch(enchantMenuDataHook::kSetData_hook, uintptr_t(code.getCode()));
 	}
 
-	g_branchTrampoline.Write5Call(smithingMenuDataHook::kSetData_Base.GetUIntPtr() + 0xDD, (uintptr_t)smithingMenuDataHook::SetData_Hook);
-	g_branchTrampoline.Write5Call(craftingMenuDataHook::kSetData_Base.GetUIntPtr() + 0xDD, (uintptr_t)craftingMenuDataHook::SetData_Hook);
-	g_branchTrampoline.Write5Call(alchemyMenuDataHook::kSetData_Base.GetUIntPtr() + 0xDD, (uintptr_t)alchemyMenuDataHook::SetData_Hook);
-	// The call here instead of branch like in SKSE32 is not an error. This patch doesn't need asm anymore (look at alchemyMenuDataHook::ExtendCategoryArgs_Entry_Intermediate for more info)
-	g_branchTrampoline.Write5Call(alchemyMenuDataHook::kExtendCategoryArgs_Base.GetUIntPtr() + 0x598, (uintptr_t)alchemyMenuDataHook::ExtendCategoryArgs_Entry_Intermediate);
+	{
+		struct SmithingMenuHook : Xbyak::CodeGenerator {
+			SmithingMenuHook(void * buf) : Xbyak::CodeGenerator(4096, buf)
+			{
+				lea(rcx, ptr[rbp - 0x48]);	// GFxValue *
+				mov(rdx, rbx);	// InventoryEntryData **
+				mov(r8, r14);	// SmithingMenu *
+				mov(rax, (uintptr_t)smithingMenuDataHook::SetData_Hook);
+				call(rax);
+
+				jmp(ptr[rip]);
+				dq(smithingMenuDataHook::kSetData_retn);
+			}
+		};
+
+		void * codeBuf = g_localTrampoline.StartAlloc();
+		SmithingMenuHook code(codeBuf);
+		g_localTrampoline.EndAlloc(code.getCurr());
+
+		g_branchTrampoline.Write5Branch(smithingMenuDataHook::kSetData_hook, uintptr_t(code.getCode()));
+	}
+
+	{
+		struct CraftingMenuHook : Xbyak::CodeGenerator {
+			CraftingMenuHook(void * buf) : Xbyak::CodeGenerator(4096, buf)
+			{
+				lea(rcx, ptr[rbp - 0x38]);	// GFxValue *
+				mov(rdx, rbx);	// ConstructibleObjectMenu::EntryData *
+				mov(r8, r14);	// ConstructibleObjectMenu *
+				mov(rax, (uintptr_t)craftingMenuDataHook::SetData_Hook);
+				call(rax);
+
+				jmp(ptr[rip]);
+				dq(craftingMenuDataHook::kSetData_retn);
+			}
+		};
+
+		void * codeBuf = g_localTrampoline.StartAlloc();
+		CraftingMenuHook code(codeBuf);
+		g_localTrampoline.EndAlloc(code.getCurr());
+
+		g_branchTrampoline.Write5Branch(craftingMenuDataHook::kSetData_hook, uintptr_t(code.getCode()));
+	}
+
+	{
+		struct AlchemyMenuHook : Xbyak::CodeGenerator {
+			AlchemyMenuHook(void * buf) : Xbyak::CodeGenerator(4096, buf)
+			{
+				lea(rcx, ptr[rbp - 0x38]);	// GFxValue *
+				mov(rdx, rbx);	// AlchemyMenu::EntryData *
+				mov(r8, r14);	// AlchemyMenu *
+				mov(rax, (uintptr_t)alchemyMenuDataHook::SetData_Hook);
+				call(rax);
+
+				jmp(ptr[rip]);
+				dq(alchemyMenuDataHook::kSetData_retn);
+			}
+		};
+
+		void * codeBuf = g_localTrampoline.StartAlloc();
+		AlchemyMenuHook code(codeBuf);
+		g_localTrampoline.EndAlloc(code.getCurr());
+
+		g_branchTrampoline.Write5Branch(alchemyMenuDataHook::kSetData_hook, uintptr_t(code.getCode()));
+	}
+
+	{
+		struct AlchemyCategoryHook : Xbyak::CodeGenerator {
+			AlchemyCategoryHook(void * buf) : Xbyak::CodeGenerator(4096, buf)
+			{
+				lea(r8, ptr[rbp - 0x69]);	// overwrite name "SetCategoriesList"
+				mov(rax, (uintptr_t)GetFnAddr(&alchemyMenuDataHook::GFxInvokeHook::Invoke));
+				jmp(rax);
+			}
+		};
+
+		void * codeBuf = g_localTrampoline.StartAlloc();
+		AlchemyCategoryHook code(codeBuf);
+		g_localTrampoline.EndAlloc(code.getCurr());
+
+		g_branchTrampoline.Write5Call(alchemyMenuDataHook::kExtendCategoryArgs_hook, uintptr_t(code.getCode()));
+	}
 	// End of crafting menu data hooks
 
 	// gfxloader creation hook

@@ -59,7 +59,7 @@ public:
 	Entry	items;	// 118
 
 	MEMBER_FN_PREFIX(SettingCollectionList);
-	DEFINE_MEMBER_FN(Get_Internal, Setting *, 0x003104D0, const char * name);
+	DEFINE_MEMBER_FN(Get_Internal, Setting *, 0x003252B0, const char * name);
 
 	Setting	*	Get(const char * name);
 };

@@ -13,7 +13,7 @@ int Function GetVersionRelease() global native
 ; get the release index of this script file.
 ; Can be used to detect a script/runtime version mismatch
 int Function GetScriptVersionRelease() global
-	return 65
+	return 66
 endFunction
 
 ; get a plugins version number, -1 if the plugin is not loaded

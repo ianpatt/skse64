@@ -1,3 +1,4 @@
+#! python2
 import os, sys, string, datetime, shutil, subprocess
 
 def mkdir_safe(a):
