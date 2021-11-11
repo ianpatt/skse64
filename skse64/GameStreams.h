@@ -40,14 +40,14 @@ public:
 	virtual void	FunctionSwap(bool swap);
 
 	MEMBER_FN_PREFIX(NiMemStream);
-	DEFINE_MEMBER_FN(Construct, NiMemStream *, 0x01439B50);
-	DEFINE_MEMBER_FN(Destroy, void, 0x01439BC0);
-	DEFINE_MEMBER_FN(Seek, void, 0x01439C50, SInt32);
+	DEFINE_MEMBER_FN(Construct, NiMemStream *, 0x01439B60);
+	DEFINE_MEMBER_FN(Destroy, void, 0x01439BD0);
+	DEFINE_MEMBER_FN(Seek, void, 0x01439C60, SInt32);
 	// ??_7NiMemStream@@6B@ + 18
 	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C4B090, void);
-	DEFINE_MEMBER_FN(CopyFrom, UInt32, 0x01439C20, void *);
+	DEFINE_MEMBER_FN(CopyFrom, UInt32, 0x01439C30, void *);
 	// ??_7NiMemStream@@6B@ + 28
-	DEFINE_MEMBER_FN(FunctionSwap, UInt32, 0x01439C90, bool);
+	DEFINE_MEMBER_FN(FunctionSwap, UInt32, 0x01439CA0, bool);
 
 	void	* data;	// 20
 	UInt32	offset;	// 28

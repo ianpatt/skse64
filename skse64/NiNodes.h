@@ -38,7 +38,7 @@ public:
 	static BSFadeNode * Create();
 
 	// 905B699D46B52EE8B3BD44B9DAFBC2F728A310B5+81
-	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x013B5520);
+	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x013B5530);
 };
 STATIC_ASSERT(sizeof(BSFadeNode) == 0x158);
 
