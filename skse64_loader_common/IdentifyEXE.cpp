@@ -256,7 +256,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	default:					_MESSAGE("unknown exe type"); break;
 	}
 
-	if(hookInfo->procType)
+	if(hookInfo->procType == kProcType_WinStore)
 	{
 		PrintLoaderError("The Windows Store (gamepass) version of Skyrim is not supported.");
 		return false;
