@@ -24,7 +24,7 @@ SKSE64 will support the latest version of Skyrim SE available on Steam, and _onl
 
 [ Suggestions for Modders ]
 
-If your mod requires SKSE64, please provide a link to the main SKSE website <http://skse.silverlock.org/> instead of packaging it with your mod install. Future versions of SKSE64 will be backwards compatibile, so including a potentially old version can cause confusion and/or break other mods which require newer versions.
+If your mod requires SKSE64, please provide a link to the main SKSE website <https://skse.silverlock.org/> instead of packaging it with your mod install. Future versions of SKSE64 will be backwards compatibile, so including a potentially old version can cause confusion and/or break other mods which require newer versions.
 
 [ Troubleshooting / FAQ ]
 
@@ -53,7 +53,7 @@ If your mod requires SKSE64, please provide a link to the main SKSE website <htt
  - See PluginAPI.h for instructions, as well as the example plugin project included with the rest of the source code. If you include any of the SKSE source code, you are required to make your source code available.
 
 * Can I include SKSE as part of a mod pack/collection or otherwise rehost the files?
- - No. Providing a link to http://skse.silverlock.org/ is the suggested method of distribution. Exceptions may be given under applicable circumstances; contact us at the email addresses below. This means that if you see this file available for download anywhere other than http://skse.silverlock.org, that service is violating copyright. I don't like having to explicitly spell this out, but my hand has been forced.
+ - No. Providing a link to https://skse.silverlock.org/ is the suggested method of distribution. Exceptions may be given under applicable circumstances; contact us at the email addresses below. This means that if you see this file available for download anywhere other than https://skse.silverlock.org or https://www.github.com/ianpatt/skse64, that service is violating copyright. I don't like having to explicitly spell this out, but my hand has been forced.
 
 * Do I need to keep old SKSE DLLs around for backwards compatibility?
  - No, they are only needed if you want to run old versions of the runtime with the last version of SKSE released for that version. Feel free to delete any skse_*.dll files that are not included with the main archive.
