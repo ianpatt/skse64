@@ -160,6 +160,41 @@ void * GetIATAddr(void * module, const char * searchDllName, const char * search
 	return NULL;
 }
 
+const void * GetResourceLibraryProcAddress(HMODULE module, const char * exportName)
+{
+	auto * base = (const UInt8 *)(uintptr_t(module) & ~3);
+	auto * dosHeader = (const IMAGE_DOS_HEADER *)base;
+	auto * ntHeader = (const IMAGE_NT_HEADERS *)(base + dosHeader->e_lfanew);
+	auto * exportTable =
+		(const IMAGE_EXPORT_DIRECTORY *)(base + ntHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress);
+
+	auto * exportAddresses = (const UInt32 *)(base + exportTable->AddressOfFunctions);	// RVA array
+	auto * exportNameOrdinals = (const UInt16 *)(base + exportTable->AddressOfNameOrdinals);	// index in to exportNames
+	auto * exportNames = (const UInt32 *)(base + exportTable->AddressOfNames);	// RVA array
+
+	const void * result = nullptr;
+
+	for(UInt32 i = 0; i < exportTable->NumberOfFunctions; i++)
+	{
+		UInt32 nameOrdinal = exportNameOrdinals[i];
+		if(nameOrdinal < exportTable->NumberOfNames)
+		{
+			UInt32 nameRVA = exportNames[nameOrdinal];
+			auto * name = (const char *)(base + nameRVA);
+
+			if(!strcmp(exportName, name))
+			{
+				UInt32 addrRVA = exportAddresses[i];
+				result = (const void *)(base + addrRVA);
+
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
 #pragma warning (push)
 #pragma warning (disable : 4200)
 struct RTTIType

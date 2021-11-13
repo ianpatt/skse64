@@ -197,6 +197,7 @@ bool GetConfigOption_UInt32(const char * section, const char * key, UInt32 * dat
 const std::string & GetOSInfoStr();
 
 void * GetIATAddr(void * module, const char * searchDllName, const char * searchImportName);
+const void * GetResourceLibraryProcAddress(HMODULE module, const char * exportName);
 
 const char * GetObjectClassName(void * objBase);
 void DumpClass(void * theClassPtr, UInt64 nIntsToDump);

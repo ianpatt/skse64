@@ -109,6 +109,14 @@ PluginManager::~PluginManager()
 	DeInit();
 }
 
+PluginManager::LoadedPlugin::LoadedPlugin()
+	:handle(0)
+	,load(nullptr)
+{
+	memset(&info, 0, sizeof(info));
+	memset(&version, 0, sizeof(version));
+}
+
 bool PluginManager::Init(void)
 {
 	bool	result = false;
@@ -117,8 +125,12 @@ bool PluginManager::Init(void)
 	{
 		_MESSAGE("plugin directory = %s", m_pluginDirectory.c_str());
 
+		// avoid realloc
+		m_plugins.reserve(5);
+
 		__try
 		{
+			ScanPlugins();
 			InstallPlugins();
 
 			result = true;
@@ -244,64 +256,97 @@ bool PluginManager::FindPluginDirectory(void)
 	return result;
 }
 
-void PluginManager::InstallPlugins(void)
+void PluginManager::ScanPlugins(void)
 {
-	// avoid realloc
-	m_plugins.reserve(5);
+	_MESSAGE("scanning plugin directory %s", m_pluginDirectory.c_str());
+
+	UInt32 handleIdx = 1;	// start at 1, 0 is reserved for internal use
 
 	for(IDirectoryIterator iter(m_pluginDirectory.c_str(), "*.dll"); !iter.Done(); iter.Next())
 	{
 		std::string	pluginPath = iter.GetFullPath();
 
-		_MESSAGE("checking plugin %s", pluginPath.c_str());
-
 		LoadedPlugin	plugin;
-		memset(&plugin, 0, sizeof(plugin));
+		plugin.dllName = iter.Get()->cFileName;
+
+		_MESSAGE("checking plugin %s", plugin.dllName.c_str());
+
+		HMODULE resourceHandle = (HMODULE)LoadLibraryEx(pluginPath.c_str(), nullptr, LOAD_LIBRARY_AS_IMAGE_RESOURCE);
+		if(resourceHandle)
+		{
+			auto * version = (const SKSEPluginVersionData *)GetResourceLibraryProcAddress(resourceHandle, "SKSEPlugin_Version");
+			if(version)
+			{
+				plugin.version = *version;
+				Sanitize(&plugin.version);
+
+				auto * loadStatus = CheckPluginCompatibility(plugin.version);
+				if(!loadStatus)
+				{
+					// compatible, add to list
+
+					plugin.internalHandle = handleIdx;
+					handleIdx++;
+
+					m_plugins.push_back(plugin);
+				}
+				else
+				{
+					_MESSAGE("plugin %s %s", plugin.dllName.c_str(), loadStatus);
+				}
+			}
+			else
+			{
+				_MESSAGE("no version data");
+			}
+
+			FreeLibrary(resourceHandle);
+		}
+		else
+		{
+			_ERROR("couldn't load plugin %s (Error %d)", plugin.dllName.c_str(), GetLastError());
+		}
+	}
+}
+
+void PluginManager::InstallPlugins(void)
+{
+	for(size_t i = 0; i < m_plugins.size(); i++)
+	{
+		auto & plugin = m_plugins[i];
+
+		_MESSAGE("loading plugin \"%s\"", plugin.version.name);
 
 		s_currentLoadingPlugin = &plugin;
-		s_currentPluginHandle = m_plugins.size() + 1;	// +1 because 0 is reserved for internal use
+		s_currentPluginHandle = plugin.internalHandle;
+
+		std::string pluginPath = m_pluginDirectory + plugin.dllName;
 
 		plugin.handle = (HMODULE)LoadLibrary(pluginPath.c_str());
 		if(plugin.handle)
 		{
 			bool		success = false;
 
-			plugin.query = (_SKSEPlugin_Query)GetProcAddress(plugin.handle, "SKSEPlugin_Query");
 			plugin.load = (_SKSEPlugin_Load)GetProcAddress(plugin.handle, "SKSEPlugin_Load");
-
-			if(plugin.query && plugin.load)
+			if(plugin.load)
 			{
-				const char	* loadStatus = NULL;
+				const char * loadStatus = NULL;
 
-				loadStatus = SafeCallQueryPlugin(&plugin, &g_SKSEInterface);
+				loadStatus = SafeCallLoadPlugin(&plugin, &g_SKSEInterface);
 
 				if(!loadStatus)
 				{
-					loadStatus = CheckPluginCompatibility(&plugin);
-
-					if(!loadStatus)
-					{
-						loadStatus = SafeCallLoadPlugin(&plugin, &g_SKSEInterface);
-
-						if(!loadStatus)
-						{
-							loadStatus = "loaded correctly";
-							success = true;
-						}
-					}
-				}
-				else
-				{
-					loadStatus = "reported as incompatible during query";
+					success = true;
+					loadStatus = "loaded correctly";
 				}
 
 				ASSERT(loadStatus);
 
 				_MESSAGE("plugin %s (%08X %s %08X) %s (handle %d)",
-					pluginPath.c_str(),
-					plugin.info.infoVersion,
-					plugin.info.name ? plugin.info.name : "<NULL>",
-					plugin.info.version,
+					plugin.dllName.c_str(),
+					plugin.version.dataVersion,
+					plugin.version.name,
+					plugin.version.pluginVersion,
 					loadStatus,
 					s_currentPluginHandle);
 			}
@@ -310,15 +355,16 @@ void PluginManager::InstallPlugins(void)
 				_MESSAGE("plugin %s does not appear to be an SKSE plugin", pluginPath.c_str());
 			}
 
-			if(success)
-			{
-				// succeeded, add it to the list
-				m_plugins.push_back(plugin);
-			}
-			else
+			if(!success)
 			{
 				// failed, unload the library
 				FreeLibrary(plugin.handle);
+
+				// and remove from plugins list
+				m_plugins.erase(m_plugins.begin() + i);
+
+				// fix iterator
+				i--;
 			}
 		}
 		else
@@ -330,29 +376,18 @@ void PluginManager::InstallPlugins(void)
 	s_currentLoadingPlugin = NULL;
 	s_currentPluginHandle = 0;
 
+	// make fake PluginInfo structs after m_plugins is locked
+	for(auto & plugin : m_plugins)
+	{
+		plugin.info.infoVersion = PluginInfo::kInfoVersion;
+		plugin.info.name = plugin.version.name;
+		plugin.info.version = plugin.version.pluginVersion;
+	}
+
 	// alert any listeners that plugin load has finished
 	Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostLoad, NULL, 0, NULL);
 	// second post-load dispatch
 	Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostPostLoad, NULL, 0, NULL);
-}
-
-// SEH-wrapped calls to plugin API functions to avoid bugs from bringing down the core
-const char * PluginManager::SafeCallQueryPlugin(LoadedPlugin * plugin, const SKSEInterface * skse)
-{
-	__try
-	{
-		if(!plugin->query(skse, &plugin->info))
-		{
-			return "reported as incompatible during query";
-		}
-	}
-	__except(EXCEPTION_EXECUTE_HANDLER)
-	{
-		// something very bad happened
-		return "disabled, fatal error occurred while querying plugin";
-	}
-
-	return NULL;
 }
 
 const char * PluginManager::SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSEInterface * skse)
@@ -373,6 +408,13 @@ const char * PluginManager::SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSE
 	return NULL;
 }
 
+void PluginManager::Sanitize(SKSEPluginVersionData * version)
+{
+	version->name[sizeof(version->name) - 1] = 0;
+	version->author[sizeof(version->author) - 1] = 0;
+	version->supportEmail[sizeof(version->supportEmail) - 1] = 0;
+}
+
 enum
 {
 	kCompat_BlockFromRuntime =	1 << 0,
@@ -389,19 +431,20 @@ struct MinVersionEntry
 
 static const MinVersionEntry	kMinVersionList[] =
 {
-	// returns true for multiple versions of the runtime
-	{	"papyrusutil plugin",	2,	"broken version check, will crash the game", kCompat_BlockFromRuntime },
-
 	{	NULL, 0, NULL }
 };
 
-// see if we have a plugin that we know causes problems
-const char * PluginManager::CheckPluginCompatibility(LoadedPlugin * plugin)
+const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData & version)
 {
 	__try
 	{
-		// stupid plugin check
-		if(!plugin->info.name)
+		// basic validity
+		if(version.dataVersion != SKSEPluginVersionData::kVersion)
+		{
+			return "disabled, bad version data";
+		}
+
+		if(!version.name[0])
 		{
 			return "disabled, no name specified";
 		}
@@ -409,9 +452,9 @@ const char * PluginManager::CheckPluginCompatibility(LoadedPlugin * plugin)
 		// check for 'known bad' versions of plugins
 		for(const MinVersionEntry * iter = kMinVersionList; iter->name; ++iter)
 		{
-			if(!strcmp(iter->name, plugin->info.name))
+			if(!strcmp(iter->name, version.name))
 			{
-				if(plugin->info.version < iter->minVersion)
+				if(version.pluginVersion < iter->minVersion)
 				{
 #ifdef RUNTIME
 					if(iter->compatFlags & kCompat_BlockFromRuntime)
@@ -431,6 +474,47 @@ const char * PluginManager::CheckPluginCompatibility(LoadedPlugin * plugin)
 				break;
 			}
 		}
+
+		// version compatibility
+		const UInt32 kIndependentMask =
+			SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE |
+			SKSEPluginVersionData::kVersionIndependent_Signatures;
+
+		if(version.versionIndependence & ~kIndependentMask)
+		{
+			return "disabled, unsupported version independence method";
+		}
+
+		if(!version.versionIndependence)
+		{
+			bool found = false;
+
+			for(UInt32 i = 0; i < _countof(version.compatibleVersions); i++)
+			{
+				UInt32 compatibleVersion = version.compatibleVersions[i];
+
+				if(compatibleVersion == RUNTIME_VERSION)
+				{
+					found = true;
+					break;
+				}
+				else if(!compatibleVersion)
+				{
+					break;
+				}
+			}
+
+			if(!found)
+			{
+				return "disabled, incompatible with current runtime version";
+			}
+		}
+
+		// SE version compatibility
+		if(version.seVersionRequired > PACKED_SKSE_VERSION)
+		{
+			return "disabled, requires newer script extender";
+		}
 	}
 	__except(EXCEPTION_EXECUTE_HANDLER)
 	{
@@ -438,12 +522,12 @@ const char * PluginManager::CheckPluginCompatibility(LoadedPlugin * plugin)
 		return "disabled, fatal error occurred while checking plugin compatibility";
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void * PluginManager::GetEventDispatcher(UInt32 dispatcherId)
 {
-	void	* result = NULL;
+	void	* result = nullptr;
 
 #ifdef RUNTIME
 	switch(dispatcherId)
@@ -474,7 +558,6 @@ void * PluginManager::GetEventDispatcher(UInt32 dispatcherId)
 
 	return result;
 }
-
 
 // Plugin communication interface
 struct PluginListener {

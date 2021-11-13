@@ -85,7 +85,7 @@ void SKSE64_Initialize(void)
 		Hooks_Threads_Init();
 		Hooks_Handlers_Init();
 
-		//g_pluginManager.Init();
+		g_pluginManager.Init();
 
 		// Add Hooks_XXX_Commit calls here in the same order
 		Hooks_Debug_Commit();

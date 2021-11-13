@@ -37,21 +37,27 @@ public:
 private:
 	struct LoadedPlugin
 	{
-		// internals
+		LoadedPlugin();
+
+		std::string dllName;
+
 		HMODULE		handle;
 		PluginInfo	info;
+		UInt32		internalHandle;
 
-		_SKSEPlugin_Query	query;
+		SKSEPluginVersionData	version;
+
 		_SKSEPlugin_Load	load;
 	};
 
 	bool	FindPluginDirectory(void);
+	void	ScanPlugins(void);
 	void	InstallPlugins(void);
 
-	const char *	SafeCallQueryPlugin(LoadedPlugin * plugin, const SKSEInterface * skse);
 	const char *	SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSEInterface * skse);
 
-	const char *	CheckPluginCompatibility(LoadedPlugin * plugin);
+	void			Sanitize(SKSEPluginVersionData * version);
+	const char *	CheckPluginCompatibility(const SKSEPluginVersionData & version);
 
 	typedef std::vector <LoadedPlugin>	LoadedPluginList;
 
