@@ -1496,18 +1496,15 @@ namespace alchemyMenuDataHook
 	class GFxInvokeHook
 	{
 	public:
-		// effectArray is added parameter to signature of GFxValue Invoke
-		// SE: effectArray moved to the end of parameters, for x64 specific efficiency reasons
-		bool Invoke(void * obj, GFxValue * result, AlchemyEffectCategory * effectArray, GFxValue * args, UInt32 numArgs, bool isDisplayObj)
+		// hijack unused 'result' parameter to pass effectArray
+		bool Invoke(void * obj, AlchemyEffectCategory * effectArray, const char * name, GFxValue * args, UInt32 numArgs, bool isDisplayObj)
 		{
-			const char * name = "SetCategoriesList";
-
 			if (s_bExtendAlchemyCategories)
 				scaleformExtend::AlchemyCategoryArgs(effectArray, args, numArgs);
 
 			// Call hooked func
 			GFxValue::ObjectInterface* p = reinterpret_cast<GFxValue::ObjectInterface*>(this);
-			return p->Invoke(obj, result, name, args, numArgs, isDisplayObj);
+			return p->Invoke(obj, nullptr, name, args, numArgs, isDisplayObj);
 		}	
 	};
 }
@@ -1839,7 +1836,7 @@ void Hooks_Scaleform_Commit(void)
 		struct AlchemyCategoryHook : Xbyak::CodeGenerator {
 			AlchemyCategoryHook(void * buf) : Xbyak::CodeGenerator(4096, buf)
 			{
-				lea(r8, ptr[rbp - 0x69]);	// overwrite name "SetCategoriesList"
+				mov(r8, ptr[rbp - 0x69]);	// overwrite zero in 'result' param
 				mov(rax, (uintptr_t)GetFnAddr(&alchemyMenuDataHook::GFxInvokeHook::Invoke));
 				jmp(rax);
 			}
