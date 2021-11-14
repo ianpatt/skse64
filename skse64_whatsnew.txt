@@ -1,5 +1,6 @@
 2.1.2
 - reworked plugin version checking and enabled plugin manager
+- if you are a plugin developer, there are important breaking changes noted at the bottom of PluginAPI.h
 - fixed crash when using alchemy tables (alchemy category hook)
 
 2.1.1
