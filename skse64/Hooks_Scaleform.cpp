@@ -924,7 +924,7 @@ public:
 };
 
 typedef void * (* _UIOpenJournalMenu)(bool bUnk);
-RelocAddr<_UIOpenJournalMenu> UIOpenJournalMenu(0x00000000);
+RelocAddr<_UIOpenJournalMenu> UIOpenJournalMenu(0x00924130);
 
 class SKSEScaleform_OpenJournalMenu : public GFxFunctionHandler
 {
