@@ -62,7 +62,7 @@ private:
 	const char *	CheckPluginCompatibility(const SKSEPluginVersionData & version);
 	const char *	CheckAddressLibrary(void);
 
-	void			LogPluginLoadError(const LoadedPlugin & plugin, const char * errStr, UInt32 errCode = 0);
+	void			LogPluginLoadError(const LoadedPlugin & plugin, const char * errStr, UInt32 errCode = 0, bool isError = true);
 	void			ReportPluginErrors();
 
 	typedef std::vector <LoadedPlugin>	LoadedPluginList;

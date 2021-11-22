@@ -301,7 +301,7 @@ void PluginManager::ScanPlugins(void)
 			}
 			else
 			{
-				LogPluginLoadError(plugin, "no version data");
+				LogPluginLoadError(plugin, "no version data", 0, false);
 			}
 
 			FreeLibrary(resourceHandle);
@@ -569,14 +569,15 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 	return nullptr;
 }
 
-void PluginManager::LogPluginLoadError(const LoadedPlugin & pluginSrc, const char * errStr, UInt32 errCode)
+void PluginManager::LogPluginLoadError(const LoadedPlugin & pluginSrc, const char * errStr, UInt32 errCode, bool isError)
 {
 	LoadedPlugin plugin = pluginSrc;
 
 	plugin.errorState = errStr;
 	plugin.errorCode = errCode;
 
-	m_erroredPlugins.push_back(plugin);
+	if(isError)
+		m_erroredPlugins.push_back(plugin);
 
 	_MESSAGE("plugin %s (%08X %s %08X) %s %d (handle %d)",
 		plugin.dllName.c_str(),
