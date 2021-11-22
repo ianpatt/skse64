@@ -1,11 +1,13 @@
 #include "skse64/PluginManager.h"
 #include "common/IDirectoryIterator.h"
+#include "common/IFileStream.h"
 #include "skse64/GameAPI.h"
 #include "skse64_common/Utilities.h"
 #include "skse64/Serialization.h"
 #include "skse64_common/skse_version.h"
 #include "skse64/PapyrusEvents.h"
 #include "skse64_common/BranchTrampoline.h"
+#include "resource.h"
 
 PluginManager	g_pluginManager;
 
@@ -141,6 +143,8 @@ bool PluginManager::Init(void)
 			_ERROR("exception occurred while loading plugins");
 		}
 	}
+
+	ReportPluginErrors();
 
 	return result;
 }
@@ -292,21 +296,49 @@ void PluginManager::ScanPlugins(void)
 				}
 				else
 				{
-					_MESSAGE("plugin %s %s", plugin.dllName.c_str(), loadStatus);
+					LogPluginLoadError(plugin, loadStatus);
 				}
 			}
 			else
 			{
-				_MESSAGE("no version data");
+				LogPluginLoadError(plugin, "no version data");
 			}
 
 			FreeLibrary(resourceHandle);
 		}
 		else
 		{
-			_ERROR("couldn't load plugin %s (Error %d)", plugin.dllName.c_str(), GetLastError());
+			LogPluginLoadError(plugin, "couldn't load plugin", GetLastError());
 		}
 	}
+}
+
+const char * PluginManager::CheckAddressLibrary(void)
+{
+	static bool s_checked = false;
+	static const char * s_status = nullptr;
+
+	if(s_checked)
+	{
+		return s_status;
+	}
+
+	char fileName[256];
+	_snprintf_s(fileName, 256, "Data\\SKSE\\Plugins\\versionlib-%d-%d-%d-%d.bin",
+		GET_EXE_VERSION_MAJOR(RUNTIME_VERSION),
+		GET_EXE_VERSION_MINOR(RUNTIME_VERSION),
+		GET_EXE_VERSION_BUILD(RUNTIME_VERSION),
+		0);
+
+	IFileStream versionLib;
+	if(!versionLib.Open(fileName))
+	{
+		s_status = "disabled, address library needs to be updated";
+	}
+
+	s_checked = true;
+
+	return s_status;
 }
 
 void PluginManager::InstallPlugins(void)
@@ -342,17 +374,24 @@ void PluginManager::InstallPlugins(void)
 
 				ASSERT(loadStatus);
 
-				_MESSAGE("plugin %s (%08X %s %08X) %s (handle %d)",
-					plugin.dllName.c_str(),
-					plugin.version.dataVersion,
-					plugin.version.name,
-					plugin.version.pluginVersion,
-					loadStatus,
-					s_currentPluginHandle);
+				if(success)
+				{
+					_MESSAGE("plugin %s (%08X %s %08X) %s (handle %d)",
+						plugin.dllName.c_str(),
+						plugin.version.dataVersion,
+						plugin.version.name,
+						plugin.version.pluginVersion,
+						loadStatus,
+						s_currentPluginHandle);
+				}
+				else
+				{
+					LogPluginLoadError(plugin, loadStatus);
+				}
 			}
 			else
 			{
-				_MESSAGE("plugin %s does not appear to be an SKSE plugin", pluginPath.c_str());
+				LogPluginLoadError(plugin, "does not appear to be an SKSE plugin");
 			}
 
 			if(!success)
@@ -369,7 +408,7 @@ void PluginManager::InstallPlugins(void)
 		}
 		else
 		{
-			_ERROR("couldn't load plugin %s (Error %d)", pluginPath.c_str(), GetLastError());
+			LogPluginLoadError(plugin, "couldn't load plugin", GetLastError());
 		}
 	}
 
@@ -485,7 +524,12 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 			return "disabled, unsupported version independence method";
 		}
 
-		if(!version.versionIndependence)
+		if(version.versionIndependence & SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE)
+		{
+			const char * result = CheckAddressLibrary();
+			if(result) return result;
+		}
+		else if(!version.versionIndependence)
 		{
 			bool found = false;
 
@@ -523,6 +567,68 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 	}
 
 	return nullptr;
+}
+
+void PluginManager::LogPluginLoadError(const LoadedPlugin & pluginSrc, const char * errStr, UInt32 errCode)
+{
+	LoadedPlugin plugin = pluginSrc;
+
+	plugin.errorState = errStr;
+	plugin.errorCode = errCode;
+
+	m_erroredPlugins.push_back(plugin);
+
+	_MESSAGE("plugin %s (%08X %s %08X) %s %d (handle %d)",
+		plugin.dllName.c_str(),
+		plugin.version.dataVersion,
+		plugin.version.name,
+		plugin.version.pluginVersion,
+		plugin.errorState,
+		plugin.errorCode,
+		s_currentPluginHandle);
+}
+
+void PluginManager::ReportPluginErrors()
+{
+#if 0
+	PluginErrorDialogBox dialog(*this);
+	dialog.Show();
+
+	return;
+#endif
+
+	if(m_erroredPlugins.empty())
+		return;
+
+	// With this plugin DLL load error, the thread of prophecy is severed. Update your plugins to restore the weave of fate, or persist in the doomed world you have created
+
+	std::string message = "A DLL plugin has failed to load correctly. If a new version of Skyrim was just released, it probably needs to be updated. Please contact the plugin's author for more information.\n";
+
+	for(auto & plugin : m_erroredPlugins)
+	{
+		message += "\n";
+		message += plugin.dllName + ": " + plugin.errorState;
+
+		if(plugin.errorCode)
+		{
+			char codeStr[128];
+			sprintf_s(codeStr, "%08X", plugin.errorCode);
+
+			message += " (";
+			message += codeStr;
+			message += ")";
+		}
+	}
+
+	message += "\n\nContinuing to load may result in lost save data or other undesired behavior.";
+	message += "\nExit game? (yes highly suggested)";
+
+	int result = MessageBox(0, message.c_str(), "SKSE Plugin Loader", MB_YESNO);
+
+	if(result == IDYES)
+	{
+		TerminateProcess(GetCurrentProcess(), 0);
+	}
 }
 
 void * PluginManager::GetEventDispatcher(UInt32 dispatcherId)
@@ -725,6 +831,77 @@ PluginHandle PluginManager::LookupHandleFromName(const char* pluginName)
 		idx++;
 	}
 	return kPluginHandle_Invalid;
+}
+
+void PluginErrorDialogBox::Show()
+{
+	extern HINSTANCE g_moduleHandle;
+
+	CreateDialogParam(g_moduleHandle, MAKEINTRESOURCE(IDD_PLUGINERROR), NULL, _DialogProc, (LPARAM)this);
+	UInt32 err = GetLastError();
+}
+
+INT_PTR PluginErrorDialogBox::_DialogProc(HWND window, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	INT_PTR result = 0;
+	PluginErrorDialogBox * context = nullptr;
+
+	if(msg == WM_INITDIALOG)
+	{
+		context = (PluginErrorDialogBox *)lParam;
+		context->m_window = window;
+		SetWindowLongPtr(window, GWLP_USERDATA, lParam);
+	}
+	else
+	{
+		context = (PluginErrorDialogBox *)GetWindowLongPtr(window, GWLP_USERDATA);
+	}
+
+	if(context)
+		result = context->DialogProc(msg, wParam, lParam);
+
+	return result;
+}
+
+INT_PTR PluginErrorDialogBox::DialogProc(UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	INT_PTR result = FALSE;
+
+	switch(msg)
+	{
+		case WM_INITDIALOG:
+			result = TRUE;
+			break;
+
+		case WM_COMMAND:
+		{
+			bool done = false;
+
+			switch(LOWORD(wParam))
+			{
+				case IDCANCEL:
+					done = true;
+					m_exitGame = true;
+					break;
+
+				case IDOK:
+					done = true;
+					break;
+			}
+
+			if(done)
+			{
+				DestroyWindow(m_window);
+			}
+		}
+		break;
+
+		default:
+			result = FALSE;
+			break;
+	}
+
+	return result;
 }
 
 inline void * BranchTrampolineManager::Allocate(PluginHandle plugin, size_t size)

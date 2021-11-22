@@ -153,6 +153,7 @@ source_group(
 		InternalTasks.cpp
 		InternalTasks.h
 		PluginAPI.h
+		PluginLoadErrorDialog.rc
 		PluginManager.cpp
 		PluginManager.h
 		Serialization.cpp
@@ -379,6 +380,7 @@ add_library(
 	${sources}
 	skse64.def
 	${skse64_common_SOURCE_DIR}/skse_version.rc
+	PluginLoadErrorDialog.rc
 )
 
 add_library(skse64::${PROJECT_NAME} ALIAS ${PROJECT_NAME})

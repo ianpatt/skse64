@@ -1,0 +1,14 @@
+#include "resource.h"
+#include "winres.h"
+
+IDD_PLUGINERROR DIALOGEX 0, 0, 310, 177
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "SKSE Plugin Manager"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Exit",IDCANCEL,252,156,50,14
+    PUSHBUTTON      "Continue",IDOK,6,156,50,14
+    LTEXT           "A DLL plugin has failed to load correctly.",IDC_STATIC,6,6,132,8
+    LISTBOX         IDC_PLUGINERROR_ERRORLIST,6,18,294,120,LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Continuing to load may result in lost save data or other undesired behavior.",IDC_STATIC,6,144,294,8
+END
