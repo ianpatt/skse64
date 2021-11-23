@@ -6,7 +6,7 @@
 #include "xbyak/xbyak.h"
 #include <queue>
 
-RelocAddr <uintptr_t> kInstallCameraHook_Base(0x0050F0E0);
+RelocAddr <uintptr_t> kInstallCameraHook_Base(0x0050F050);
 
 void InstallCameraHook(TESCameraState * oldState, TESCameraState * newState)
 {

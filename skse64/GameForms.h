@@ -967,9 +967,9 @@ public:
 	UInt32	unk40;	// 40
 
 	MEMBER_FN_PREFIX(BGSListForm);
-	DEFINE_MEMBER_FN(AddFormToList, void, 0x002D8260, TESForm * form);
-	DEFINE_MEMBER_FN(RemoveFormFromList, void, 0x002D8430, TESForm * form);
-	DEFINE_MEMBER_FN(RevertList, void, 0x002D8180);
+	DEFINE_MEMBER_FN(AddFormToList, void, 0x002D81D0, TESForm * form);
+	DEFINE_MEMBER_FN(RemoveFormFromList, void, 0x002D83A0, TESForm * form);
+	DEFINE_MEMBER_FN(RevertList, void, 0x002D80F0);
 
 	class Visitor
 	{
@@ -1700,8 +1700,8 @@ public:
 	UnkArray	unk250;		// 250
 
 	MEMBER_FN_PREFIX(TESQuest);
-	DEFINE_MEMBER_FN(ForceRefTo, UInt32, 0x0038C2D0, UInt32 aliasId, TESObjectREFR * reference);
-	DEFINE_MEMBER_FN(NewGame_Internal, UInt8, 0x00387FE0, UInt8 * unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(ForceRefTo, UInt32, 0x0038C240, UInt32 aliasId, TESObjectREFR * reference);
+	DEFINE_MEMBER_FN(NewGame_Internal, UInt8, 0x00387F50, UInt8 * unk1, UInt8 unk2);
 
 	UInt8 NewGame_Hook(UInt8 * unk1, UInt8 unk2);
 };
@@ -2572,7 +2572,7 @@ public:
 	UInt64						unk138;				// 138
 
 	MEMBER_FN_PREFIX(TESObjectCELL);
-	DEFINE_MEMBER_FN(GetNorthRotation, float, 0x00280E50);
+	DEFINE_MEMBER_FN(GetNorthRotation, float, 0x00280DC0);
 };
 STATIC_ASSERT(offsetof(TESObjectCELL, refData) == 0x88);
 STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0xB8);

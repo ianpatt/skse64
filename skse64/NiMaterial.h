@@ -118,8 +118,8 @@ public:
 	void SetTextureSet(BSTextureSet * textureSet);
 
 	MEMBER_FN_PREFIX(BSLightingShaderMaterial);
-	DEFINE_MEMBER_FN(CopyFrom, void, 0x013F2BD0, BSLightingShaderMaterial * other);
-	DEFINE_MEMBER_FN(dtor_base, void, 0x013F2A70);
+	DEFINE_MEMBER_FN(CopyFrom, void, 0x013F2B30, BSLightingShaderMaterial * other);
+	DEFINE_MEMBER_FN(dtor_base, void, 0x013F29D0);
 };
 STATIC_ASSERT(sizeof(BSLightingShaderMaterial) == 0xA0);
 
@@ -132,7 +132,7 @@ public:
 	NiTexturePtr unkA8;	// A8 inited to 0
 
 	// uses ??_7BSLightingShaderMaterialEye@@6B@ at +17
-	DEFINE_MEMBER_FN(dtor, void, 0x013F4580);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F44E0);
 };
 
 class BSLightingShaderMaterialEnvmap : public BSLightingShaderMaterial
@@ -144,7 +144,7 @@ public:
 	NiTexturePtr unkA8;	// A8 inited to 0
 
 	// 7EF3019D0F8B78F82664DFE78C15204CD5C8C2B9+392
-	DEFINE_MEMBER_FN(dtor, void, 0x013F3EA0);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F3E00);
 };
 
 class BSLightingShaderMaterialFacegen : public BSLightingShaderMaterial
@@ -157,7 +157,7 @@ public:
 	NiTexturePtr unkB0;				// B0 inited to 0
 
 	// uses ??_7BSLightingShaderMaterialFacegen@@6B@ at +17
-	DEFINE_MEMBER_FN(dtor, void, 0x013F5B70);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F5AD0);
 };
 
 class BSLightingShaderMaterialGlowmap : public BSLightingShaderMaterial
@@ -168,7 +168,7 @@ public:
 	NiTexturePtr glowMap;	// A0
 
 	// uses ??_7BSLightingShaderMaterialGlowmap@@6B@ at +17
-	DEFINE_MEMBER_FN(dtor, void, 0x013F4C80);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F4BE0);
 };
 
 class BSLightingShaderMaterialParallax : public BSLightingShaderMaterial
@@ -179,7 +179,7 @@ public:
 	NiTexturePtr unkA0;	// A0
 
 	// uses ??_7BSLightingShaderMaterialParallax@@6B@ at +17
-	DEFINE_MEMBER_FN(dtor, void, 0x013F5100);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F5060);
 };
 
 class BSLightingShaderMaterialMultiLayerParallax : public BSLightingShaderMaterial
@@ -192,7 +192,7 @@ public:
 	NiTexturePtr unkB0;	// A0
 
 	// uses ??_7BSLightingShaderMaterialMultiLayerParallax@@6B@ at +17
-	DEFINE_MEMBER_FN(dtor, void, 0x013F75E0);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F7540);
 };
 
 class BSLightingShaderMaterialParallaxOcc : public BSLightingShaderMaterial
@@ -203,7 +203,7 @@ public:
 	NiTexturePtr unkA0;	// A0
 
 	// uses ??_7BSLightingShaderMaterialParallaxOcc@@6B@ at +17
-	DEFINE_MEMBER_FN(dtor, void, 0x013F5580);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F54E0);
 };
 
 class BSLightingShaderMaterialFacegenTint : public BSLightingShaderMaterial
@@ -229,4 +229,3 @@ extern RelocAddr<_CreateShaderMaterial> CreateShaderMaterial;
 // This is actually vtable+8 but it has no dependency on the 'this' ptr
 typedef BSLightingShaderMaterialFacegenTint * (*_CreateFacegenTintMaterial)();
 extern RelocAddr<_CreateFacegenTintMaterial> CreateFacegenTintMaterial;
-

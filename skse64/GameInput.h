@@ -287,7 +287,7 @@ public:
 	// used by Hooks_Event
 	PlayerControls * ctor_Hook(void);
 	MEMBER_FN_PREFIX(PlayerControls);
-	DEFINE_MEMBER_FN(ctor, PlayerControls *, 0x0072E270);
+	DEFINE_MEMBER_FN(ctor, PlayerControls *, 0x0072DFE0);
 };
 STATIC_ASSERT(offsetof(PlayerControls, runMode) == 0x049);
 STATIC_ASSERT(offsetof(PlayerControls, remapMode) == 0x050);

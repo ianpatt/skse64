@@ -98,10 +98,10 @@ public:
 	GRefCountBase	* unk18;	// 28 - holds a reference
 
 	MEMBER_FN_PREFIX(IMenu);
-	DEFINE_MEMBER_FN(InitMovie_internal, void, 0x00F0FFD0, GFxMovieView* view);
-	DEFINE_MEMBER_FN(NextFrame_internal, void, 0x00F0FD60, UInt32 arg0, UInt32 arg1);
-	DEFINE_MEMBER_FN(ProcessMessage_internal, UInt32, 0x00F0FD10, UIMessage* message);
-	DEFINE_MEMBER_FN(dtor, void, 0x00F0FCB0);
+	DEFINE_MEMBER_FN(InitMovie_internal, void, 0x00F0FEF0, GFxMovieView* view);
+	DEFINE_MEMBER_FN(NextFrame_internal, void, 0x00F0FC80, UInt32 arg0, UInt32 arg1);
+	DEFINE_MEMBER_FN(ProcessMessage_internal, UInt32, 0x00F0FC30, UIMessage* message);
+	DEFINE_MEMBER_FN(dtor, void, 0x00F0FBD0);
 };
 STATIC_ASSERT(offsetof(IMenu, view) == 0x10);
 
@@ -253,7 +253,7 @@ public:
 
 	MEMBER_FN_PREFIX(RaceSexMenu);
 	// B3D68A070DD2D03BA80128C5FED7004330D111AC+B1
-	DEFINE_MEMBER_FN(LoadSliders, void *, 0x008E5650, UInt64 unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(LoadSliders, void *, 0x008E53C0, UInt64 unk1, UInt8 unk2);
 };
 STATIC_ASSERT(offsetof(RaceSexMenu, sliderData) == 0x140);
 STATIC_ASSERT(offsetof(RaceSexMenu, raceIndex) == 0x188);
@@ -366,8 +366,8 @@ public:
 	GFxValue		object;		// 10
 
 	MEMBER_FN_PREFIX(HUDObject);
-	DEFINE_MEMBER_FN_0(dtor, void, 0x008B5510);
-	DEFINE_MEMBER_FN_1(Impl_Fn03, void *, 0x008B0370, void * unk1);
+	DEFINE_MEMBER_FN_0(dtor, void, 0x008B5280);
+	DEFINE_MEMBER_FN_1(Impl_Fn03, void *, 0x008B00E0, void * unk1);
 
 	DEFINE_STATIC_HEAP(Heap_Allocate, Heap_Free);
 };
@@ -410,7 +410,7 @@ public:
 	TESWordOfPower*	word;	// 50
 	UInt32			time;	// 58 - g_gameTime + iObjectivesWaitTime
 
-	DEFINE_MEMBER_FN_0(dtor, void, 0x008B5580);
+	DEFINE_MEMBER_FN_0(dtor, void, 0x008B52F0);
 };
 
 // 78
@@ -564,7 +564,7 @@ public:
 		UInt8		pad12[6];	// 12
 
 		MEMBER_FN_PREFIX(CategoryListEntry);
-		DEFINE_MEMBER_FN(SetData, void, 0x0089D7D0, GFxValue* target);
+		DEFINE_MEMBER_FN(SetData, void, 0x0089D540, GFxValue* target);
 
 		void SetData_Extended(EnchantConstructMenu*	subMenu, GFxValue* target);
 	};
@@ -841,8 +841,8 @@ public:
 //	DEFINE_MEMBER_FN(AddMessage, void, 0x004503E0, UIMessage * msg);	// old 1.1 implementation
 	// 1.3 uses a little non-thread-safe pool of UIMessages to wrap around the nicely thread-safe BSTMessageQueue it gets added to
 
-	DEFINE_MEMBER_FN(AddMessage, void, 0x0016ECD0, StringCache::Ref * strData, UInt32 msgID, void * objData);
-	DEFINE_MEMBER_FN(CreateUIMessageData, IUIMessageData *, 0x00F09120, const BSFixedString &type);
+	DEFINE_MEMBER_FN(AddMessage, void, 0x0016EC40, StringCache::Ref * strData, UInt32 msgID, void * objData);
+	DEFINE_MEMBER_FN(CreateUIMessageData, IUIMessageData *, 0x00F09040, const BSFixedString &type);
 
 	static UIManager *	GetSingleton(void)
 	{
@@ -856,7 +856,7 @@ public:
 	void QueueCommand(UIDelegate* cmd);
 	void QueueCommand(UIDelegate_v1* cmd);
 
-	DEFINE_MEMBER_FN(ProcessEventQueue_HookTarget, void, 0x00F08FA0);
+	DEFINE_MEMBER_FN(ProcessEventQueue_HookTarget, void, 0x00F08EC0);
 };
 STATIC_ASSERT(offsetof(UIManager, pad348) == 0x348);
 STATIC_ASSERT(sizeof(UIManager) == 0xB80);
@@ -997,10 +997,10 @@ public:
 	UInt8			pad15B[5];
 
 	MEMBER_FN_PREFIX(Inventory3DManager);
-	DEFINE_MEMBER_FN(UpdateItem3D, void, 0x008B7880, InventoryEntryData * objDesc);
-	DEFINE_MEMBER_FN(UpdateMagic3D, void, 0x008B78B0, TESForm * form, UInt32 unk1);
-	DEFINE_MEMBER_FN(Clear3D, void, 0x008B7C70);
-	DEFINE_MEMBER_FN(Render, UInt32, 0x008B7590);
+	DEFINE_MEMBER_FN(UpdateItem3D, void, 0x008B75F0, InventoryEntryData * objDesc);
+	DEFINE_MEMBER_FN(UpdateMagic3D, void, 0x008B7620, TESForm * form, UInt32 unk1);
+	DEFINE_MEMBER_FN(Clear3D, void, 0x008B79E0);
+	DEFINE_MEMBER_FN(Render, UInt32, 0x008B7300);
 };
 
 STATIC_ASSERT(offsetof(Inventory3DManager, unk14) == 0x14);
@@ -1091,8 +1091,8 @@ public:
 
 private:
 	MEMBER_FN_PREFIX(MenuManager);
-	DEFINE_MEMBER_FN(IsMenuOpen, bool, 0x00F044A0, BSFixedString * menuName);
-	DEFINE_MEMBER_FN(Register_internal, void, 0x00F06170, const char * name, CreatorFunc creator);
+	DEFINE_MEMBER_FN(IsMenuOpen, bool, 0x00F043C0, BSFixedString * menuName);
+	DEFINE_MEMBER_FN(Register_internal, void, 0x00F06090, const char * name, CreatorFunc creator);
 
 public:
 

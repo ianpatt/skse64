@@ -2,9 +2,9 @@
 #include "skse64/GameAPI.h"
 
 // 4772884F2DDD41847925EAA949727085D82940A1+401
-RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00C8F700);
+RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00C8F620);
 // 4772884F2DDD41847925EAA949727085D82940A1+414
-RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape(0x00C9A9F0);
+RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape(0x00C9A910);
 
 // ??_7NiTriShape@@6B@
 static const RelocPtr<uintptr_t> s_NiTriShapeVtbl(0x0185D828);
@@ -67,7 +67,7 @@ BSDismemberSkinInstance * BSDismemberSkinInstance::Create()
 {
 	typedef BSDismemberSkinInstance * (*_BSDismemberSkinInstance_Create)();
 	// 4772884F2DDD41847925EAA949727085D82940A1+2E4
-	static RelocAddr <_BSDismemberSkinInstance_Create> BSDismemberSkinInstance_Create(0x00C93940);
+	static RelocAddr <_BSDismemberSkinInstance_Create> BSDismemberSkinInstance_Create(0x00C93860);
 
 	return BSDismemberSkinInstance_Create();
 }
