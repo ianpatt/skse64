@@ -1,4 +1,4 @@
-Skyrim Script Extender 64 v2.1.2 beta
+Skyrim Script Extender 64 v2.1.3 beta
 by Ian Patterson and Stephen Abel (ianpatt and behippo)
 Thanks to: Paul Connelly (scruggsywuggsy the ferret), gibbed, Purple Lunchbox, snakster
 Special thanks to eternity for the help getting this finished. Can't thank you enough.
@@ -6,11 +6,11 @@ Special thanks to eternity for the help getting this finished. Can't thank you e
 The Skyrim Script Extender 64, or SKSE64 for short, is a modder's resource that expands the scripting capabilities of Skyrim Special Edition. It does so without modifying the executable files on disk, so there are no permanent side effects.
 
 ### READ THIS ###
-This is a preliminary build of SKSE64 with support for Skyrim SE 1.6.318, aka the Anniversary Edition. All of the hooks tested as working, the Papyrus extensions seem to be OKish but I don't have complete test coverage. At the very least you can keep using Todd's favorite mod (SkyUI) without problems. The primary feature that is missing is the plugin manager, which is currently disabled until I can rewrite the system that handles plugin compatibility checks. Plugin developers can build local versions with it enabled, but keep in mind that the version check code is going to change.
+This is a preliminary build of SKSE64 with support for Skyrim SE 1.6.323, aka the Anniversary Edition. All of the hooks tested as working, the Papyrus extensions seem to be OKish but I don't have complete test coverage. At the very least you can keep using Todd's favorite mod (SkyUI) without problems. The primary feature that is missing is the plugin manager, which is currently disabled until I can rewrite the system that handles plugin compatibility checks. Plugin developers can build local versions with it enabled, but keep in mind that the version check code is going to change.
 
 Compatibility:
 
-SKSE64 will support the latest version of Skyrim SE available on Steam, and _only_ this version (currently 1.6.318 with any combination of numbers after that). When a new version is released, we will update as soon as possible; please be patient. The editor does not currently need modification, however a custom set of .pex/psc files must be installed.
+SKSE64 will support the latest version of Skyrim SE available on Steam, and _only_ this version (currently 1.6.323 with any combination of numbers after that). When a new version is released, we will update as soon as possible; please be patient. The editor does not currently need modification, however a custom set of .pex/psc files must be installed.
 
 [ Installation ]
 

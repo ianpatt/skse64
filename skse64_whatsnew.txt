@@ -1,4 +1,6 @@
 2.1.3
+- support for 1.6.323
+- many plugin error messages are now reported from SKSE rather than by loading the plugin
 - fixed scaleform OpenJournalMenu
 
 2.1.2
