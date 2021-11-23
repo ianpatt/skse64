@@ -71,7 +71,7 @@ install(
 	FILES
 		xbyak.h
 		xbyak_bin2hex.h
-		xbayk_mnemonic.h
+		xbyak_mnemonic.h
 		xbyak_util.h
 	DESTINATION
 		${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
