@@ -55,7 +55,7 @@ configure_package_config_file(
 
 install(
 	EXPORT ${PROJECT_NAME}_Targets
-	FILE ${PROJECT_NAME}Targets.cmake
+	FILE ${PROJECT_NAME}-targets.cmake
 	NAMESPACE Xbyak::
 	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
 )
