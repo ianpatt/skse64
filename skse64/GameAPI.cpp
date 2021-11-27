@@ -7,7 +7,7 @@ RelocPtr <Heap> g_mainHeap(0x01F57A80);
 RelocPtr <ConsoleManager *> g_console(0x02F9A800);
 
 // 4D7631B98BE6AABD42229719E0D837E677A24FB5+CF
-RelocPtr <UInt32> g_consoleHandle(0x01F57A80);
+RelocPtr <UInt32> g_consoleHandle(0x02FE6FE4);
 
 // 3DD6796A3BFE73B35604DD47E8677156AEBD4360+20
 RelocPtr <UInt32> g_TlsIndexPtr(0x03531398);
