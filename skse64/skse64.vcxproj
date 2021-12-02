@@ -111,10 +111,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\common;$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)_1_5_97</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_VC142|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\common;$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)_1_6_323</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Lib_VC142|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -123,10 +125,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)..\common;$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)_1_5_97</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_VC142|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)..\common;$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)_1_6_323</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Lib_VC142|x64'">
     <LinkIncremental>false</LinkIncremental>
