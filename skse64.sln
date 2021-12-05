@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "skse64", "skse64\skse64.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_vc14", "..\common\common\common_vc14.vcxproj", "{472E19AB-DEF0-42DF-819B-18722E8DC822}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xbyak", "xbyak\xbyak.vcxproj", "{B625DFBF-E9DF-44B5-9B93-BD615616F01B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_VC142|x64 = Debug_VC142|x64
@@ -99,6 +101,18 @@ Global
 		{472E19AB-DEF0-42DF-819B-18722E8DC822}.Release|x64.ActiveCfg = Release|x64
 		{472E19AB-DEF0-42DF-819B-18722E8DC822}.Release|x64.Build.0 = Release|x64
 		{472E19AB-DEF0-42DF-819B-18722E8DC822}.Release|x86.ActiveCfg = Release|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Debug_VC142|x64.ActiveCfg = Debug_VC142|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Debug_VC142|x64.Build.0 = Debug_VC142|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Debug_VC142|x86.ActiveCfg = Debug_VC142|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Debug|x64.ActiveCfg = Debug|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Debug|x64.Build.0 = Debug|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Debug|x86.ActiveCfg = Debug|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Release_VC142|x64.ActiveCfg = Release_VC142|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Release_VC142|x64.Build.0 = Release_VC142|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Release_VC142|x86.ActiveCfg = Release_VC142|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Release|x64.ActiveCfg = Release|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Release|x64.Build.0 = Release|x64
+		{B625DFBF-E9DF-44B5-9B93-BD615616F01B}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
