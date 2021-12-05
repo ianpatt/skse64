@@ -11,6 +11,10 @@
 *.vspscc
 
 # build output
+Debug/
+Debug_VC142/
+Release/
+Release_VC142/
 *.tlog
 *.lastbuildstate
 *.unsuccessfulbuild
