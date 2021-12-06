@@ -8,7 +8,7 @@ NiBoneNames * NiBoneNames::GetSingleton(void)
 	return addr;
 }
 
-NiNode * NiNode::Create(UInt32 arrBufLen)
+NiNode * NiNode::Create(UInt16 arrBufLen)
 {
 	void* memory = Heap_Allocate(sizeof(NiNode));
 	memset(memory, 0, sizeof(NiNode));

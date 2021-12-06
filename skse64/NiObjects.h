@@ -266,6 +266,7 @@ public:
 	DEFINE_MEMBER_FN(CopyFrom, void, 0x003EC240, BSFaceGenModel * other);
 	DEFINE_MEMBER_FN(SetModelData, bool, 0x003EC9C0, const char * meshPath, void * unk1, UInt8 unk2);
 	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EC820, BSFixedString * morphName, TESModelTri * triModel, NiAVObject ** headNode, float relative, UInt8 unk1);
+	DEFINE_MEMBER_FN(ApplyRaceMorph, UInt8, 0x003EC6D0, BSFixedString* morphName, TESModelTri* triModel, NiAVObject** headNode, float relative, UInt8 unk1);
 };
 
 // 18

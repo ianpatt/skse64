@@ -58,7 +58,7 @@ RelocAddr<_UpdateHarvestModel> UpdateHarvestModel(0x001A82B0);
 RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x0035C1E0);
 
 // 63503D87B68DB4A4C8A2BE534A75246035A76798+82
-RelocPtr<FacePresetList> g_facePresetList(0x01E69300);	// aNosetype
+RelocPtr<FacePresetList> g_facePresetList(0x01E6A300);	// aNosetype
 
 RelocAddr<_HasLOS> HasLOS(0x00948C30);
 

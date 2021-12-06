@@ -357,6 +357,14 @@ public:
 		UInt32	unk08;	// 08
 	};
 
+	enum Flag
+	{
+		kFlagNone = 0,
+		kFlagNoSpecularMap = 1 << 0,
+		kFlagFacegenTextures = 1 << 1,
+		kFlagHasModelSpaceNormalMap = 1 << 2
+	};
+
 	enum
 	{
 		kTextureDiffuse = 0,
@@ -376,7 +384,7 @@ public:
 
 	TESTexture		texturePaths[kNumTextures];	// 40
 	UInt64			unkC0;						// C0
-	UInt16			unkC8;						// C8
+	UInt16			flags;						// C8
 	UInt8			padCA[6];					// CA
 	Data			unkD0[kNumTextures];		// D0
 };
@@ -1448,15 +1456,13 @@ public:
 		UInt32	pad0C;			// 0C
 	};
 
-	Data40						data;					// 40
-	TESModelTextureSwap			models[2][2];			// 50
-	UInt64						unk130;					// 130
-	UInt64						unk138;					// 138
-	UInt64						unk140;					// 140
-	UInt64						unk148;					// 148
-	tArray<TESRace*>			additionalRaces;		// 150
-	BGSFootstepSet				* footstepSet;			// 168
-	UInt64						unk170;					// 170
+	Data40						data;						// 40
+	TESModelTextureSwap			models[2][2];				// 50
+	BGSTextureSet*				skinTextures[2];			// 130 - NAM0 - NAM1
+	BGSListForm*				skinTextureSwapLists[2];	// 140 - NAM2 - NAM3
+	tArray<TESRace*>			additionalRaces;			// 150
+	BGSFootstepSet				* footstepSet;				// 168
+	UInt64						unk170;						// 170
 
 	bool isValidRace(TESRace * race) const;
 	void GetNodeName(char * dstBuff, TESObjectREFR * refr, TESObjectARMO * armor, float weightOverride);
