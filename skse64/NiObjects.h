@@ -123,7 +123,7 @@ public:
 
 	
 	MEMBER_FN_PREFIX(NiObject);
-	DEFINE_MEMBER_FN(DeepCopy, NiStream *, 0x00C79F70, NiObject ** result);
+	DEFINE_MEMBER_FN(DeepCopy, NiStream *, 0x00C7AF80, NiObject ** result);
 };
 STATIC_ASSERT(sizeof(NiObject) == 0x10);
 
@@ -219,7 +219,7 @@ public:
 
 	MEMBER_FN_PREFIX(NiAVObject);
 	// A5B2FC7D42E72BA4F6A679BAC0BAE17C12A4AFE1+E3
-	DEFINE_MEMBER_FN(UpdateNode, void, 0x00C7DE60, ControllerUpdateContext * ctx);
+	DEFINE_MEMBER_FN(UpdateNode, void, 0x00C7EE70, ControllerUpdateContext * ctx);
 };
 STATIC_ASSERT(offsetof(NiAVObject, m_localTransform) == 0x48);
 STATIC_ASSERT(offsetof(NiAVObject, m_worldTransform) == 0x7C);
@@ -262,10 +262,10 @@ public:
 	UInt32	pad1C;		// 1C
 
 	MEMBER_FN_PREFIX(BSFaceGenModel);
-	DEFINE_MEMBER_FN(ctor, void, 0x003EC1A0);
-	DEFINE_MEMBER_FN(CopyFrom, void, 0x003EC240, BSFaceGenModel * other);
-	DEFINE_MEMBER_FN(SetModelData, bool, 0x003EC9C0, const char * meshPath, void * unk1, UInt8 unk2);
-	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EC820, BSFixedString * morphName, TESModelTri * triModel, NiAVObject ** headNode, float relative, UInt8 unk1);
+	DEFINE_MEMBER_FN(ctor, void, 0x003EC330);
+	DEFINE_MEMBER_FN(CopyFrom, void, 0x003EC3D0, BSFaceGenModel * other);
+	DEFINE_MEMBER_FN(SetModelData, bool, 0x003ECB50, const char * meshPath, void * unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EC9B0, BSFixedString * morphName, TESModelTri * triModel, NiAVObject ** headNode, float relative, UInt8 unk1);
 };
 
 // 18
@@ -276,7 +276,7 @@ public:
 	
 
 	MEMBER_FN_PREFIX(BSFaceGenMorphData);
-	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EF6C0, const char ** morphName, NiAVObject * faceTrishape, float relative, UInt8 unk2);
+	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EF850, const char ** morphName, NiAVObject * faceTrishape, float relative, UInt8 unk2);
 };
 
 // 20

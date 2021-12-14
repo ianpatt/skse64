@@ -2,7 +2,7 @@
 #include "GameAPI.h"
 
 // 3740B7AD44E615CF1BB4401806BB6F9DB42DA46D+12
-RelocPtr <SkyrimVM*> g_skyrimVM(0x01F5E378);
+RelocPtr <SkyrimVM*> g_skyrimVM(0x01F5F4F8);
 
 void VMClassInfo::AddRef(void)
 {

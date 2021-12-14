@@ -256,11 +256,11 @@ public:
 
 private:
 	MEMBER_FN_PREFIX(BaseExtraList);
-	// 
-	DEFINE_MEMBER_FN(CheckContainerExtraData_Internal, bool, 0x001195B0, bool isEquipped);
+	// A7985F15034C77C00ACC57607F29F4802502A1BA+2F
+	DEFINE_MEMBER_FN(CheckContainerExtraData_Internal, bool, 0x00119580, bool isEquipped);
 	// This also does some internal ReferenceHandle lookup
 	// 
-	DEFINE_MEMBER_FN(GetExtraTextDisplayData_Internal, ExtraTextDisplayData*, 0x0011D390);
+	DEFINE_MEMBER_FN(GetExtraTextDisplayData_Internal, ExtraTextDisplayData*, 0x0011D360);
 };
 
 typedef tList<BaseExtraList> ExtendDataList;
