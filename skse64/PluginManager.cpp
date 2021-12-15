@@ -278,30 +278,37 @@ void PluginManager::ScanPlugins(void)
 		HMODULE resourceHandle = (HMODULE)LoadLibraryEx(pluginPath.c_str(), nullptr, LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 		if(resourceHandle)
 		{
-			auto * version = (const SKSEPluginVersionData *)GetResourceLibraryProcAddress(resourceHandle, "SKSEPlugin_Version");
-			if(version)
+			if(Is64BitDLL(resourceHandle))
 			{
-				plugin.version = *version;
-				Sanitize(&plugin.version);
-
-				auto * loadStatus = CheckPluginCompatibility(plugin.version);
-				if(!loadStatus)
+				auto * version = (const SKSEPluginVersionData *)GetResourceLibraryProcAddress(resourceHandle, "SKSEPlugin_Version");
+				if(version)
 				{
-					// compatible, add to list
+					plugin.version = *version;
+					Sanitize(&plugin.version);
 
-					plugin.internalHandle = handleIdx;
-					handleIdx++;
+					auto * loadStatus = CheckPluginCompatibility(plugin.version);
+					if(!loadStatus)
+					{
+						// compatible, add to list
 
-					m_plugins.push_back(plugin);
+						plugin.internalHandle = handleIdx;
+						handleIdx++;
+
+						m_plugins.push_back(plugin);
+					}
+					else
+					{
+						LogPluginLoadError(plugin, loadStatus);
+					}
 				}
 				else
 				{
-					LogPluginLoadError(plugin, loadStatus);
+					LogPluginLoadError(plugin, "no version data", 0, false);
 				}
 			}
 			else
 			{
-				LogPluginLoadError(plugin, "no version data", 0, false);
+				LogPluginLoadError(plugin, "LE plugin cannot be used with SE");
 			}
 
 			FreeLibrary(resourceHandle);

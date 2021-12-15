@@ -160,7 +160,7 @@ void * GetIATAddr(void * module, const char * searchDllName, const char * search
 	return NULL;
 }
 
-const void * GetResourceLibraryProcAddress(HMODULE module, const char * exportName)
+const void * GetResourceLibraryProcAddress(const HMODULE module, const char * exportName)
 {
 	auto * base = (const UInt8 *)(uintptr_t(module) & ~3);
 	auto * dosHeader = (const IMAGE_DOS_HEADER *)base;
@@ -193,6 +193,16 @@ const void * GetResourceLibraryProcAddress(HMODULE module, const char * exportNa
 	}
 
 	return result;
+}
+
+bool Is64BitDLL(const HMODULE module)
+{
+	auto * base = (const UInt8 *)(uintptr_t(module) & ~3);
+	auto * dosHeader = (const IMAGE_DOS_HEADER *)base;
+	auto * ntHeader = (const IMAGE_NT_HEADERS *)(base + dosHeader->e_lfanew);
+
+	// FileHeader is PE32/64 independent
+	return ntHeader->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64;
 }
 
 #pragma warning (push)

@@ -474,7 +474,7 @@ public:
 	UInt32	unk0C;	// 0C - init'd to FFFFFFFF
 
 	MEMBER_FN_PREFIX(TESDescription);
-	DEFINE_MEMBER_FN(Get, void, 0x0019ABA0, BSString * out, TESForm * parent, UInt32 fieldType);
+	DEFINE_MEMBER_FN(Get, void, 0x0019AB70, BSString * out, TESForm * parent, UInt32 fieldType);
 };
 
 // 18 
@@ -1064,8 +1064,8 @@ public:
 	UInt32	handle;			// 2770
 	UInt32	unk2774;		// 2774
 
-	DEFINE_MEMBER_FN_0(UpdateWeightData, void, 0x001D1370);
-	DEFINE_MEMBER_FN_0(DeleteThis, void, 0x001D1270);
+	DEFINE_MEMBER_FN_0(UpdateWeightData, void, 0x001D1360);
+	DEFINE_MEMBER_FN_0(DeleteThis, void, 0x001D1260);
 };
 STATIC_ASSERT(offsetof(Biped, unk10) == 0x10);
 STATIC_ASSERT(offsetof(Biped, unk13C0) == 0x13C0);
@@ -1296,10 +1296,10 @@ public:
 	UInt32	pad13C;						// 13C
 
 	MEMBER_FN_PREFIX(ActorProcessManager);
-	DEFINE_MEMBER_FN(SetEquipFlag, void, 0x006A56F0, UInt8 flags);
-	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x006777A0, Actor * actor);
+	DEFINE_MEMBER_FN(SetEquipFlag, void, 0x006A68C0, UInt8 flags);
+	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x00678970, Actor * actor);
 	// CDC12817DF3AB5B832348763F433A216BB8A85CA+89
-	DEFINE_MEMBER_FN(SetDataFlag, void, 0x00683400, float flag); // Sets a number on the 0x10 object
+	DEFINE_MEMBER_FN(SetDataFlag, void, 0x006845D0, float flag); // Sets a number on the 0x10 object
 
 	void UpdateEquipment_Hooked(Actor * actor);
 };
@@ -1383,9 +1383,9 @@ public:
 	void SetSkillLegendaryLevel(BSFixedString actorValue, UInt32 level);
 
 	MEMBER_FN_PREFIX(PlayerSkills);
-	DEFINE_MEMBER_FN(GetSkillData, UInt32, 0x0070E8E0, UInt32 actorValue, float * level, float * points, float * pointsMax, UInt32 * unk6);
-	DEFINE_MEMBER_FN(IncrementLegendary, UInt32, 0x0070EED0, UInt32 actorValue);
-	DEFINE_MEMBER_FN(SetLevel, void, 0x0070EE70, UInt32 level);
+	DEFINE_MEMBER_FN(GetSkillData, UInt32, 0x0070FAB0, UInt32 actorValue, float * level, float * points, float * pointsMax, UInt32 * unk6);
+	DEFINE_MEMBER_FN(IncrementLegendary, UInt32, 0x007100A0, UInt32 actorValue);
+	DEFINE_MEMBER_FN(SetLevel, void, 0x00710040, UInt32 level);
 };
 
 // 10

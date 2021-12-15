@@ -8,14 +8,14 @@ bool InputEventDispatcher::IsGamepadEnabled(void)
 InputEventDispatcher* InputEventDispatcher::GetSingleton()
 {
 	// 8FAAB2F3DC59885AE2A550C95F2C82BE2497789F+37
-	static RelocPtr<InputEventDispatcher*> g_inputEventDispatcher(0x02FBFD88);
+	static RelocPtr<InputEventDispatcher*> g_inputEventDispatcher(0x02FC0DC0);
 	return *g_inputEventDispatcher;
 }
 
 InputManager * InputManager::GetSingleton(void)
 {
 	// 80AE59E4FF0DC421866FA7261C1625595B0C7572+11
-	static RelocPtr<InputManager*> g_inputManager(0x02F60320);
+	static RelocPtr<InputManager*> g_inputManager(0x02F614A0);
 	return *g_inputManager;
 }
 
@@ -98,13 +98,13 @@ BSFixedString InputManager::GetMappedControl(UInt32 buttonID, UInt32 deviceType,
 PlayerControls * PlayerControls::GetSingleton(void)
 {
 	// 20AF40A6B803C21547F594CE478EAA5065E8F5A5+11B
-	static RelocPtr<PlayerControls*> g_playerControls(0x02F60328);
+	static RelocPtr<PlayerControls*> g_playerControls(0x02F614A8);
 	return *g_playerControls;
 }
 
 MenuControls * MenuControls::GetSingleton(void)
 {
 	// 4E9F39D1066653EF254B38406212E476F80A6C9B+F0
-	static RelocPtr<MenuControls*> g_menuControls(0x02F9AB08);
+	static RelocPtr<MenuControls*> g_menuControls(0x02F9BC88);
 	return *g_menuControls;
 }

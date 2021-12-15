@@ -1,7 +1,7 @@
 #include "GameEvents.h"
 
 // 614D2151B14D0D61E7DA7088CAB85DB111E2E0D3+1B
-RelocAddr<_GetEventDispatcherList> GetEventDispatcherList(0x00194130);
+RelocAddr<_GetEventDispatcherList> GetEventDispatcherList(0x00194100);
 
 //EventDispatcher<BGSFootstepEvent>* g_footstepEventDispatcher = (EventDispatcher<BGSFootstepEvent>*) 0x01B2E9C0;
 
