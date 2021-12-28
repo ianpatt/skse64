@@ -79,33 +79,45 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Common.props" />
-    <Import Project="Postbuild.props" />
+    <Import Project="..\sheets\ForcedInclude.props" />
+    <Import Project="..\sheets\Postbuild.props" />
+    <Import Project="..\sheets\Runtime.props" />
+    <Import Project="..\sheets\Common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_VC142|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Common.props" />
-    <Import Project="Postbuild.props" />
+    <Import Project="..\sheets\ForcedInclude.props" />
+    <Import Project="..\sheets\Postbuild.props" />
+    <Import Project="..\sheets\Runtime.props" />
+    <Import Project="..\sheets\Common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Lib_VC142|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Common.props" />
-    <Import Project="Postbuild.props" />
+    <Import Project="..\sheets\ForcedInclude.props" />
+    <Import Project="..\sheets\Postbuild.props" />
+    <Import Project="..\sheets\Runtime.props" />
+    <Import Project="..\sheets\Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Common.props" />
-    <Import Project="Postbuild.props" />
+    <Import Project="..\sheets\ForcedInclude.props" />
+    <Import Project="..\sheets\Postbuild.props" />
+    <Import Project="..\sheets\Runtime.props" />
+    <Import Project="..\sheets\Common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_VC142|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Common.props" />
-    <Import Project="Postbuild.props" />
+    <Import Project="..\sheets\ForcedInclude.props" />
+    <Import Project="..\sheets\Postbuild.props" />
+    <Import Project="..\sheets\Runtime.props" />
+    <Import Project="..\sheets\Common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_Lib_VC142|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Common.props" />
-    <Import Project="Postbuild.props" />
+    <Import Project="..\sheets\ForcedInclude.props" />
+    <Import Project="..\sheets\Postbuild.props" />
+    <Import Project="..\sheets\Runtime.props" />
+    <Import Project="..\sheets\Common.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -372,7 +384,7 @@
     <ClCompile Include="Translation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\common\common_vc14.vcxproj">
+    <ProjectReference Include="..\..\common\common\common_vc14.vcxproj">
       <Project>{472e19ab-def0-42df-819b-18722e8dc822}</Project>
     </ProjectReference>
     <ProjectReference Include="..\skse64_common\skse64_common.vcxproj">

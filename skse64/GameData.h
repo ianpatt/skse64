@@ -528,7 +528,7 @@ public:
 
 	MEMBER_FN_PREFIX(FaceGen);
 	DEFINE_MEMBER_FN(RegenerateHead, void, 0x003EA4D0, BSFaceGenNiNode * headNode, BGSHeadPart * head, TESNPC * npc);
-	DEFINE_MEMBER_FN(ApplyMorph, void, 0x003E9D90, BSFaceGenNiNode * faceGenNode, BGSHeadPart * headPart, BSFixedString * morphName, float relative);
+	DEFINE_MEMBER_FN(ApplyMorph, void, 0x003E9DD0, BSFaceGenNiNode* faceGenNode, BGSHeadPart* headPart, BSFixedString* morphName, float relative);
 };
 STATIC_ASSERT(offsetof(FaceGen, isReset) == 0x58);
 

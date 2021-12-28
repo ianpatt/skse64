@@ -23,9 +23,9 @@ public:
 
 	NiTArray <NiAVObject *>	m_children;	// 110
 
-	static NiNode * Create(UInt32 arrBufLen = 0);
+	static NiNode * Create(UInt16 arrBufLen = 0);
 
-	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00C58D20, UInt16 arrBufLen);
+	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00C7FE40, UInt16 arrBufLen);
 };
 STATIC_ASSERT(sizeof(NiNode) == 0x128);
 
