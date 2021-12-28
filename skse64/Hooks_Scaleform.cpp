@@ -209,7 +209,7 @@ public:
 		InputEventDispatcher* pInputEventDispatcher = InputEventDispatcher::GetSingleton();
 		if (! (pInputEventDispatcher))
 			return;
-		
+
 		pInputEventDispatcher->AddEventSink(&remapHandler);
 		menuControls->remapMode = true;
 		playerControls->remapMode = true;		
@@ -460,7 +460,7 @@ public:
 		}
 
 #if _DEBUG
-		_MESSAGE("scaleform: send mod event (%s, %s, %d)", eventName, strArg, numArg);
+		_MESSAGE("scaleform: send mod event (%s, %s, %f)", eventName, strArg, numArg);
 #endif
 
 		BSFixedString aEventName(eventName);

@@ -41,8 +41,8 @@ class EventDispatcher
 	MEMBER_FN_PREFIX(EventDispatcher);
 	// 9FCA8C7632C2FC6D6E342E554B43402121BC4E44+66
 	DEFINE_MEMBER_FN(AddEventSink_Internal, void, 0x00587FC0, SinkT * eventSink);
-	// 94BFF5985A34190AE96F0F52B0614333E77595D8+71
-	DEFINE_MEMBER_FN(RemoveEventSink_Internal, void, 0x0043C3B0, SinkT * eventSink);
+	// 
+	DEFINE_MEMBER_FN(RemoveEventSink_Internal, void, 0x0043C590, SinkT * eventSink);
 	// FB59C2DDF89F5248DF43230E39A6FECF8C997BA6+466
 	DEFINE_MEMBER_FN(SendEvent_Internal, void, 0x00181CB0, EventArgT * evn);
 
