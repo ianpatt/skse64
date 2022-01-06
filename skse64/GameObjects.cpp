@@ -148,7 +148,7 @@ BSShaderTextureSet * BSShaderTextureSet::Create()
 {
 	typedef BSShaderTextureSet * (* _BSShaderTextureSet_Create)(void);
 	// 898A3CAF8F24D9FDC30B00DA3DC5BDF182682C1C+63
-	static RelocAddr <_BSShaderTextureSet_Create> BSShaderTextureSet_Create(0x0140B8F0);
+	static RelocAddr <_BSShaderTextureSet_Create> BSShaderTextureSet_Create(0x0140B7A0);
 
 	return BSShaderTextureSet_Create();
 }

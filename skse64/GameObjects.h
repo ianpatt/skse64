@@ -798,10 +798,10 @@ public:
 	UInt64			unk260;			// 260
 
 	MEMBER_FN_PREFIX(TESNPC);
-	DEFINE_MEMBER_FN(GetSex, char, 0x00367420);	// return (formType == 0x2B) ? (actorData.flags & 1) : -1;
-	DEFINE_MEMBER_FN(HasOverlays, bool, 0x00380040);
+	DEFINE_MEMBER_FN(GetSex, char, 0x00367290);	// return (formType == 0x2B) ? (actorData.flags & 1) : -1;
+	DEFINE_MEMBER_FN(HasOverlays, bool, 0x0037FEB0);
 
-	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x0037D010, BGSHeadPart * target);	// Swaps a headPart of the same type as target with target
+	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x0037CE80, BGSHeadPart * target);	// Swaps a headPart of the same type as target with target
 
 	struct MorphAction {
 		BSFaceGenNiNode * faceNode;
@@ -810,9 +810,9 @@ public:
 		float	value;
 	};
 	
-	DEFINE_MEMBER_FN(UpdateNeck, void, 0x003775C0, BSFaceGenNiNode * faceNode);	// Updates the neck seam when weight changed
+	DEFINE_MEMBER_FN(UpdateNeck, void, 0x00377430, BSFaceGenNiNode * faceNode);	// Updates the neck seam when weight changed
 
-	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x00377380, NiColorA * result, TintMask * tintMask, bool fromTint);	// Computes RGB SkinTone from RGBA TintMask
+	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x003771F0, NiColorA * result, TintMask * tintMask, bool fromTint);	// Computes RGB SkinTone from RGBA TintMask
 
 	void SetFaceTexture(BGSTextureSet * textureSet);
 	void SetHairColor(BGSColorForm * hairColor);

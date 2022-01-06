@@ -1,4 +1,4 @@
-Skyrim Script Extender 64 v2.1.4 beta
+Skyrim Script Extender 64 v2.1.5 beta
 by Ian Patterson and Stephen Abel (ianpatt and behippo)
 Thanks to: Paul Connelly (scruggsywuggsy the ferret), gibbed, Purple Lunchbox, snakster
 Special thanks to eternity for the help getting this finished. Can't thank you enough.
@@ -7,7 +7,7 @@ The Skyrim Script Extender 64, or SKSE64 for short, is a modder's resource that 
 
 Compatibility:
 
-SKSE64 will support the latest version of Skyrim SE available on Steam, and _only_ this version (currently 1.6.342 with any combination of numbers after that). When a new version is released, we will update as soon as possible; please be patient. The editor does not currently need modification, however a custom set of .pex/psc files must be installed.
+SKSE64 will support the latest version of Skyrim SE available on Steam, and _only_ this version (currently 1.6.353 with any combination of numbers after that). When a new version is released, we will update as soon as possible; please be patient. The editor does not currently need modification, however a custom set of .pex/psc files must be installed.
 
 [ Installation ]
 

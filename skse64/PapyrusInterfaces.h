@@ -51,5 +51,5 @@ public:
 	//	void	** _vtbl;	// 00
 
 	MEMBER_FN_PREFIX(ObjectBindPolicy);
-	DEFINE_MEMBER_FN(BindObject, void, 0x0135A3A0, VMIdentifier ** identifier, UInt64 handle);
+	DEFINE_MEMBER_FN(BindObject, void, 0x0135A430, VMIdentifier ** identifier, UInt64 handle);
 };

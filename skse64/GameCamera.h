@@ -260,7 +260,7 @@ public:
 	UInt8		pad31[7];		// 31
 
 	MEMBER_FN_PREFIX(TESCamera);
-	DEFINE_MEMBER_FN(SetCameraState, UInt32, 0x0050F1F0, TESCameraState * cameraState);
+	DEFINE_MEMBER_FN(SetCameraState, UInt32, 0x0050F050, TESCameraState * cameraState);
 };
 STATIC_ASSERT(offsetof(TESCamera, cameraNode) == 0x20);
 STATIC_ASSERT(sizeof(TESCamera) == 0x38);
@@ -380,7 +380,7 @@ public:
 	UInt8	pad166[2];									// 166
 
 	MEMBER_FN_PREFIX(PlayerCamera);
-	DEFINE_MEMBER_FN(UpdateThirdPerson, void, 0x0087A4F0, bool weaponDrawn);
+	DEFINE_MEMBER_FN(UpdateThirdPerson, void, 0x0087A350, bool weaponDrawn);
 };
 
 STATIC_ASSERT(offsetof(PlayerCamera, cameraStates) == 0xB8);

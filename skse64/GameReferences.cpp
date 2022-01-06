@@ -16,9 +16,9 @@ RelocAddr<_LookupREFRObjectByHandle> LookupREFRObjectByHandle(0x00139130);
 // AF5D1D698E25CFB06197DD5322B6F15A13ABF0B3+30
 RelocPtr<UInt32> g_invalidRefHandle(0x01F5A43C);
 
-RelocAddr<_MoveRefrToPosition> MoveRefrToPosition(0x009D4320);
-RelocAddr<_PlaceAtMe_Native> PlaceAtMe_Native(0x009BE290);
-RelocAddr<_AddItem_Native> AddItem_Native(0x009BC110);
+RelocAddr<_MoveRefrToPosition> MoveRefrToPosition(0x009D4240);
+RelocAddr<_PlaceAtMe_Native> PlaceAtMe_Native(0x009BE1B0);
+RelocAddr<_AddItem_Native> AddItem_Native(0x009BC030);
 
 UInt32 GetOrCreateRefrHandle(TESObjectREFR* ref)
 {

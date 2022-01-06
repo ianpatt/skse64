@@ -1,4 +1,5 @@
 2.1.5
+- support for 1.6.353
 - fix RemoveEventSink_Internal (fixes MCM keybindings)
 
 2.1.4

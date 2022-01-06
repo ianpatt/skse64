@@ -36,30 +36,30 @@ RelocPtr <EquipManager *> g_equipManager(0x02F60108);
 // FBC6C0FB3A858D20081F5FF9CB3E780E59DCE52F+50
 RelocPtr <RelationshipRanks> g_relationshipRanks(0x01E66FE8);
 
-RelocAddr<_ChangeActorHeadPart> ChangeActorHeadPart(0x003F49F0);
+RelocAddr<_ChangeActorHeadPart> ChangeActorHeadPart(0x003F4860);
 // 
-RelocAddr<_GetEitherHandSlot> GetEitherHandSlot(0x00347020);
+RelocAddr<_GetEitherHandSlot> GetEitherHandSlot(0x00346E90);
 // 
-RelocAddr<_GetRightHandSlot> GetRightHandSlot(0x00347010);
+RelocAddr<_GetRightHandSlot> GetRightHandSlot(0x00346E80);
 // 
-RelocAddr<_GetLeftHandSlot> GetLeftHandSlot(0x00347000);
-RelocAddr<_LookupActorValueByName> LookupActorValueByName(0x003FA1C0);
-RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x008E4B80);
-RelocAddr<_GetActorBaseOverlays> GetActorBaseOverlays(0x00380140);
-RelocAddr<_GetNumActorBaseOverlays> GetNumActorBaseOverlays(0x003801D0);
+RelocAddr<_GetLeftHandSlot> GetLeftHandSlot(0x00346E70);
+RelocAddr<_LookupActorValueByName> LookupActorValueByName(0x003FA030);
+RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x008E4AA0);
+RelocAddr<_GetActorBaseOverlays> GetActorBaseOverlays(0x0037FFB0);
+RelocAddr<_GetNumActorBaseOverlays> GetNumActorBaseOverlays(0x00380040);
 
-RelocAddr<_ApplyMasksToRenderTarget> ApplyMasksToRenderTarget(0x003F3850);
+RelocAddr<_ApplyMasksToRenderTarget> ApplyMasksToRenderTarget(0x003F36C0);
 
-RelocAddr<_UpdateModelSkin> UpdateModelSkin(0x003F4D20); // Applies tint to ShaderType 5 nodes
-RelocAddr<_UpdateModelHair> UpdateModelHair(0x003F4E30); // Applies tint to ShaderType 6 nodes
-RelocAddr<_UpdateModelFace> UpdateModelFace(0x003F4390);
+RelocAddr<_UpdateModelSkin> UpdateModelSkin(0x003F4B90); // Applies tint to ShaderType 5 nodes
+RelocAddr<_UpdateModelHair> UpdateModelHair(0x003F4CA0); // Applies tint to ShaderType 6 nodes
+RelocAddr<_UpdateModelFace> UpdateModelFace(0x003F4200);
 RelocAddr<_UpdateHarvestModel> UpdateHarvestModel(0x001A8280);
 
-RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x0035C370);
+RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x0035C1E0);
 
 RelocPtr<FacePresetList> g_facePresetList(0x01E6B300);	// aNosetype
 
-RelocAddr<_HasLOS> HasLOS(0x00949C50);
+RelocAddr<_HasLOS> HasLOS(0x00949B70);
 
 class LoadedModFinder
 {
