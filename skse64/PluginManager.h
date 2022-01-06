@@ -64,6 +64,7 @@ private:
 
 	void			LogPluginLoadError(const LoadedPlugin & plugin, const char * errStr, UInt32 errCode = 0, bool isError = true);
 	void			ReportPluginErrors();
+	void			UpdateAddressLibraryPrompt();
 
 	typedef std::vector <LoadedPlugin>	LoadedPluginList;
 
@@ -71,6 +72,8 @@ private:
 	LoadedPluginList	m_plugins;
 
 	LoadedPluginList	m_erroredPlugins;
+
+	bool				m_oldAddressLibrary = false;
 
 	static LoadedPlugin		* s_currentLoadingPlugin;
 	static PluginHandle		s_currentPluginHandle;

@@ -340,6 +340,7 @@ const char * PluginManager::CheckAddressLibrary(void)
 	IFileStream versionLib;
 	if(!versionLib.Open(fileName))
 	{
+		m_oldAddressLibrary = true;
 		s_status = "disabled, address library needs to be updated";
 	}
 
@@ -608,9 +609,12 @@ void PluginManager::ReportPluginErrors()
 	if(m_erroredPlugins.empty())
 		return;
 
+	if(m_oldAddressLibrary)
+		UpdateAddressLibraryPrompt();
+
 	// With this plugin DLL load error, the thread of prophecy is severed. Update your plugins to restore the weave of fate, or persist in the doomed world you have created
 
-	std::string message = "A DLL plugin has failed to load correctly. If a new version of Skyrim was just released, it probably needs to be updated. Please contact the plugin's author for more information.\n";
+	std::string message = "A DLL plugin has failed to load correctly. If a new version of Skyrim was just released, the plugin needs to be updated. Please check the mod's webpage for updates.\n";
 
 	for(auto & plugin : m_erroredPlugins)
 	{
@@ -635,6 +639,19 @@ void PluginManager::ReportPluginErrors()
 
 	if(result == IDYES)
 	{
+		TerminateProcess(GetCurrentProcess(), 0);
+	}
+}
+
+void PluginManager::UpdateAddressLibraryPrompt()
+{
+	int result = MessageBox(0,
+		"DLL plugins you have installed require a new version of the Address Library. Either this is a new install, or Skyrim was just updated. Visit the Address Library webpage for updates?",
+		"SKSE Plugin Loader", MB_YESNO);
+
+	if(result == IDYES)
+	{
+		ShellExecute(0, nullptr, "https://www.nexusmods.com/skyrimspecialedition/mods/32444", nullptr, nullptr, 0);
 		TerminateProcess(GetCurrentProcess(), 0);
 	}
 }
