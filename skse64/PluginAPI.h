@@ -313,6 +313,8 @@ struct SKSEPluginVersionData
 
 	char	author[256];			// null-terminated ASCII plugin author name (can be empty)
 	char	supportEmail[256];		// null-terminated ASCII support email address (can be empty)
+									// this is not for showing to users, it's in case I need to contact you about
+									// a compatibility problem with your plugin
 
 	// version compatibility
 	UInt32	versionIndependence;	// set to one of the kVersionIndependent_ enums or zero

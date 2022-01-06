@@ -833,7 +833,7 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 const char * PluginManager::GetPluginNameFromHandle(PluginHandle handle)
 {
 	if (handle > 0 && handle <= m_plugins.size())
-		return (m_plugins[handle - 1].info.name);
+		return (m_plugins[handle - 1].version.name);
 	else if (handle == 0)
 		return "SKSE";
 
@@ -849,7 +849,7 @@ PluginHandle PluginManager::LookupHandleFromName(const char* pluginName)
 	for(LoadedPluginList::iterator iter = m_plugins.begin(); iter != m_plugins.end(); ++iter)
 	{
 		LoadedPlugin	* plugin = &(*iter);
-		if(!_stricmp(plugin->info.name, pluginName))
+		if(!_stricmp(plugin->version.name, pluginName))
 		{
 			return idx;
 		}
