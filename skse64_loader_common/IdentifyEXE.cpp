@@ -259,6 +259,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	bool result = false;
 
 	const UInt64 kCurVersion = 0x0001000500610000;	// 1.5.97.0
+	const UInt64 kAEVersionMin = 0x0001000600000000;	// 1.6.0.0
 
 	// convert version resource to internal version format
 	UInt32 versionInternal = MAKE_EXE_VERSION(version >> 48, version >> 32, version >> 16);
@@ -280,6 +281,15 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 			"You are using Skyrim version %d.%d.%d, which is out of date and incompatible with this version of SKSE64. Update to the latest version.",
 			GET_EXE_VERSION_MAJOR(versionInternal), GET_EXE_VERSION_MINOR(versionInternal), GET_EXE_VERSION_BUILD(versionInternal));
 #endif
+	}
+	else if(version >= kAEVersionMin)
+	{
+		PrintLoaderError(
+			"You have updated to the Anniversary Edition (AE) of Skyrim.\n"
+			"Please download the AE version of SKSE64 from https://skse.silverlock.org.\n"
+			"\n"
+			"Runtime: %d.%d.%d",
+			GET_EXE_VERSION_MAJOR(versionInternal), GET_EXE_VERSION_MINOR(versionInternal), GET_EXE_VERSION_BUILD(versionInternal));
 	}
 	else if(version > kCurVersion)
 	{
