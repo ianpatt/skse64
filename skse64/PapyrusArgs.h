@@ -103,6 +103,22 @@ void PackValue(VMValue * dst, T ** src, VMClassRegistry * registry)
 	PackHandle(dst, *src, BaseType::kTypeID, registry);
 }
 
+template<>
+class VMResultArray<bool> : public std::vector<bool>
+{
+public:
+	void PackArray(VMValue::ArrayData * data, VMClassRegistry * registry)
+	{
+		UInt32 i = 0;
+		for (std::vector<bool>::iterator it = begin(); it != end(); ++it, i++) {
+			VMValue * value = data->GetData() + i;
+			bool _data = *it;
+			PackValue<bool>(value, &_data, registry);
+			value->type = VMValue::kType_Bool;
+		}
+	}
+};
+
 template <> void UnpackValue <float>(float * dst, VMValue * src);
 template <> void UnpackValue <UInt32>(UInt32 * dst, VMValue * src);
 template <> void UnpackValue <SInt32>(SInt32 * dst, VMValue * src);
