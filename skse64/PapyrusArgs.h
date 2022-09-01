@@ -112,8 +112,8 @@ public:
 		UInt32 i = 0;
 		for (std::vector<bool>::iterator it = begin(); it != end(); ++it, i++) {
 			VMValue * value = data->GetData() + i;
-			bool data = *it;
-			PackValue<bool>(value, &data, registry);
+			bool _data = *it;
+			PackValue<bool>(value, &_data, registry);
 			value->type = VMValue::kType_Bool;
 		}
 	}
