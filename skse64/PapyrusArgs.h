@@ -45,7 +45,7 @@ public:
 	{
 		// Copy the contents from the reference array to the VM array
 		UInt32 i = 0;
-		for(std::vector<T>::iterator it = begin(); it != end(); ++it, i++) {
+		for(auto it = this->begin(); it != this->end(); ++it, i++) {
 			VMValue * value = data->GetData() + i;
 			PackValue(value, (T*)&(*it), registry);
 			value->type = GetTypeID<T>(registry); // Always pack the type, even if empty data
@@ -110,7 +110,7 @@ public:
 	void PackArray(VMValue::ArrayData * data, VMClassRegistry * registry)
 	{
 		UInt32 i = 0;
-		for (std::vector<bool>::iterator it = begin(); it != end(); ++it, i++) {
+		for (auto it = this->begin(); it != this->end(); ++it, i++) {
 			VMValue * value = data->GetData() + i;
 			bool _data = *it;
 			PackValue<bool>(value, &_data, registry);

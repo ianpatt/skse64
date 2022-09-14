@@ -3,6 +3,7 @@
 #include "skse64/ScaleformAPI.h"
 #include "skse64/ScaleformTypes.h"
 #include "skse64/ScaleformValue.h"
+#include "skse64/ScaleformMovie.h"
 #include "skse64_common/Utilities.h"
 #include <typeinfo>
 #include <map>
