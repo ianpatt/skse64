@@ -92,12 +92,12 @@ public:
 		if (params)
 			reg.params = *params;
 		
-		Lock();
+		this->Lock();
 
-		if (m_data[key].insert(reg).second)
+		if (this->m_data[key].insert(reg).second)
 			policy->AddRef(handle);
 
-		Release();
+		this->Release();
 	}
 
 	template <typename T>
@@ -115,12 +115,12 @@ public:
 		_MESSAGE("Executed PapyrusEvents::Register - %016llX", reg.handle);
 #endif
 		
-		Lock();
+		this->Lock();
 
-		if (m_data[key].insert(reg).second)
+		if (this->m_data[key].insert(reg).second)
 			policy->AddRef(reg.handle);
 
-		Release();
+		this->Release();
 	}
 
 	void Unregister(K & key, UInt64 handle)
@@ -131,12 +131,12 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = handle;
 
-		Lock();
+		this->Lock();
 
-		if (m_data[key].erase(reg))
+		if (this->m_data[key].erase(reg))
 			policy->Release(handle);
 
-		Release();
+		this->Release();
 	}
 
 	template <typename T>
@@ -148,12 +148,12 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = policy->Create(type, (void *)classType);
 
-		Lock();
+		this->Lock();
 
-		if (m_data[key].erase(reg))
+		if (this->m_data[key].erase(reg))
 			policy->Release(reg.handle);
 
-		Release();
+		this->Release();
 	}
 
 	void UnregisterAll(UInt64 handle)
@@ -164,13 +164,13 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = handle;
 
-		Lock();
+		this->Lock();
 
-		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
 			if (iter->second.erase(reg))
 				policy->Release(handle);
 
-		Release();
+		this->Release();
 	}
 
 	template <typename T>
@@ -182,43 +182,43 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = policy->Create(type, (void *)classType);
 
-		Lock();
+		this->Lock();
 
-		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
 			if (iter->second.erase(reg))
 				policy->Release(reg.handle);
 
-		Release();
+		this->Release();
 	}
 
 	template <typename F>
 	void ForEach(K & key, F & functor)
 	{
-		Lock();
+		this->Lock();
 
-		RegMap::iterator handles = m_data.find(key);
+		auto handles = this->m_data.find(key);
 
-		if (handles != m_data.end())
-			for (RegSet::iterator iter = handles->second.begin(); iter != handles->second.end(); ++iter)
+		if (handles != this->m_data.end())
+			for (auto iter = handles->second.begin(); iter != handles->second.end(); ++iter)
 				functor(*iter);
 
-		Release();
+		this->Release();
 	}
 
 	void Clear(void)
 	{
-		Lock();
-		m_data.clear();
-		Release();
+		this->Lock();
+		this->m_data.clear();
+		this->Release();
 	}
 
 	bool Save(SKSESerializationInterface * intfc, UInt32 type, UInt32 version)
 	{
 		intfc->OpenRecord(type, version);
 
-		Lock();
+		this->Lock();
 
-		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
 		{
 			UInt32 numRegs = iter->second.size();
 
@@ -232,13 +232,13 @@ public:
 			// Reg count
 			intfc->WriteRecordData(&numRegs, sizeof(numRegs));
 			// Regs
-			for (RegSet::iterator elems = iter->second.begin(); elems != iter->second.end(); ++elems)
+			for (auto elems = iter->second.begin(); elems != iter->second.end(); ++elems)
 				elems->Save(intfc, version);
 		}
 
 		intfc->OpenRecord('REGE', version);
 
-		Release();
+		this->Release();
 
 		return true;
 	}
@@ -285,12 +285,12 @@ public:
 
 							reg.handle = newHandle;
 
-							Lock();
+							this->Lock();
 
-							if (m_data[curKey].insert(reg).second)
+							if (this->m_data[curKey].insert(reg).second)
 								policy->AddRef(reg.handle);
 
-							Release();
+							this->Release();
 							
 						}
 						else
@@ -336,12 +336,12 @@ public:
 		if (params)
 			reg.params = *params;
 		
-		Lock();
+		this->Lock();
 
-		if (m_data.insert(reg).second)
+		if (this->m_data.insert(reg).second)
 			policy->AddRef(handle);
 
-		Release();
+		this->Release();
 	}
 
 	template <typename T>
@@ -355,12 +355,12 @@ public:
 		if (params)
 			reg.params = *params;
 		
-		Lock();
+		this->Lock();
 
-		if (m_data.insert(reg).second)
+		if (this->m_data.insert(reg).second)
 			policy->AddRef(reg.handle);
 
-		Release();
+		this->Release();
 	}
 
 	void Unregister(UInt64 handle)
@@ -371,12 +371,12 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = handle;
 
-		Lock();
+		this->Lock();
 
-		if (m_data.erase(reg))
+		if (this->m_data.erase(reg))
 			policy->Release(handle);
 
-		Release();
+		this->Release();
 	}
 
 	template <typename T>
@@ -388,48 +388,48 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = policy->Create(type, (void *)classType);
 
-		Lock();
+		this->Lock();
 
-		if (m_data.erase(reg))
+		if (this->m_data.erase(reg))
 			policy->Release(reg.handle);
 
-		Release();
+		this->Release();
 	}
 
 	template <typename F>
 	void ForEach(F & functor)
 	{
-		Lock();
+		this->Lock();
 
-		for (RegSet::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
 			functor(*iter);
 
-		Release();
+		this->Release();
 	}
 
 	void Clear(void)
 	{
-		Lock();
-		m_data.clear();
-		Release();
+		this->Lock();
+		this->m_data.clear();
+		this->Release();
 	}
 
 	bool Save(SKSESerializationInterface * intfc, UInt32 type, UInt32 version)
 	{
 		intfc->OpenRecord(type, version);
 
-		Lock();
+		this->Lock();
 
-		UInt32 numRegs = m_data.size();
+		UInt32 numRegs = this->m_data.size();
 
 		// Reg count
 		intfc->WriteRecordData(&numRegs, sizeof(numRegs));
 			
 		// Regs
-		for (RegSet::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
 			iter->Save(intfc, version);
 
-		Release();
+		this->Release();
 
 		return true;
 	}
@@ -460,12 +460,12 @@ public:
 
 				reg.handle = newHandle;
 
-				Lock();
+				this->Lock();
 
-				if (m_data.insert(reg).second)
+				if (this->m_data.insert(reg).second)
 					policy->AddRef(reg.handle);
 
-				Release();
+				this->Release();
 				
 			}
 			else

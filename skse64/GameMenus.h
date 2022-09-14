@@ -153,8 +153,8 @@ class TESRace;
 class RaceMenuSlider
 {
 public:
-	RaceMenuSlider::RaceMenuSlider() {};
-	RaceMenuSlider::RaceMenuSlider(UInt32 filterFlag, const char * sliderName, const char * callbackName, UInt32 sliderId, UInt32 index, UInt32 type, UInt8 unk8, float min, float max, float value, float interval, UInt32 unk13);
+	RaceMenuSlider() {};
+	RaceMenuSlider(UInt32 filterFlag, const char * sliderName, const char * callbackName, UInt32 sliderId, UInt32 index, UInt32 type, UInt8 unk8, float min, float max, float value, float interval, UInt32 unk13);
 
 	enum {
 		kTypeHeadPart = 0,
@@ -342,7 +342,7 @@ STATIC_ASSERT(sizeof(MapMenu) == 0x030598);
 class HUDObject
 {
 public:
-	HUDObject::HUDObject(GFxMovieView* movie)
+	HUDObject(GFxMovieView* movie)
 	{
 		if (movie)
 			InterlockedIncrement(&movie->refCount);
