@@ -6,6 +6,7 @@
 //#include "skse/NiInterpolators.h"
 #include "skse64/NiObjects.h"
 #include "skse64/NiTypes.h"
+#include "skse64/GameBSExtraData.h"
 
 class TESForm;
 class TESObjectSTAT;
@@ -2482,15 +2483,6 @@ public:
 		UInt32	unk4;
 	};
 
-	// 18
-	struct Data048
-	{
-		BSExtraData	* extraData;;	// 00
-		void*	unk00;	// 08
-		UInt32	unk10;	// 10
-		UInt32	unk14;	// 14
-	};
-
 	struct TVDT
 	{
 		struct TVDT1
@@ -2528,7 +2520,7 @@ public:
 		UInt32	maxSize;		// 4
 		UInt32	freeEntries;	// 8 - maxSize - freeEntries = num valid entries (where Reference.unk08 is not NULL)
 		UInt32	unk0C;			// 0C
-		void	*unk10;			// 10 - Reference.unk08 is usually inititalized to this, but it is not always this
+		void	*unk10;			// 10 - Reference.unk08 is usually initialized to this, but it is not always this
 		void	*unk18;			// 18
 		Reference*	refArray;	// 20
 	};
@@ -2543,15 +2535,7 @@ public:
 	UInt8						unk046;		// 046
 	UInt8						pad047;		// 047
 	
-	// ExtraEditorID
-	// ExtraCellImageSpace
-	// ExtraCellMusicType
-	// ExtraLocation
-	// ExtraEncounterZone
-	// ExtraCellAcousticSpace
-	// ExtraSeenData
-	// ExtraHavok
-	Data048						unk048;				// 048
+	BaseExtraList				unk048;				// 048
 	TVDT *						* unk060;			// 060 
 	void						* unk068;			// 068
 	float						waterLevel;			// 070 - init'd to 7F7FFFFFh, max float
@@ -2574,9 +2558,9 @@ public:
 	MEMBER_FN_PREFIX(TESObjectCELL);
 	DEFINE_MEMBER_FN(GetNorthRotation, float, 0x00280DB0);
 };
-STATIC_ASSERT(offsetof(TESObjectCELL, refData) == 0x88);
-STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0xB8);
-STATIC_ASSERT(sizeof(TESObjectCELL) == 0x140);
+STATIC_ASSERT(offsetof(TESObjectCELL, refData) == 0x90);
+STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0xC0);
+STATIC_ASSERT(sizeof(TESObjectCELL) == 0x148);
 
 // 48 
 class TESObjectLAND : public TESForm
