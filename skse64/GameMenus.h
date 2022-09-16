@@ -1005,7 +1005,7 @@ public:
 
 STATIC_ASSERT(offsetof(Inventory3DManager, unk14) == 0x14);
 STATIC_ASSERT(offsetof(Inventory3DManager, object) == 0x38);
-STATIC_ASSERT(offsetof(Inventory3DManager, unk158) == 0x158);
+STATIC_ASSERT(offsetof(Inventory3DManager, unk158) == 0x160);
 
 // 018
 class MenuTableItem

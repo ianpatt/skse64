@@ -269,7 +269,7 @@ public:
 	DEFINE_MEMBER_FN(GetWorldspace, TESWorldSpace*, 0x002ABD30);
 };
 
-STATIC_ASSERT(sizeof(TESObjectREFR) == 0x98);
+STATIC_ASSERT(sizeof(TESObjectREFR) == 0xA0);
 STATIC_ASSERT(offsetof(TESObjectREFR, extraData) == 0x70);
 STATIC_ASSERT(offsetof(TESObjectREFR, loadedState) == 0x68);
 STATIC_ASSERT(offsetof(TESObjectREFR::LoadedState, node) == 0x68);
@@ -320,7 +320,7 @@ public:
 };
 STATIC_ASSERT(sizeof(ActorState) == 0x10);
 
-// 2B0 
+// 2B8
 class Actor : public TESObjectREFR
 {
 public:
@@ -576,23 +576,23 @@ public:
 	bool VisitFactions(FactionVisitor & visitor);
 };
 
-STATIC_ASSERT(offsetof(Actor, magicTarget) == 0x98);
-STATIC_ASSERT(offsetof(Actor, actorValueOwner) == 0xB0);
-STATIC_ASSERT(offsetof(Actor, actorState) == 0xB8);
-STATIC_ASSERT(offsetof(Actor, unk0D8) == 0xD8);
-STATIC_ASSERT(offsetof(Actor, addedSpells) == 0x188);
-STATIC_ASSERT(sizeof(Actor) == 0x2B0);
+STATIC_ASSERT(offsetof(Actor, magicTarget) == 0xA0);
+STATIC_ASSERT(offsetof(Actor, actorValueOwner) == 0xB8);
+STATIC_ASSERT(offsetof(Actor, actorState) == 0xC0);
+STATIC_ASSERT(offsetof(Actor, unk0D8) == 0xE0);
+STATIC_ASSERT(offsetof(Actor, addedSpells) == 0x190);
+STATIC_ASSERT(sizeof(Actor) == 0x2B8);
 
-// 2B0 
+// 2B8
 class Character : public Actor
 {
 public:
 	enum { kTypeID = kFormType_Character };
 };
 
-STATIC_ASSERT(sizeof(Character) == 0x2B0);
+STATIC_ASSERT(sizeof(Character) == 0x2B8);
 
-// BE0 
+// BE8
 class PlayerCharacter : public Character
 {
 public:
@@ -906,20 +906,20 @@ public:
 	DEFINE_MEMBER_FN(GetArmorValue, float, 0x006BB740, InventoryEntryData * pForm);
 };
 
-STATIC_ASSERT(offsetof(PlayerCharacter, userEventEnabledEvent) == 0x2C0);
-STATIC_ASSERT(offsetof(PlayerCharacter, numPerkPoints) == 0xB01);
-STATIC_ASSERT(offsetof(PlayerCharacter, tintMasks) == 0xB10);
-STATIC_ASSERT(offsetof(PlayerCharacter, overlayTintMasks) == 0xB28);
-STATIC_ASSERT(offsetof(PlayerCharacter, unk3D8) == 0x3D8);
-STATIC_ASSERT(offsetof(PlayerCharacter, lastRiddenHorseHandle) == 0x914);
-STATIC_ASSERT(offsetof(PlayerCharacter, skills) == 0x9B0);
-STATIC_ASSERT(offsetof(PlayerCharacter, tempPoison) == 0xA00);
-STATIC_ASSERT(offsetof(PlayerCharacter, hostileHandles) == 0x9D8);
-STATIC_ASSERT(offsetof(PlayerCharacter, currentWorldSpace) == 0x628);
-STATIC_ASSERT(offsetof(PlayerCharacter, addedPerks) == 0x4B0);
-STATIC_ASSERT(offsetof(PlayerCharacter, sameWorldSpace) == 0x988);
-STATIC_ASSERT(offsetof(PlayerCharacter, unk890) == 0x890);
-STATIC_ASSERT(sizeof(PlayerCharacter) == 0xBE0);
+STATIC_ASSERT(offsetof(PlayerCharacter, userEventEnabledEvent) == 0x2C8);
+STATIC_ASSERT(offsetof(PlayerCharacter, numPerkPoints) == 0xB09);
+STATIC_ASSERT(offsetof(PlayerCharacter, tintMasks) == 0xB18);
+STATIC_ASSERT(offsetof(PlayerCharacter, overlayTintMasks) == 0xB30);
+STATIC_ASSERT(offsetof(PlayerCharacter, unk3D8) == 0x3E0);
+STATIC_ASSERT(offsetof(PlayerCharacter, lastRiddenHorseHandle) == 0x91C);
+STATIC_ASSERT(offsetof(PlayerCharacter, skills) == 0x9B8);
+STATIC_ASSERT(offsetof(PlayerCharacter, tempPoison) == 0xA08);
+STATIC_ASSERT(offsetof(PlayerCharacter, hostileHandles) == 0x9E0);
+STATIC_ASSERT(offsetof(PlayerCharacter, currentWorldSpace) == 0x630);
+STATIC_ASSERT(offsetof(PlayerCharacter, addedPerks) == 0x4B8);
+STATIC_ASSERT(offsetof(PlayerCharacter, sameWorldSpace) == 0x990);
+STATIC_ASSERT(offsetof(PlayerCharacter, unk890) == 0x898);
+STATIC_ASSERT(sizeof(PlayerCharacter) == 0xBE8);
 
 
 // 140 
@@ -957,7 +957,7 @@ class Projectile : public TESObjectREFR
 	UInt8	unk98[0x1D8 - 0x98];	// 98 TODO
 };
 
-// 1F8 
+// 200
 class BarrierProjectile : public Projectile
 {
 	enum { kTypeID = kFormType_BarrierProj };
@@ -966,7 +966,7 @@ class BarrierProjectile : public Projectile
 	UInt32		pad1DC;	// 1DC	
 	UnkArray	unk1E0;	// 1E0
 };
-STATIC_ASSERT(sizeof(BarrierProjectile) == 0x1F8);
+STATIC_ASSERT(sizeof(BarrierProjectile) == 0x200);
 
 // 240 
 class BeamProjectile : public Projectile

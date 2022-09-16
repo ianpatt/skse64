@@ -281,6 +281,7 @@ __declspec(dllexport) SKSEPluginVersionData SKSEPlugin_Version =
 	"my name",
 	"support@example.com",
 
+	0,	// not version independent (extended field)
 	0,	// not version independent
 	{ RUNTIME_VERSION_1_6_318, 0 },	// compatible with 1.6.318
 
@@ -300,10 +301,21 @@ struct SKSEPluginVersionData
 
 	enum
 	{
-		// set this if you are using a (potential at this time of writing) post-AE version of the Address Library
+		// set this if you are using a post-AE version of the Address Library
 		kVersionIndependent_AddressLibraryPostAE = 1 << 0,
 		// set this if you exclusively use signature matching to find your addresses and have NO HARDCODED ADDRESSES
 		kVersionIndependent_Signatures = 1 << 1,
+		// set this if you are using 1.6.629+ compatible structure layout (likely provided by CommonLib/SKSE)
+		// this also marks you as incompatible with pre-1.6.629. see kVersionIndependentEx_NoStructUse if you have a
+		// plugin that only does code patches and works across many versions
+		kVersionIndependent_StructsPost629 = 1 << 2,
+	};
+	
+	enum
+	{
+		// set this if your plugin either doesn't use any game structures or has put in extraordinary effort
+		// to work with pre and post 1.6.629 structure layout
+		kVersionIndependentEx_NoStructUse = 1 << 0,
 	};
 
 	UInt32	dataVersion;			// set to kVersion
@@ -312,11 +324,12 @@ struct SKSEPluginVersionData
 	char	name[256];				// null-terminated ASCII plugin name
 
 	char	author[256];			// null-terminated ASCII plugin author name (can be empty)
-	char	supportEmail[256];		// null-terminated ASCII support email address (can be empty)
+	char	supportEmail[252];		// null-terminated ASCII support email address (can be empty)
 									// this is not for showing to users, it's in case I need to contact you about
 									// a compatibility problem with your plugin
 
 	// version compatibility
+	UInt32	versionIndependenceEx;	// set to one of the kVersionIndependentEx_ enums or zero
 	UInt32	versionIndependence;	// set to one of the kVersionIndependent_ enums or zero
 	UInt32	compatibleVersions[16];	// zero-terminated list of RUNTIME_VERSION_ defines your plugin is compatible with
 

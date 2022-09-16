@@ -486,7 +486,7 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 	__try
 	{
 		// basic validity
-		if(version.dataVersion != SKSEPluginVersionData::kVersion)
+		if(!version.dataVersion)
 		{
 			return "disabled, bad version data";
 		}
@@ -523,21 +523,30 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 		}
 
 		// version compatibility
-		const UInt32 kIndependentMask =
-			SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE |
-			SKSEPluginVersionData::kVersionIndependent_Signatures;
 
-		if(version.versionIndependence & ~kIndependentMask)
-		{
-			return "disabled, unsupported version independence method";
-		}
+		// any claim of version independence?
+		bool versionIndependent = version.versionIndependence & (SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE | SKSEPluginVersionData::kVersionIndependent_Signatures);
 
+		// verify the address library is there to centralize error message
 		if(version.versionIndependence & SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE)
 		{
 			const char * result = CheckAddressLibrary();
 			if(result) return result;
 		}
-		else if(!version.versionIndependence)
+		
+		// 1.6.629+ has different structure sizes, make sure the plugin specifies which is used
+		if(
+			versionIndependent &&
+			(RUNTIME_VERSION >= RUNTIME_VERSION_1_6_629) &&
+			!(version.versionIndependence & SKSEPluginVersionData::kVersionIndependent_StructsPost629))
+		{
+			// plugins that don't use gameplay structures or that use EXTREME EFFORT can specify that they are truly generic
+			if(!(version.versionIndependenceEx & SKSEPluginVersionData::kVersionIndependentEx_NoStructUse))
+				return "disabled, only compatible with versions earlier than 1.6.629";
+		}
+		
+		// simple version list
+		if(!versionIndependent)
 		{
 			bool found = false;
 
@@ -558,7 +567,7 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 
 			if(!found)
 			{
-				return "disabled, incompatible with current runtime version";
+				return "disabled, incompatible with current version of the game";
 			}
 		}
 
