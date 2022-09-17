@@ -924,7 +924,7 @@ public:
 };
 
 typedef void * (* _UIOpenJournalMenu)(bool bUnk);
-RelocAddr<_UIOpenJournalMenu> UIOpenJournalMenu(0x00924F90);
+RelocAddr<_UIOpenJournalMenu> UIOpenJournalMenu(0x00936E60);
 
 class SKSEScaleform_OpenJournalMenu : public GFxFunctionHandler
 {
@@ -1148,13 +1148,13 @@ public:
 	UInt8						unk30[0x10];	// 30 
 
 	MEMBER_FN_PREFIX(StandardItemData);
-	DEFINE_MEMBER_FN(ctor_data, StandardItemData *, 0x00882BC0, GFxMovieView ** movieView, InventoryEntryData * objDesc, UInt64 unk);
+	DEFINE_MEMBER_FN(ctor_data, StandardItemData *, 0x00894220, GFxMovieView ** movieView, InventoryEntryData * objDesc, UInt64 unk);
 
 	StandardItemData * ctor_Hook(GFxMovieView ** movieView, InventoryEntryData * objDesc, UInt64 unk);
 
 	static uintptr_t GetCtorHookAddress()
 	{
-		static RelocAddr<uintptr_t> kCtorHookAddress(0x00883B90 + 0x97);
+		static RelocAddr<uintptr_t> kCtorHookAddress(0x008951F0 + 0x97);
 		return kCtorHookAddress.GetUIntPtr();
 	}
 };
@@ -1203,11 +1203,11 @@ public:
 
 
 	MEMBER_FN_PREFIX(MagicItemData);
-	DEFINE_MEMBER_FN(ctor_data, MagicItemData *, 0x008CF470, GFxMovieView ** movieView, TESForm * pForm, int unk); // unk is ignored by ctor
+	DEFINE_MEMBER_FN(ctor_data, MagicItemData *, 0x008E0CA0, GFxMovieView ** movieView, TESForm * pForm, int unk); // unk is ignored by ctor
 
 	static uintptr_t GetCtorHookAddress()
 	{
-		static RelocAddr<uintptr_t> kCtorHookAddress(0x008D0A90 + 0x97);
+		static RelocAddr<uintptr_t> kCtorHookAddress(0x008E22C0 + 0x97);
 		return kCtorHookAddress.GetUIntPtr();
 	}
 
@@ -1247,7 +1247,7 @@ namespace favMenuDataHook
 
 	// 1 - Item
 
-	RelocAddr<uintptr_t> kSetItemData_Base(0x008A7F60);
+	RelocAddr<uintptr_t> kSetItemData_Base(0x008B95C0);
 	uintptr_t kSetItemData_hook = kSetItemData_Base + 0xC2;
 	uintptr_t kSetItemData_retn = kSetItemData_Base + 0xC8;
 
@@ -1277,7 +1277,7 @@ namespace favMenuDataHook
 
 	// 2 - Magic
 
-	RelocAddr<uintptr_t> kSetMagicData_Base(0x008A8F70);
+	RelocAddr<uintptr_t> kSetMagicData_Base(0x008BA5D0);
 	uintptr_t kSetMagicData_hook = kSetMagicData_Base + 0x6B;
 	uintptr_t kSetMagicData_retn = kSetMagicData_Base + 0x71;
 
@@ -1302,7 +1302,7 @@ namespace favMenuDataHook
 
 	// 3 - VampireLord
 
-	RelocAddr<uintptr_t> kSetVampireData_Base(0x008A9200);
+	RelocAddr<uintptr_t> kSetVampireData_Base(0x008BA860);
 	uintptr_t kSetVampireData_hook = kSetVampireData_Base + 0x92;
 	uintptr_t kSetVampireData_retn = kSetVampireData_Base + 0x98;
 }
@@ -1311,7 +1311,7 @@ namespace favMenuDataHook
 
 namespace enchantMenuDataHook
 {
-	RelocAddr<uintptr_t> kSetData_Base(0x0089C1B0);
+	RelocAddr<uintptr_t> kSetData_Base(0x008AD810);
 	uintptr_t kSetData_hook = kSetData_Base + 0x4A1;
 	uintptr_t kSetData_retn = kSetData_Base + 0x4A6;
 }
@@ -1390,7 +1390,7 @@ void EnchantConstructMenu_CategoryListEntry_SetData_Extended(EnchantConstructMen
 
 namespace smithingMenuDataHook
 {
-	RelocAddr<uintptr_t> kSetData_Base(0x00892AA0);
+	RelocAddr<uintptr_t> kSetData_Base(0x008A4100);
 	uintptr_t kSetData_hook = kSetData_Base + 0xD6;
 	uintptr_t kSetData_retn = kSetData_Base + 0xDB;
 
@@ -1423,7 +1423,7 @@ namespace smithingMenuDataHook
 namespace craftingMenuDataHook
 {
 	// 
-	RelocAddr<uintptr_t> kSetData_Base(0x00892FD0);
+	RelocAddr<uintptr_t> kSetData_Base(0x008A4630);
 	uintptr_t kSetData_hook = kSetData_Base + 0xC4;
 	uintptr_t kSetData_retn = kSetData_Base + 0xC9;
 
@@ -1460,7 +1460,7 @@ namespace craftingMenuDataHook
 namespace alchemyMenuDataHook
 {
 	// 
-	RelocAddr<uintptr_t> kSetData_Base(0x00892CE0);
+	RelocAddr<uintptr_t> kSetData_Base(0x008A4340);
 	uintptr_t kSetData_hook = kSetData_Base + 0xC6;
 	uintptr_t kSetData_retn = kSetData_Base + 0xCB;
 
@@ -1489,7 +1489,7 @@ namespace alchemyMenuDataHook
 	// Category arguments 
 	// (note: this passes data in arguments to SetCategoriesList. makes it more difficult to extend)
 
-	RelocAddr<uintptr_t> kExtendCategoryArgs_Base(0x008A0640);
+	RelocAddr<uintptr_t> kExtendCategoryArgs_Base(0x008B1CA0);
 	uintptr_t kExtendCategoryArgs_hook = kExtendCategoryArgs_Base + 0x564;
 	uintptr_t kExtendCategoryArgs_retn = kExtendCategoryArgs_Base + 0x569;
 
@@ -1609,7 +1609,7 @@ void InstallHooks(GFxMovieView * view)
 	globals.SetMember("skse", &skse);
 }
 
-RelocAddr <uintptr_t> kInstallHooks_Enter(0x00F11C60 + 0x1DD);
+RelocAddr <uintptr_t> kInstallHooks_Enter(0x00F23910 + 0x1DD);
 
 void InstallHooks_Entry(GFxMovieView *pthis, UInt32 unk)
 {

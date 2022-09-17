@@ -118,8 +118,8 @@ public:
 	void SetTextureSet(BSTextureSet * textureSet);
 
 	MEMBER_FN_PREFIX(BSLightingShaderMaterial);
-	DEFINE_MEMBER_FN(CopyFrom, void, 0x013F3AE0, BSLightingShaderMaterial * other);
-	DEFINE_MEMBER_FN(dtor_base, void, 0x013F3980);
+	DEFINE_MEMBER_FN(CopyFrom, void, 0x013F1390, BSLightingShaderMaterial * other);
+	DEFINE_MEMBER_FN(dtor_base, void, 0x013F1230);
 };
 STATIC_ASSERT(sizeof(BSLightingShaderMaterial) == 0xA0);
 
@@ -144,7 +144,7 @@ public:
 	NiTexturePtr unkA8;	// A8 inited to 0
 
 	// 7EF3019D0F8B78F82664DFE78C15204CD5C8C2B9+392
-	DEFINE_MEMBER_FN(dtor, void, 0x013F4DB0);
+	DEFINE_MEMBER_FN(dtor, void, 0x013F2660);
 };
 
 class BSLightingShaderMaterialFacegen : public BSLightingShaderMaterial

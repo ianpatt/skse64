@@ -33,7 +33,7 @@ public:
 
 	// 141415050 - CreateRenderTargets
 
-	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00DAA470, UInt32 width, UInt32 height);
+	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00DBC120, UInt32 width, UInt32 height);
 };
 
 extern RelocPtr <BSRenderManager> g_renderManager;

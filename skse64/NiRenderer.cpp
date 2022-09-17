@@ -1,7 +1,7 @@
 #include "skse64/NiRenderer.h"
 
 // 984B8D46444288152A10744FB7226DC9943D175E+57
-RelocPtr <BSRenderManager> g_renderManager(0x030C3C40);
+RelocPtr <BSRenderManager> g_renderManager(0x030C2D40);
 
 BSRenderManager * BSRenderManager::GetSingleton()
 {
@@ -9,4 +9,4 @@ BSRenderManager * BSRenderManager::GetSingleton()
 }
 
 // 56C98A6AC471728E145A8629B087CE2BE81252C1+CC
-RelocPtr <BSShaderResourceManager> g_shaderResourceManager(0x030AF4C0);
+RelocPtr <BSShaderResourceManager> g_shaderResourceManager(0x030AE5C0);

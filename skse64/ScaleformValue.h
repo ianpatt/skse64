@@ -126,26 +126,26 @@ public:
 	public:
 		GFxMovieRoot	* root;
 
-		DEFINE_MEMBER_FN_3(HasMember, bool, 0x00F0DBC0, void * obj, const char * name, bool isDisplayObj);
-		DEFINE_MEMBER_FN_4(SetMember, bool, 0x00F10020, void * obj, const char * name, GFxValue * value, bool isDisplayObj);
-		DEFINE_MEMBER_FN_3(DeleteMember, bool, 0x00F0CAA0, void * obj, const char * name, bool isDisplayObj);
-		DEFINE_MEMBER_FN_4(GetMember, bool, 0x00F0D710, void * obj, const char * name, GFxValue * value, bool isDisplayObj);
-		DEFINE_MEMBER_FN_6(Invoke, bool, 0x00F0DE30, void * obj, GFxValue * result, const char * name, GFxValue * args, UInt32 numArgs, bool isDisplayObj);
-		DEFINE_MEMBER_FN_6(AttachMovie, bool, 0x00F0B870, void * obj, GFxValue * value, const char * symbolName, const char * instanceName, SInt32 depth, void * initArgs);
-		DEFINE_MEMBER_FN_2(PushBack, bool, 0x00F0E780, void * obj, GFxValue * value);
-		DEFINE_MEMBER_FN_3(SetText, bool, 0x00F10120, void * obj, const char * text, bool html);
+		DEFINE_MEMBER_FN_3(HasMember, bool, 0x00F1F5B0, void * obj, const char * name, bool isDisplayObj);
+		DEFINE_MEMBER_FN_4(SetMember, bool, 0x00F21A10, void * obj, const char * name, GFxValue * value, bool isDisplayObj);
+		DEFINE_MEMBER_FN_3(DeleteMember, bool, 0x00F1E490, void * obj, const char * name, bool isDisplayObj);
+		DEFINE_MEMBER_FN_4(GetMember, bool, 0x00F1F100, void * obj, const char * name, GFxValue * value, bool isDisplayObj);
+		DEFINE_MEMBER_FN_6(Invoke, bool, 0x00F1F820, void * obj, GFxValue * result, const char * name, GFxValue * args, UInt32 numArgs, bool isDisplayObj);
+		DEFINE_MEMBER_FN_6(AttachMovie, bool, 0x00F1D260, void * obj, GFxValue * value, const char * symbolName, const char * instanceName, SInt32 depth, void * initArgs);
+		DEFINE_MEMBER_FN_2(PushBack, bool, 0x00F20170, void * obj, GFxValue * value);
+		DEFINE_MEMBER_FN_3(SetText, bool, 0x00F21B10, void * obj, const char * text, bool html);
 		//DEFINE_MEMBER_FN(PopBack, bool, 0x00000000, void * obj, GFxValue * value);
-		DEFINE_MEMBER_FN_1(GetArraySize, UInt32, 0x00F0D170, void * obj);
+		DEFINE_MEMBER_FN_1(GetArraySize, UInt32, 0x00F1EB60, void * obj);
 		//DEFINE_MEMBER_FN(SetArraySize, bool, 0x00000000, void * obj, UInt32 size);
-		DEFINE_MEMBER_FN_3(GetElement, bool, 0x00F0D4F0, void * obj, UInt32 index, GFxValue * value);
+		DEFINE_MEMBER_FN_3(GetElement, bool, 0x00F1EEE0, void * obj, UInt32 index, GFxValue * value);
 		//DEFINE_MEMBER_FN(SetElement, bool, 0x00000000, void * obj, UInt32 index, GFxValue * value);
-		DEFINE_MEMBER_FN_3(GotoLabeledFrame, bool, 0x00F0DB20, void * obj, const char * frameLabel, bool stop);
+		DEFINE_MEMBER_FN_3(GotoLabeledFrame, bool, 0x00F1F510, void * obj, const char * frameLabel, bool stop);
 		//DEFINE_MEMBER_FN(GotoFrame, bool, 0x00000000, void * obj, UInt32 frameNumber, bool stop);
-		DEFINE_MEMBER_FN_2(GetDisplayInfo, bool, 0x00F0D1D0, void * obj, DisplayInfo * displayInfo);
-		DEFINE_MEMBER_FN_2(SetDisplayInfo, bool, 0x00F0F000, void * obj, DisplayInfo * displayInfo);
+		DEFINE_MEMBER_FN_2(GetDisplayInfo, bool, 0x00F1EBC0, void * obj, DisplayInfo * displayInfo);
+		DEFINE_MEMBER_FN_2(SetDisplayInfo, bool, 0x00F209F0, void * obj, DisplayInfo * displayInfo);
 
-		DEFINE_MEMBER_FN_2(AddManaged_Internal, void, 0x00F0E500, GFxValue * value, void * obj);
-		DEFINE_MEMBER_FN_2(ReleaseManaged_Internal, void, 0x00F0E560, GFxValue * value, void * obj);
+		DEFINE_MEMBER_FN_2(AddManaged_Internal, void, 0x00F1FEF0, GFxValue * value, void * obj);
+		DEFINE_MEMBER_FN_2(ReleaseManaged_Internal, void, 0x00F1FF50, GFxValue * value, void * obj);
 	};
 
 	ObjectInterface	* objectInterface;	// 00

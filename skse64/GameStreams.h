@@ -40,12 +40,12 @@ public:
 	virtual void	FunctionSwap(bool swap);
 
 	MEMBER_FN_PREFIX(NiMemStream);
-	DEFINE_MEMBER_FN(Construct, NiMemStream *, 0x0143AA70);
-	DEFINE_MEMBER_FN(Destroy, void, 0x0143AAE0);
-	DEFINE_MEMBER_FN(Seek, void, 0x0143AB70, SInt32);
+	DEFINE_MEMBER_FN(Construct, NiMemStream *, 0x01438320);
+	DEFINE_MEMBER_FN(Destroy, void, 0x01438390);
+	DEFINE_MEMBER_FN(Seek, void, 0x01438420, SInt32);
 	// ??_7NiMemStream@@6B@ + 18
 	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C4BEF0, void);
-	DEFINE_MEMBER_FN(CopyFrom, UInt32, 0x0143AB40, void *);
+	DEFINE_MEMBER_FN(CopyFrom, UInt32, 0x014383F0, void *);
 	// ??_7NiMemStream@@6B@ + 28
 	DEFINE_MEMBER_FN(FunctionSwap, UInt32, 0x0143ABB0, bool);
 
@@ -77,17 +77,17 @@ public:
 	UInt64	offset;		// 30
 
 	MEMBER_FN_PREFIX(BSResourceNiBinaryStream);
-	DEFINE_MEMBER_FN(Construct, BSResourceNiBinaryStream *, 0x00C9F5C0, const char * filePath, UInt32 unk1, UInt32 unk2);	// unk1 = 0, unk2 = 0
-	DEFINE_MEMBER_FN(ReadLine, UInt32, 0x00C9FB00, char * dst, UInt32 dstLen, UInt32 terminator);
+	DEFINE_MEMBER_FN(Construct, BSResourceNiBinaryStream *, 0x00CB1270, const char * filePath, UInt32 unk1, UInt32 unk2);	// unk1 = 0, unk2 = 0
+	DEFINE_MEMBER_FN(ReadLine, UInt32, 0x00CB17B0, char * dst, UInt32 dstLen, UInt32 terminator);
 	
 	// E93F9EA10EEEC2FC86D868E75F28A023D7453255+51
-	DEFINE_MEMBER_FN(Read, UInt32, 0x00C9FCF0, void * dst, UInt32 len);
+	DEFINE_MEMBER_FN(Read, UInt32, 0x00CB19A0, void * dst, UInt32 len);
 	// E93F9EA10EEEC2FC86D868E75F28A023D7453255+5C
-	DEFINE_MEMBER_FN(Write, UInt32, 0x00C9FD60, void * src, UInt32 len);
-	DEFINE_MEMBER_FN(Destroy, void, 0x00C9F8A0);
+	DEFINE_MEMBER_FN(Write, UInt32, 0x00CB1A10, void * src, UInt32 len);
+	DEFINE_MEMBER_FN(Destroy, void, 0x00CB1550);
 
-	DEFINE_MEMBER_FN(IsValid, bool, 0x00C9F9E0, void);
-	DEFINE_MEMBER_FN(Seek, void, 0x00C9F9F0, SInt32);
+	DEFINE_MEMBER_FN(IsValid, bool, 0x00CB1690, void);
+	DEFINE_MEMBER_FN(Seek, void, 0x00CB16A0, SInt32);
 	// ??_7BSResourceNiBinaryStream@@6B@ + 18
 	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C9FA30, void);	// return offset;
 	// ??_7BSResourceNiBinaryStream@@6B@ + 28

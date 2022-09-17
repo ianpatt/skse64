@@ -32,7 +32,7 @@ struct RenderTargetInfo
 };
 
 typedef void ( * _CreateRenderTarget)(void * renderTargetManager, UInt64 type, RenderTargetInfo * info);
-RelocAddr<_CreateRenderTarget> CreateRenderTarget(0x00DB18B0);
+RelocAddr<_CreateRenderTarget> CreateRenderTarget(0x00DC3560);
 _CreateRenderTarget CreateRenderTarget_Original = nullptr;
 
 void CreateRenderTarget_Hook(BSRenderManager ** targetManager, UInt64 type, RenderTargetInfo * info)
@@ -65,7 +65,7 @@ void Hooks_NetImmerse_Init(void)
 	}
 }
 
-RelocAddr <uintptr_t> UpdateEquipment_Enter(0x006BBB70 + 0x197);
+RelocAddr <uintptr_t> UpdateEquipment_Enter(0x006CD1B0 + 0x197);
 
 void Hooks_NetImmerse_Commit(void)
 {
