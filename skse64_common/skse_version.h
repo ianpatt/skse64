@@ -7,7 +7,7 @@
 #define SKSE_VERSION_INTEGER_BETA	0
 #define SKSE_VERSION_VERSTRING		"0, 2, 2, 0"
 #define SKSE_VERSION_PADDEDSTRING	"0001"
-#define SKSE_VERSION_RELEASEIDX		66
+#define SKSE_VERSION_RELEASEIDX		67
 
 #define MAKE_EXE_VERSION_EX(major, minor, build, sub)	((((major) & 0xFF) << 24) | (((minor) & 0xFF) << 16) | (((build) & 0xFFF) << 4) | ((sub) & 0xF))
 #define MAKE_EXE_VERSION(major, minor, build)			MAKE_EXE_VERSION_EX(major, minor, build, 0)
