@@ -11,10 +11,10 @@
 #include "xbyak/xbyak.h"
 
 // Used by UpdatePlayerTints to create a render target of a particular size
-// D55B7565783E557DBA232E15687FDD05C35FE3D1+473
-RelocPtr<UInt32> g_tintTextureWidth(0x030C7444);
-// D55B7565783E557DBA232E15687FDD05C35FE3D1+46C
-RelocPtr<UInt32> g_tintTextureHeight(0x030C7448);
+// 26B3881DC3E4564CDC73DBD71BD51FFCEEF842A3+473
+RelocPtr<UInt32> g_tintTextureWidth(0x030C6544);
+// 26B3881DC3E4564CDC73DBD71BD51FFCEEF842A3+46C
+RelocPtr<UInt32> g_tintTextureHeight(0x030C6548);
 
 UInt32 g_tintTextureResolution = 512;
 

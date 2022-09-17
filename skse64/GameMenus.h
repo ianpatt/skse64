@@ -998,9 +998,9 @@ public:
 
 	MEMBER_FN_PREFIX(Inventory3DManager);
 	DEFINE_MEMBER_FN(UpdateItem3D, void, 0x008C9D10, InventoryEntryData * objDesc);
-	DEFINE_MEMBER_FN(UpdateMagic3D, void, 0x008B8510, TESForm * form, UInt32 unk1);
-	DEFINE_MEMBER_FN(Clear3D, void, 0x008B88D0);
-	DEFINE_MEMBER_FN(Render, UInt32, 0x008B81F0);
+	DEFINE_MEMBER_FN(UpdateMagic3D, void, 0x008C9D40, TESForm * form, UInt32 unk1);
+	DEFINE_MEMBER_FN(Clear3D, void, 0x008CA100);
+	DEFINE_MEMBER_FN(Render, UInt32, 0x008C9A20);
 };
 
 STATIC_ASSERT(offsetof(Inventory3DManager, unk14) == 0x14);

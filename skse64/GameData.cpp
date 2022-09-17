@@ -22,7 +22,7 @@ RelocPtr<MenuTopicManager *> g_MenuTopicManager(0x02F99598);
 RelocPtr <ActorValueList *> g_actorValueList(0x01F58128);
 
 // aWerewolfSpell
-RelocPtr <DefaultObjectList> g_defaultObjectList(0x01E4AF20);
+RelocPtr <DefaultObjectList> g_defaultObjectList(0x01E48F50);
 
 // 68BF756333EF751059E935236F381FA91F62C373+22
 RelocPtr <BGSSaveLoadManager *> g_saveLoadManager(0x02FC13C8);
@@ -44,7 +44,7 @@ RelocAddr<_GetRightHandSlot> GetRightHandSlot(0x00348E40);
 // 
 RelocAddr<_GetLeftHandSlot> GetLeftHandSlot(0x00348E30);
 RelocAddr<_LookupActorValueByName> LookupActorValueByName(0x003FC5A0);
-RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x008E4AA0);
+RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x008F62C0);
 RelocAddr<_GetActorBaseOverlays> GetActorBaseOverlays(0x003820E0);
 RelocAddr<_GetNumActorBaseOverlays> GetNumActorBaseOverlays(0x00382170);
 
@@ -57,7 +57,7 @@ RelocAddr<_UpdateHarvestModel> UpdateHarvestModel(0x001A9FA0);
 
 RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x0035E1E0);
 
-RelocPtr<FacePresetList> g_facePresetList(0x01E6B300);	// aNosetype
+RelocPtr<FacePresetList> g_facePresetList(0x01E69370);	// aNosetype
 
 RelocAddr<_HasLOS> HasLOS(0x0095BA40);
 

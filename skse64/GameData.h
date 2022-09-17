@@ -868,7 +868,7 @@ public:
 	DEFINE_MEMBER_FN(SaveGame_HookTarget, void, 0x005B01B0, UInt64 *unk0);
 	DEFINE_MEMBER_FN(LoadGame_HookTarget, bool, 0x005B08C0, UInt64 *unk0, UInt32 unk1, UInt32 unk2, void *unk3);
 
-	DEFINE_MEMBER_FN(ProcessEvents_Internal, void, 0x005ABA70);
+	DEFINE_MEMBER_FN(ProcessEvents_Internal, void, 0x005BD4F0);
 	DEFINE_MEMBER_FN(DeleteSavegame, void, 0x005BA1D0, const char * saveName, UInt32 unk1);
 };
 STATIC_ASSERT(offsetof(BGSSaveLoadManager, thread) == 0x2B0);

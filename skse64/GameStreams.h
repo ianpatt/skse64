@@ -44,10 +44,10 @@ public:
 	DEFINE_MEMBER_FN(Destroy, void, 0x01438390);
 	DEFINE_MEMBER_FN(Seek, void, 0x01438420, SInt32);
 	// ??_7NiMemStream@@6B@ + 18
-	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C4BEF0, void);
+	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C5DBA0, void);
 	DEFINE_MEMBER_FN(CopyFrom, UInt32, 0x014383F0, void *);
 	// ??_7NiMemStream@@6B@ + 28
-	DEFINE_MEMBER_FN(FunctionSwap, UInt32, 0x0143ABB0, bool);
+	DEFINE_MEMBER_FN(FunctionSwap, UInt32, 0x01438460, bool);
 
 	void	* data;	// 20
 	UInt32	offset;	// 28
@@ -89,9 +89,9 @@ public:
 	DEFINE_MEMBER_FN(IsValid, bool, 0x00CB1690, void);
 	DEFINE_MEMBER_FN(Seek, void, 0x00CB16A0, SInt32);
 	// ??_7BSResourceNiBinaryStream@@6B@ + 18
-	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00C9FA30, void);	// return offset;
+	DEFINE_MEMBER_FN(GetOffset, UInt32, 0x00CB16E0, void);	// return offset;
 	// ??_7BSResourceNiBinaryStream@@6B@ + 28
-	DEFINE_MEMBER_FN(EnableEndianSwap, void, 0x00C9FAC0, bool);
+	DEFINE_MEMBER_FN(EnableEndianSwap, void, 0x00CB1770, bool);
 
 	UInt32 ReadLine(char * dst, UInt32 dstLen, UInt32 terminator);
 	UInt32 ReadLine_w(wchar_t * dst, UInt32 dstLen, UInt32 terminator);	// length in characters

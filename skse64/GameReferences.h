@@ -262,7 +262,7 @@ public:
 
 	MEMBER_FN_PREFIX(TESObjectREFR);
 	DEFINE_MEMBER_FN(GetBaseScale, float, 0x002A0D30);
-	DEFINE_MEMBER_FN(IsOffLimits, bool, 0x002AC940);
+	DEFINE_MEMBER_FN(IsOffLimits, bool, 0x002AE7F0);
 	// 9C5031E1D6707680E2D9E4A717A225C1137FED59+145
 	DEFINE_MEMBER_FN(GetWeight, float, 0x002BABF0);
 	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x002AA6B0);
@@ -557,7 +557,7 @@ public:
 	DEFINE_MEMBER_FN(HasPerk, bool, 0x006330D0, BGSPerk * perk);
 	DEFINE_MEMBER_FN(GetLevel, UInt16, 0x0060CFE0);
 	DEFINE_MEMBER_FN(SetRace, void, 0x006410D0, TESRace*, bool isPlayer);
-	DEFINE_MEMBER_FN(UpdateWeaponAbility, void, 0x00658070, TESForm*, BaseExtraList * extraData, bool bLeftHand);
+	DEFINE_MEMBER_FN(UpdateWeaponAbility, void, 0x006696B0, TESForm*, BaseExtraList * extraData, bool bLeftHand);
 	DEFINE_MEMBER_FN(UpdateArmorAbility, void, 0x00669640, TESForm*, BaseExtraList * extraData);
 	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x006201F0, Actor * actor);
 	DEFINE_MEMBER_FN(ResetAI, void, 0x00612FD0, UInt32 unk1, UInt32 unk2);

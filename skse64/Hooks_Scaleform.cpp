@@ -1511,7 +1511,7 @@ namespace alchemyMenuDataHook
 
 namespace GFxLoaderHook
 {
-	RelocPtr<UInt64> kCtor_Base(0x005D4EF0 + 0xE91);	// WinMain+15
+	RelocPtr<UInt64> kCtor_Base(0x005E64F0 + 0xEB1);	// WinMain+15
 
 	GFxLoader *ctor_Hook(GFxLoader * loader)
 	{

@@ -812,7 +812,7 @@ public:
 	
 	DEFINE_MEMBER_FN(UpdateNeck, void, 0x00379460, BSFaceGenNiNode * faceNode);	// Updates the neck seam when weight changed
 
-	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x003771F0, NiColorA * result, TintMask * tintMask, bool fromTint);	// Computes RGB SkinTone from RGBA TintMask
+	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x00379220, NiColorA * result, TintMask * tintMask, bool fromTint);	// Computes RGB SkinTone from RGBA TintMask
 
 	void SetFaceTexture(BGSTextureSet * textureSet);
 	void SetHairColor(BGSColorForm * hairColor);

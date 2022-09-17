@@ -163,5 +163,5 @@ public:
 
 	MEMBER_FN_PREFIX(RightHandWeaponSheatheHandler);
 	// ??_7RightHandWeaponSheatheHandler@@6B@ + 8
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0074CC70, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075E2D0, Actor * form, UInt32 unk04);
 };

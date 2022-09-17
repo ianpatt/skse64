@@ -4,7 +4,7 @@
 // 91546BBAE6D61CD8C6D2021DD28BEB01C32E7178+30
 RelocPtr<SettingCollectionList*> g_iniSettingCollection(0x030B8658);
 // see ??_7INIPrefSettingCollection@@6B@
-RelocPtr<SettingCollectionList*> g_iniPrefSettingCollection(0x03007810);
+RelocPtr<SettingCollectionList*> g_iniPrefSettingCollection(0x03006910);
 // CC0A0629D6A4756EA7CC1819A40AE77FB941F585+14
 RelocPtr<SettingCollectionMap*>  g_gameSettingCollection(0x02F5F500);
 
