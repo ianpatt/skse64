@@ -523,6 +523,17 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 		}
 
 		// version compatibility
+		
+		const UInt32 kKnownVersionIndependent =
+			SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE |
+			SKSEPluginVersionData::kVersionIndependent_Signatures |
+			SKSEPluginVersionData::kVersionIndependent_StructsPost629;
+		
+		// bail out on unknown flags, handles future breaking API changes in the runtime
+		if(version.versionIndependence & ~kKnownVersionIndependent)
+		{
+			return "disabled, unsupported version independence method";
+		}
 
 		// any claim of version independence?
 		bool versionIndependent = version.versionIndependence & (SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE | SKSEPluginVersionData::kVersionIndependent_Signatures);
