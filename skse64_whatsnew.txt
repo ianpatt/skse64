@@ -1,3 +1,6 @@
+2.2.2
+- fix crash when sheathing right-hand weapon (thanks SlavicPotato for letting me know about the missing address)
+
 2.2.1
 - support for 1.6.640
 
