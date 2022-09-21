@@ -197,11 +197,11 @@ public:
 	// This function seems to fix weird lighting issues when creating armors internally
 	// Not particularly sure what it does but it seems to mess around with a lot material flags
 	MEMBER_FN_PREFIX(BSLightingShaderProperty);
-	DEFINE_MEMBER_FN(InitializeShader, UInt32, 0x013E73D0, BSGeometry * geometry);
-	DEFINE_MEMBER_FN(SetMaterial, UInt32, 0x013B62B0, BSLightingShaderMaterial * material, bool unk1); // unk1 usually 1
-	DEFINE_MEMBER_FN(SetFlags, UInt64, 0x013B61A0, UInt8 unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(InitializeShader, UInt32, 0x013E7300, BSGeometry * geometry);
+	DEFINE_MEMBER_FN(SetMaterial, UInt32, 0x013B61E0, BSLightingShaderMaterial * material, bool unk1); // unk1 usually 1
+	DEFINE_MEMBER_FN(SetFlags, UInt64, 0x013B60D0, UInt8 unk1, UInt8 unk2);
 	// InvalidateMaterial was inlined away
 
-	DEFINE_MEMBER_FN(InvalidateTextures, void, 0x013E7780, UInt32 unk1); // unk1 usually 0, called after material Releases textures
+	DEFINE_MEMBER_FN(InvalidateTextures, void, 0x013E76B0, UInt32 unk1); // unk1 usually 0, called after material Releases textures
 };
 STATIC_ASSERT(offsetof(BSLightingShaderProperty, emissiveColor) == 0xF0);

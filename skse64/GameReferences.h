@@ -552,15 +552,15 @@ public:
 	UInt64	unk2A8;									// 2A8
 
 	MEMBER_FN_PREFIX(Actor);
-	DEFINE_MEMBER_FN(QueueNiNodeUpdate, void, 0x006CD1B0, bool updateWeight);
+	DEFINE_MEMBER_FN(QueueNiNodeUpdate, void, 0x006CD0E0, bool updateWeight);
 	// CC3C9D131FFDF35E82C6D7182C4F9E42A3ED1EF2+28
-	DEFINE_MEMBER_FN(HasPerk, bool, 0x006330D0, BGSPerk * perk);
-	DEFINE_MEMBER_FN(GetLevel, UInt16, 0x0060CFE0);
-	DEFINE_MEMBER_FN(SetRace, void, 0x006410D0, TESRace*, bool isPlayer);
-	DEFINE_MEMBER_FN(UpdateWeaponAbility, void, 0x006696B0, TESForm*, BaseExtraList * extraData, bool bLeftHand);
-	DEFINE_MEMBER_FN(UpdateArmorAbility, void, 0x00669640, TESForm*, BaseExtraList * extraData);
-	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x006201F0, Actor * actor);
-	DEFINE_MEMBER_FN(ResetAI, void, 0x00612FD0, UInt32 unk1, UInt32 unk2);
+	DEFINE_MEMBER_FN(HasPerk, bool, 0x00633000, BGSPerk * perk);
+	DEFINE_MEMBER_FN(GetLevel, UInt16, 0x0060CF10);
+	DEFINE_MEMBER_FN(SetRace, void, 0x00641000, TESRace*, bool isPlayer);
+	DEFINE_MEMBER_FN(UpdateWeaponAbility, void, 0x006695E0, TESForm*, BaseExtraList * extraData, bool bLeftHand);
+	DEFINE_MEMBER_FN(UpdateArmorAbility, void, 0x00669570, TESForm*, BaseExtraList * extraData);
+	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00620120, Actor * actor);
+	DEFINE_MEMBER_FN(ResetAI, void, 0x00612F00, UInt32 unk1, UInt32 unk2);
 
 	TESForm * GetEquippedObject(bool abLeftHand);
 	void UpdateSkinColor();
@@ -900,10 +900,10 @@ public:
 	}
 
 	MEMBER_FN_PREFIX(PlayerCharacter);
-	DEFINE_MEMBER_FN(GetNumTints, UInt32, 0x006F05C0, UInt32 tintType);
-	DEFINE_MEMBER_FN(GetTintMask, TintMask *, 0x006F0410, UInt32 tintType, UInt32 index);
-	DEFINE_MEMBER_FN(GetDamage, float, 0x006CD0F0, InventoryEntryData * pForm);
-	DEFINE_MEMBER_FN(GetArmorValue, float, 0x006CCD80, InventoryEntryData * pForm);
+	DEFINE_MEMBER_FN(GetNumTints, UInt32, 0x006F04F0, UInt32 tintType);
+	DEFINE_MEMBER_FN(GetTintMask, TintMask *, 0x006F0340, UInt32 tintType, UInt32 index);
+	DEFINE_MEMBER_FN(GetDamage, float, 0x006CD020, InventoryEntryData * pForm);
+	DEFINE_MEMBER_FN(GetArmorValue, float, 0x006CCCB0, InventoryEntryData * pForm);
 };
 
 STATIC_ASSERT(offsetof(PlayerCharacter, userEventEnabledEvent) == 0x2C8);

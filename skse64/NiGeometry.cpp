@@ -2,15 +2,15 @@
 #include "skse64/GameAPI.h"
 
 // 4772884F2DDD41847925EAA949727085D82940A1+401
-RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00CA2210);
+RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00CA2140);
 // 4772884F2DDD41847925EAA949727085D82940A1+414
-RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape(0x00CAD500);
+RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape(0x00CAD430);
 
 // ??_7NiTriShape@@6B@
-static const RelocPtr<uintptr_t> s_NiTriShapeVtbl(0x0185EC98);
+static const RelocPtr<uintptr_t> s_NiTriShapeVtbl(0x0185EAA8);
 
 // ??_7NiTriStrips@@6B@
-static const RelocPtr<uintptr_t> s_NiTriStripsVtbl(0x0185F250);
+static const RelocPtr<uintptr_t> s_NiTriStripsVtbl(0x0185F060);
 
 void NiGeometryData::AllocateVerts(UInt32 numVerts)
 {
@@ -67,7 +67,7 @@ BSDismemberSkinInstance * BSDismemberSkinInstance::Create()
 {
 	typedef BSDismemberSkinInstance * (*_BSDismemberSkinInstance_Create)();
 	// 4772884F2DDD41847925EAA949727085D82940A1+2E4
-	static RelocAddr <_BSDismemberSkinInstance_Create> BSDismemberSkinInstance_Create(0x00CA6450);
+	static RelocAddr <_BSDismemberSkinInstance_Create> BSDismemberSkinInstance_Create(0x00CA6380);
 
 	return BSDismemberSkinInstance_Create();
 }
