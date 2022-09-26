@@ -203,12 +203,12 @@ public:
 };
 //STATIC_ASSERT(sizeof(BSExtraData) == 0x10);
 
-// 18
+// 20
 class BaseExtraList
 {
 public:
 	BaseExtraList();
-	~BaseExtraList();
+	virtual ~BaseExtraList();
 	
 	struct PresenceBitfield
 	{
@@ -248,21 +248,21 @@ public:
 	const char * GetDisplayName(TESForm * type);
 
 	BSExtraData* GetByType(UInt32 type);
-	BSExtraData			* m_data;		// 00
-	PresenceBitfield	* m_presence;	// 08
+	BSExtraData			* m_data;		// 08
+	PresenceBitfield	* m_presence;	// 10
 
 	// These added in SE
-	BSReadWriteLock		m_lock;
+	BSReadWriteLock		m_lock;			// 18
 
 private:
 	MEMBER_FN_PREFIX(BaseExtraList);
 	// A7985F15034C77C00ACC57607F29F4802502A1BA+2F
-	DEFINE_MEMBER_FN(CheckContainerExtraData_Internal, bool, 0x00119580, bool isEquipped);
+	DEFINE_MEMBER_FN(CheckContainerExtraData_Internal, bool, 0x0011B240, bool isEquipped);
 	// This also does some internal ReferenceHandle lookup
 	// 
-	DEFINE_MEMBER_FN(GetExtraTextDisplayData_Internal, ExtraTextDisplayData*, 0x0011D360);
+	DEFINE_MEMBER_FN(GetExtraTextDisplayData_Internal, ExtraTextDisplayData*, 0x0011F020);
 };
 
 typedef tList<BaseExtraList> ExtendDataList;
 
-STATIC_ASSERT(sizeof(BaseExtraList) == 0x18);
+STATIC_ASSERT(sizeof(BaseExtraList) == 0x20);

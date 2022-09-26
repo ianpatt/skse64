@@ -11,10 +11,10 @@
 #include "xbyak/xbyak.h"
 
 // Used by UpdatePlayerTints to create a render target of a particular size
-// D55B7565783E557DBA232E15687FDD05C35FE3D1+473
-RelocPtr<UInt32> g_tintTextureWidth(0x030C7444);
-// D55B7565783E557DBA232E15687FDD05C35FE3D1+46C
-RelocPtr<UInt32> g_tintTextureHeight(0x030C7448);
+// 26B3881DC3E4564CDC73DBD71BD51FFCEEF842A3+473
+RelocPtr<UInt32> g_tintTextureWidth(0x030C6544);
+// 26B3881DC3E4564CDC73DBD71BD51FFCEEF842A3+46C
+RelocPtr<UInt32> g_tintTextureHeight(0x030C6548);
 
 UInt32 g_tintTextureResolution = 512;
 
@@ -32,7 +32,7 @@ struct RenderTargetInfo
 };
 
 typedef void ( * _CreateRenderTarget)(void * renderTargetManager, UInt64 type, RenderTargetInfo * info);
-RelocAddr<_CreateRenderTarget> CreateRenderTarget(0x00DB18B0);
+RelocAddr<_CreateRenderTarget> CreateRenderTarget(0x00DC3490);
 _CreateRenderTarget CreateRenderTarget_Original = nullptr;
 
 void CreateRenderTarget_Hook(BSRenderManager ** targetManager, UInt64 type, RenderTargetInfo * info)
@@ -65,7 +65,7 @@ void Hooks_NetImmerse_Init(void)
 	}
 }
 
-RelocAddr <uintptr_t> UpdateEquipment_Enter(0x006BBB70 + 0x197);
+RelocAddr <uintptr_t> UpdateEquipment_Enter(0x006CD0E0 + 0x197);
 
 void Hooks_NetImmerse_Commit(void)
 {

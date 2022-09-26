@@ -261,15 +261,15 @@ public:
 	void DecRef();
 
 	MEMBER_FN_PREFIX(TESObjectREFR);
-	DEFINE_MEMBER_FN(GetBaseScale, float, 0x0029EE80);
-	DEFINE_MEMBER_FN(IsOffLimits, bool, 0x002AC940);
+	DEFINE_MEMBER_FN(GetBaseScale, float, 0x002A0D30);
+	DEFINE_MEMBER_FN(IsOffLimits, bool, 0x002AE7F0);
 	// 9C5031E1D6707680E2D9E4A717A225C1137FED59+145
-	DEFINE_MEMBER_FN(GetWeight, float, 0x002B8D40);
-	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x002A8800);
-	DEFINE_MEMBER_FN(GetWorldspace, TESWorldSpace*, 0x002ABD30);
+	DEFINE_MEMBER_FN(GetWeight, float, 0x002BABF0);
+	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x002AA6B0);
+	DEFINE_MEMBER_FN(GetWorldspace, TESWorldSpace*, 0x002ADBE0);
 };
 
-STATIC_ASSERT(sizeof(TESObjectREFR) == 0x98);
+STATIC_ASSERT(sizeof(TESObjectREFR) == 0xA0);
 STATIC_ASSERT(offsetof(TESObjectREFR, extraData) == 0x70);
 STATIC_ASSERT(offsetof(TESObjectREFR, loadedState) == 0x68);
 STATIC_ASSERT(offsetof(TESObjectREFR::LoadedState, node) == 0x68);
@@ -320,7 +320,7 @@ public:
 };
 STATIC_ASSERT(sizeof(ActorState) == 0x10);
 
-// 2B0 
+// 2B8
 class Actor : public TESObjectREFR
 {
 public:
@@ -552,15 +552,15 @@ public:
 	UInt64	unk2A8;									// 2A8
 
 	MEMBER_FN_PREFIX(Actor);
-	DEFINE_MEMBER_FN(QueueNiNodeUpdate, void, 0x006BBB70, bool updateWeight);
+	DEFINE_MEMBER_FN(QueueNiNodeUpdate, void, 0x006CD0E0, bool updateWeight);
 	// CC3C9D131FFDF35E82C6D7182C4F9E42A3ED1EF2+28
-	DEFINE_MEMBER_FN(HasPerk, bool, 0x00621AA0, BGSPerk * perk);
-	DEFINE_MEMBER_FN(GetLevel, UInt16, 0x005FB9B0);
-	DEFINE_MEMBER_FN(SetRace, void, 0x0062FAA0, TESRace*, bool isPlayer);
-	DEFINE_MEMBER_FN(UpdateWeaponAbility, void, 0x00658070, TESForm*, BaseExtraList * extraData, bool bLeftHand);
-	DEFINE_MEMBER_FN(UpdateArmorAbility, void, 0x00658000, TESForm*, BaseExtraList * extraData);
-	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x0060EBC0, Actor * actor);
-	DEFINE_MEMBER_FN(ResetAI, void, 0x006019A0, UInt32 unk1, UInt32 unk2);
+	DEFINE_MEMBER_FN(HasPerk, bool, 0x00633000, BGSPerk * perk);
+	DEFINE_MEMBER_FN(GetLevel, UInt16, 0x0060CF10);
+	DEFINE_MEMBER_FN(SetRace, void, 0x00641000, TESRace*, bool isPlayer);
+	DEFINE_MEMBER_FN(UpdateWeaponAbility, void, 0x006695E0, TESForm*, BaseExtraList * extraData, bool bLeftHand);
+	DEFINE_MEMBER_FN(UpdateArmorAbility, void, 0x00669570, TESForm*, BaseExtraList * extraData);
+	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00620120, Actor * actor);
+	DEFINE_MEMBER_FN(ResetAI, void, 0x00612F00, UInt32 unk1, UInt32 unk2);
 
 	TESForm * GetEquippedObject(bool abLeftHand);
 	void UpdateSkinColor();
@@ -576,23 +576,23 @@ public:
 	bool VisitFactions(FactionVisitor & visitor);
 };
 
-STATIC_ASSERT(offsetof(Actor, magicTarget) == 0x98);
-STATIC_ASSERT(offsetof(Actor, actorValueOwner) == 0xB0);
-STATIC_ASSERT(offsetof(Actor, actorState) == 0xB8);
-STATIC_ASSERT(offsetof(Actor, unk0D8) == 0xD8);
-STATIC_ASSERT(offsetof(Actor, addedSpells) == 0x188);
-STATIC_ASSERT(sizeof(Actor) == 0x2B0);
+STATIC_ASSERT(offsetof(Actor, magicTarget) == 0xA0);
+STATIC_ASSERT(offsetof(Actor, actorValueOwner) == 0xB8);
+STATIC_ASSERT(offsetof(Actor, actorState) == 0xC0);
+STATIC_ASSERT(offsetof(Actor, unk0D8) == 0xE0);
+STATIC_ASSERT(offsetof(Actor, addedSpells) == 0x190);
+STATIC_ASSERT(sizeof(Actor) == 0x2B8);
 
-// 2B0 
+// 2B8
 class Character : public Actor
 {
 public:
 	enum { kTypeID = kFormType_Character };
 };
 
-STATIC_ASSERT(sizeof(Character) == 0x2B0);
+STATIC_ASSERT(sizeof(Character) == 0x2B8);
 
-// BE0 
+// BE8
 class PlayerCharacter : public Character
 {
 public:
@@ -900,26 +900,26 @@ public:
 	}
 
 	MEMBER_FN_PREFIX(PlayerCharacter);
-	DEFINE_MEMBER_FN(GetNumTints, UInt32, 0x006DEF60, UInt32 tintType);
-	DEFINE_MEMBER_FN(GetTintMask, TintMask *, 0x006DEDB0, UInt32 tintType, UInt32 index);
-	DEFINE_MEMBER_FN(GetDamage, float, 0x006BBAB0, InventoryEntryData * pForm);
-	DEFINE_MEMBER_FN(GetArmorValue, float, 0x006BB740, InventoryEntryData * pForm);
+	DEFINE_MEMBER_FN(GetNumTints, UInt32, 0x006F04F0, UInt32 tintType);
+	DEFINE_MEMBER_FN(GetTintMask, TintMask *, 0x006F0340, UInt32 tintType, UInt32 index);
+	DEFINE_MEMBER_FN(GetDamage, float, 0x006CD020, InventoryEntryData * pForm);
+	DEFINE_MEMBER_FN(GetArmorValue, float, 0x006CCCB0, InventoryEntryData * pForm);
 };
 
-STATIC_ASSERT(offsetof(PlayerCharacter, userEventEnabledEvent) == 0x2C0);
-STATIC_ASSERT(offsetof(PlayerCharacter, numPerkPoints) == 0xB01);
-STATIC_ASSERT(offsetof(PlayerCharacter, tintMasks) == 0xB10);
-STATIC_ASSERT(offsetof(PlayerCharacter, overlayTintMasks) == 0xB28);
-STATIC_ASSERT(offsetof(PlayerCharacter, unk3D8) == 0x3D8);
-STATIC_ASSERT(offsetof(PlayerCharacter, lastRiddenHorseHandle) == 0x914);
-STATIC_ASSERT(offsetof(PlayerCharacter, skills) == 0x9B0);
-STATIC_ASSERT(offsetof(PlayerCharacter, tempPoison) == 0xA00);
-STATIC_ASSERT(offsetof(PlayerCharacter, hostileHandles) == 0x9D8);
-STATIC_ASSERT(offsetof(PlayerCharacter, currentWorldSpace) == 0x628);
-STATIC_ASSERT(offsetof(PlayerCharacter, addedPerks) == 0x4B0);
-STATIC_ASSERT(offsetof(PlayerCharacter, sameWorldSpace) == 0x988);
-STATIC_ASSERT(offsetof(PlayerCharacter, unk890) == 0x890);
-STATIC_ASSERT(sizeof(PlayerCharacter) == 0xBE0);
+STATIC_ASSERT(offsetof(PlayerCharacter, userEventEnabledEvent) == 0x2C8);
+STATIC_ASSERT(offsetof(PlayerCharacter, numPerkPoints) == 0xB09);
+STATIC_ASSERT(offsetof(PlayerCharacter, tintMasks) == 0xB18);
+STATIC_ASSERT(offsetof(PlayerCharacter, overlayTintMasks) == 0xB30);
+STATIC_ASSERT(offsetof(PlayerCharacter, unk3D8) == 0x3E0);
+STATIC_ASSERT(offsetof(PlayerCharacter, lastRiddenHorseHandle) == 0x91C);
+STATIC_ASSERT(offsetof(PlayerCharacter, skills) == 0x9B8);
+STATIC_ASSERT(offsetof(PlayerCharacter, tempPoison) == 0xA08);
+STATIC_ASSERT(offsetof(PlayerCharacter, hostileHandles) == 0x9E0);
+STATIC_ASSERT(offsetof(PlayerCharacter, currentWorldSpace) == 0x630);
+STATIC_ASSERT(offsetof(PlayerCharacter, addedPerks) == 0x4B8);
+STATIC_ASSERT(offsetof(PlayerCharacter, sameWorldSpace) == 0x990);
+STATIC_ASSERT(offsetof(PlayerCharacter, unk890) == 0x898);
+STATIC_ASSERT(sizeof(PlayerCharacter) == 0xBE8);
 
 
 // 140 
@@ -957,7 +957,7 @@ class Projectile : public TESObjectREFR
 	UInt8	unk98[0x1D8 - 0x98];	// 98 TODO
 };
 
-// 1F8 
+// 200
 class BarrierProjectile : public Projectile
 {
 	enum { kTypeID = kFormType_BarrierProj };
@@ -966,7 +966,7 @@ class BarrierProjectile : public Projectile
 	UInt32		pad1DC;	// 1DC	
 	UnkArray	unk1E0;	// 1E0
 };
-STATIC_ASSERT(sizeof(BarrierProjectile) == 0x1F8);
+STATIC_ASSERT(sizeof(BarrierProjectile) == 0x200);
 
 // 240 
 class BeamProjectile : public Projectile

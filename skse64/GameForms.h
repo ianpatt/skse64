@@ -6,6 +6,7 @@
 //#include "skse/NiInterpolators.h"
 #include "skse64/NiObjects.h"
 #include "skse64/NiTypes.h"
+#include "skse64/GameBSExtraData.h"
 
 class TESForm;
 class TESObjectSTAT;
@@ -967,9 +968,9 @@ public:
 	UInt32	unk40;	// 40
 
 	MEMBER_FN_PREFIX(BGSListForm);
-	DEFINE_MEMBER_FN(AddFormToList, void, 0x002D81C0, TESForm * form);
-	DEFINE_MEMBER_FN(RemoveFormFromList, void, 0x002D8390, TESForm * form);
-	DEFINE_MEMBER_FN(RevertList, void, 0x002D80E0);
+	DEFINE_MEMBER_FN(AddFormToList, void, 0x002DA130, TESForm * form);
+	DEFINE_MEMBER_FN(RemoveFormFromList, void, 0x002DA300, TESForm * form);
+	DEFINE_MEMBER_FN(RevertList, void, 0x002DA050);
 
 	class Visitor
 	{
@@ -1700,8 +1701,8 @@ public:
 	UnkArray	unk250;		// 250
 
 	MEMBER_FN_PREFIX(TESQuest);
-	DEFINE_MEMBER_FN(ForceRefTo, UInt32, 0x0038C240, UInt32 aliasId, TESObjectREFR * reference);
-	DEFINE_MEMBER_FN(NewGame_Internal, UInt8, 0x00387F50, UInt8 * unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(ForceRefTo, UInt32, 0x0038E380, UInt32 aliasId, TESObjectREFR * reference);
+	DEFINE_MEMBER_FN(NewGame_Internal, UInt8, 0x0038A090, UInt8 * unk1, UInt8 unk2);
 
 	UInt8 NewGame_Hook(UInt8 * unk1, UInt8 unk2);
 };
@@ -2482,15 +2483,6 @@ public:
 		UInt32	unk4;
 	};
 
-	// 18
-	struct Data048
-	{
-		BSExtraData	* extraData;;	// 00
-		void*	unk00;	// 08
-		UInt32	unk10;	// 10
-		UInt32	unk14;	// 14
-	};
-
 	struct TVDT
 	{
 		struct TVDT1
@@ -2528,7 +2520,7 @@ public:
 		UInt32	maxSize;		// 4
 		UInt32	freeEntries;	// 8 - maxSize - freeEntries = num valid entries (where Reference.unk08 is not NULL)
 		UInt32	unk0C;			// 0C
-		void	*unk10;			// 10 - Reference.unk08 is usually inititalized to this, but it is not always this
+		void	*unk10;			// 10 - Reference.unk08 is usually initialized to this, but it is not always this
 		void	*unk18;			// 18
 		Reference*	refArray;	// 20
 	};
@@ -2543,15 +2535,7 @@ public:
 	UInt8						unk046;		// 046
 	UInt8						pad047;		// 047
 	
-	// ExtraEditorID
-	// ExtraCellImageSpace
-	// ExtraCellMusicType
-	// ExtraLocation
-	// ExtraEncounterZone
-	// ExtraCellAcousticSpace
-	// ExtraSeenData
-	// ExtraHavok
-	Data048						unk048;				// 048
+	BaseExtraList				unk048;				// 048
 	TVDT *						* unk060;			// 060 
 	void						* unk068;			// 068
 	float						waterLevel;			// 070 - init'd to 7F7FFFFFh, max float
@@ -2572,11 +2556,11 @@ public:
 	UInt64						unk138;				// 138
 
 	MEMBER_FN_PREFIX(TESObjectCELL);
-	DEFINE_MEMBER_FN(GetNorthRotation, float, 0x00280DB0);
+	DEFINE_MEMBER_FN(GetNorthRotation, float, 0x00282C60);
 };
-STATIC_ASSERT(offsetof(TESObjectCELL, refData) == 0x88);
-STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0xB8);
-STATIC_ASSERT(sizeof(TESObjectCELL) == 0x140);
+STATIC_ASSERT(offsetof(TESObjectCELL, refData) == 0x90);
+STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0xC0);
+STATIC_ASSERT(sizeof(TESObjectCELL) == 0x148);
 
 // 48 
 class TESObjectLAND : public TESForm
@@ -3470,7 +3454,7 @@ public:
 			return NULL;
 
 		// 5386ADDB542755AB5BD598497543E780AD5BDC54+35
-		static RelocPtr<IFormFactory *> kFactoryList(0x01F5F620);
+		static RelocPtr<IFormFactory *> kFactoryList(0x01F5D9A0);
 
 		return kFactoryList[type];
 	}

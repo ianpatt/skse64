@@ -117,14 +117,14 @@ public:
 	virtual bool				Run(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunctionBase);
-	DEFINE_MEMBER_FN(Impl_dtor, void, 0x0137AD80);
+	DEFINE_MEMBER_FN(Impl_dtor, void, 0x01378540);
 	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 6
-	DEFINE_MEMBER_FN(Impl_GetParam, UInt64 *, 0x0137A450, UInt32 idx, BSFixedString * nameOut, UInt64 * typeOut);
-	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x0137A650, UInt64 unk0, UInt64 unk1, VMClassRegistry * registry, VMState * unk3);
+	DEFINE_MEMBER_FN(Impl_GetParam, UInt64 *, 0x01377C10, UInt32 idx, BSFixedString * nameOut, UInt64 * typeOut);
+	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x01377E10, UInt64 unk0, UInt64 unk1, VMClassRegistry * registry, VMState * unk3);
 	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x10
-	DEFINE_MEMBER_FN(Impl_Fn10, BSFixedString *, 0x0137A530);
+	DEFINE_MEMBER_FN(Impl_Fn10, BSFixedString *, 0x01377CF0);
 	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x12
-	DEFINE_MEMBER_FN(Impl_Fn12, bool, 0x0137A550, UInt32 idx, UInt64 out);
+	DEFINE_MEMBER_FN(Impl_Fn12, bool, 0x01377D10, UInt32 idx, UInt64 out);
 
 	DEFINE_STATIC_HEAP(Heap_Allocate, Heap_Free);
 
@@ -156,8 +156,8 @@ public:
 	virtual bool				Run(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunction);
-	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x0137AB30, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
-	DEFINE_MEMBER_FN(Impl_dtor, void, 0x0137AD80);	// same as NativeFunctionBase dtor
+	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x013782F0, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
+	DEFINE_MEMBER_FN(Impl_dtor, void, 0x01378540);	// same as NativeFunctionBase dtor
 
 	void	DebugRunHook(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state);
 

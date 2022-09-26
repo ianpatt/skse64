@@ -1,3 +1,14 @@
+2.2.2
+- fix crash when sheathing right-hand weapon (thanks SlavicPotato for letting me know about the missing address)
+
+2.2.1
+- support for 1.6.640
+
+2.2.0
+- support for 1.6.629
+- fix returning arrays of booleans
+- plugin developers: please note the changes to SKSEPluginVersionData required by the structure size updates in 1.6.629+
+
 2.1.5
 - support for 1.6.353
 - fix RemoveEventSink_Internal (fixes MCM keybindings)

@@ -1,65 +1,65 @@
 #include "skse64/GameData.h"
 
 // 9615953AF64D4A2EB76F7BDE0F38D30B311B1351+40
-RelocAddr <UInt32*> g_gameTime(0x03007710);
+RelocAddr <UInt32*> g_gameTime(0x03006810);
 
 // B8860AA646A4AA64DB8D5C6EDA306FC6B59F1B9B+5B
-RelocPtr <DataHandler *> g_dataHandler(0x01F59DA8);
+RelocPtr <DataHandler *> g_dataHandler(0x01F58138);
 
 // 5F417CF4D2EB33C7D6903EA38BB5CDDEF48A6F83+4B
-RelocPtr <PersistentFormManager *> g_persistentFormManager(0x01F5A468);
+RelocPtr <PersistentFormManager *> g_persistentFormManager(0x01F587E8);
 
 // EC410889481EE7B9DC4B6D7A707FA41B72CDCE48+4
-RelocPtr <FaceGen *> g_faceGen(0x01F5A4C0);
+RelocPtr <FaceGen *> g_faceGen(0x01F58840);
 
 // F22C9BC54C962ED86B36585C0EC0E729DCA18000+26
-RelocPtr<MagicFavorites *>	g_MagicFavorites(0x02FC23A0);
+RelocPtr<MagicFavorites *>	g_MagicFavorites(0x02FC13B0);
 
 // 6C8AEF51A6996BA6DC317E92014FCC446B5DBC17+25
-RelocPtr<MenuTopicManager *> g_MenuTopicManager(0x02F9B218);
+RelocPtr<MenuTopicManager *> g_MenuTopicManager(0x02F99598);
 
 // 5ED03BBC1845C7394493F8FAA1DE8C7AEB3E2350+2A
-RelocPtr <ActorValueList *> g_actorValueList(0x01F59D98);
+RelocPtr <ActorValueList *> g_actorValueList(0x01F58128);
 
 // aWerewolfSpell
-RelocPtr <DefaultObjectList> g_defaultObjectList(0x01E4AF20);
+RelocPtr <DefaultObjectList> g_defaultObjectList(0x01E48F50);
 
 // 68BF756333EF751059E935236F381FA91F62C373+22
-RelocPtr <BGSSaveLoadManager *> g_saveLoadManager(0x02FC23B8);
+RelocPtr <BGSSaveLoadManager *> g_saveLoadManager(0x02FC13C8);
 
 // 3B74AA860AC42F1080FAF792E4BE1D3BF0E0EFEE+47
-RelocPtr <MiscStatManager>	g_MiscStatManager(0x02F60DA8);
+RelocPtr <MiscStatManager>	g_MiscStatManager(0x02F5F128);
 
 // A9D0A72CC9E5F85E2169118F999943FD43AF51EA+95
-RelocPtr <EquipManager *> g_equipManager(0x02F60108);
+RelocPtr <EquipManager *> g_equipManager(0x02F5E488);
 
 // FBC6C0FB3A858D20081F5FF9CB3E780E59DCE52F+50
 RelocPtr <RelationshipRanks> g_relationshipRanks(0x01E66FE8);
 
-RelocAddr<_ChangeActorHeadPart> ChangeActorHeadPart(0x003F4860);
+RelocAddr<_ChangeActorHeadPart> ChangeActorHeadPart(0x003F69C0);
 // 
-RelocAddr<_GetEitherHandSlot> GetEitherHandSlot(0x00346E90);
+RelocAddr<_GetEitherHandSlot> GetEitherHandSlot(0x00348E50);
 // 
-RelocAddr<_GetRightHandSlot> GetRightHandSlot(0x00346E80);
+RelocAddr<_GetRightHandSlot> GetRightHandSlot(0x00348E40);
 // 
-RelocAddr<_GetLeftHandSlot> GetLeftHandSlot(0x00346E70);
-RelocAddr<_LookupActorValueByName> LookupActorValueByName(0x003FA030);
-RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x008E4AA0);
-RelocAddr<_GetActorBaseOverlays> GetActorBaseOverlays(0x0037FFB0);
-RelocAddr<_GetNumActorBaseOverlays> GetNumActorBaseOverlays(0x00380040);
+RelocAddr<_GetLeftHandSlot> GetLeftHandSlot(0x00348E30);
+RelocAddr<_LookupActorValueByName> LookupActorValueByName(0x003FC5A0);
+RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x008F61F0);
+RelocAddr<_GetActorBaseOverlays> GetActorBaseOverlays(0x003820E0);
+RelocAddr<_GetNumActorBaseOverlays> GetNumActorBaseOverlays(0x00382170);
 
-RelocAddr<_ApplyMasksToRenderTarget> ApplyMasksToRenderTarget(0x003F36C0);
+RelocAddr<_ApplyMasksToRenderTarget> ApplyMasksToRenderTarget(0x003F5820);
 
-RelocAddr<_UpdateModelSkin> UpdateModelSkin(0x003F4B90); // Applies tint to ShaderType 5 nodes
-RelocAddr<_UpdateModelHair> UpdateModelHair(0x003F4CA0); // Applies tint to ShaderType 6 nodes
-RelocAddr<_UpdateModelFace> UpdateModelFace(0x003F4200);
-RelocAddr<_UpdateHarvestModel> UpdateHarvestModel(0x001A8280);
+RelocAddr<_UpdateModelSkin> UpdateModelSkin(0x003F6CF0); // Applies tint to ShaderType 5 nodes
+RelocAddr<_UpdateModelHair> UpdateModelHair(0x003F6E00); // Applies tint to ShaderType 6 nodes
+RelocAddr<_UpdateModelFace> UpdateModelFace(0x003F6360);
+RelocAddr<_UpdateHarvestModel> UpdateHarvestModel(0x001A9FA0);
 
-RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x0035C1E0);
+RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x0035E1E0);
 
-RelocPtr<FacePresetList> g_facePresetList(0x01E6B300);	// aNosetype
+RelocPtr<FacePresetList> g_facePresetList(0x01E69370);	// aNosetype
 
-RelocAddr<_HasLOS> HasLOS(0x00949B70);
+RelocAddr<_HasLOS> HasLOS(0x0095B970);
 
 class LoadedModFinder
 {
