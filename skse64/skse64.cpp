@@ -59,7 +59,7 @@ char * __get_narrow_winmain_command_line_Hook()
 
 void SKSE64_PreInit(void)
 {
-	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Skyrim Special Edition\\SKSE\\skse64.log");
+	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\" SAVE_FOLDER_NAME "\\SKSE\\skse64.log");
 
 	HANDLE exe = GetModuleHandle(nullptr);
 
