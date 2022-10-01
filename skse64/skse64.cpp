@@ -26,6 +26,69 @@
 IDebugLog gLog;
 HINSTANCE g_moduleHandle = nullptr;
 
+void SKSE64_Initialize(void);
+
+// api-ms-win-crt-runtime-l1-1-0.dll
+typedef int (*__initterm_e)(_PIFV *, _PIFV *);
+__initterm_e _initterm_e_Original = nullptr;
+
+typedef char * (*__get_narrow_winmain_command_line)();
+__get_narrow_winmain_command_line _get_narrow_winmain_command_line_Original = NULL;
+
+// runs before global initializers
+int __initterm_e_Hook(_PIFV * a, _PIFV * b)
+{
+	// could be used for plugin optional preload
+
+//	_MESSAGE("pre global init");
+
+	return _initterm_e_Original(a, b);
+}
+
+// runs after global initializers
+char * __get_narrow_winmain_command_line_Hook()
+{
+	// the usual load time
+	
+//	_MESSAGE("post global init");
+
+	SKSE64_Initialize();
+
+	return _get_narrow_winmain_command_line_Original();
+}
+
+void SKSE64_PreInit(void)
+{
+	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Skyrim Special Edition\\SKSE\\skse64.log");
+
+	HANDLE exe = GetModuleHandle(nullptr);
+
+	// fetch functions to hook
+	auto * initterm = (__initterm_e *)GetIATAddr(exe, "api-ms-win-crt-runtime-l1-1-0.dll", "_initterm_e");
+	auto * cmdline = (__get_narrow_winmain_command_line *)GetIATAddr(exe, "api-ms-win-crt-runtime-l1-1-0.dll", "_get_narrow_winmain_command_line");
+
+	// hook them
+	if(initterm)
+	{
+		_initterm_e_Original = *initterm;
+		SafeWrite64(uintptr_t(initterm), UInt64(__initterm_e_Hook));
+	}
+	else
+	{
+		_ERROR("couldn't find _initterm_e");
+	}
+
+	if(cmdline)
+	{
+		_get_narrow_winmain_command_line_Original = *cmdline;
+		SafeWrite64(uintptr_t(cmdline), UInt64(__get_narrow_winmain_command_line_Hook));
+	}
+	else
+	{
+		_ERROR("couldn't find _get_narrow_winmain_command_line");
+	}
+}
+
 void WaitForDebugger(void)
 {
 	while(!IsDebuggerPresent())
@@ -42,8 +105,6 @@ void SKSE64_Initialize(void)
 {
 	if(isInit) return;
 	isInit = true;
-
-	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Skyrim Special Edition\\SKSE\\skse64.log");
 
 #ifndef _DEBUG
 	__try {
@@ -121,7 +182,7 @@ extern "C" {
 
 	void StartSKSE(void)
 	{
-		SKSE64_Initialize();
+		SKSE64_PreInit();
 	}
 
 	BOOL WINAPI DllMain(HANDLE hDllHandle, DWORD dwReason, LPVOID lpreserved)

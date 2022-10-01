@@ -270,13 +270,6 @@ int main(int argc, char ** argv)
 	switch(procType)
 	{
 	case kProcType_Steam:
-		{
-			std::string	steamHookDllPath = runtimeDir + "\\skse64_steam_loader.dll";
-
-			injectionSucceeded = InjectDLLThread(&procInfo, steamHookDllPath.c_str(), true, g_options.m_noTimeout);
-		}
-		break;
-
 	case kProcType_Normal:
 		injectionSucceeded = InjectDLLThread(&procInfo, dllPath.c_str(), true, g_options.m_noTimeout);
 		break;
