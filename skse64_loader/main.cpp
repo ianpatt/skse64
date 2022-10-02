@@ -271,6 +271,7 @@ int main(int argc, char ** argv)
 	{
 	case kProcType_Steam:
 	case kProcType_Normal:
+	case kProcType_GOG:
 		injectionSucceeded = InjectDLLThread(&procInfo, dllPath.c_str(), true, g_options.m_noTimeout);
 		break;
 

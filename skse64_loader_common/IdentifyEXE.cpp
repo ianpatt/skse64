@@ -116,6 +116,7 @@ static bool GetFileVersionData(const char * path, UInt64 * out, std::string * ou
 	return true;
 }
 
+// non-relocated image
 const IMAGE_SECTION_HEADER * GetImageSection(const UInt8 * base, const char * name)
 {
 	const IMAGE_DOS_HEADER		* dosHeader = (IMAGE_DOS_HEADER *)base;
@@ -135,20 +136,69 @@ const IMAGE_SECTION_HEADER * GetImageSection(const UInt8 * base, const char * na
 	return NULL;
 }
 
+// non-relocated image
+bool HasImportedLibrary(const UInt8 * base, const char * name)
+{
+	auto * dosHeader = (const IMAGE_DOS_HEADER *)base;
+	auto * ntHeader = (const IMAGE_NT_HEADERS *)(base + dosHeader->e_lfanew);
+	auto * importDir = (const IMAGE_DATA_DIRECTORY *)&ntHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
+
+	if(!importDir->Size || !importDir->VirtualAddress) return false;
+
+	// resolve RVA -> file offset
+	const auto * sectionHeader = IMAGE_FIRST_SECTION(ntHeader);
+
+	auto LookupRVA = [ntHeader, sectionHeader, base](UInt32 rva) -> const UInt8 *
+	{
+		for(UInt32 i = 0; i < ntHeader->FileHeader.NumberOfSections; i++)
+		{
+			const auto * section = &sectionHeader[i];
+
+			if(	(rva >= section->VirtualAddress) &&
+				(rva < section->VirtualAddress + section->SizeOfRawData))
+			{
+				return base + rva - section->VirtualAddress + section->PointerToRawData;
+			}
+		}
+
+		return nullptr;
+	};
+
+	if(const auto * importTable = (const IMAGE_IMPORT_DESCRIPTOR *)LookupRVA(importDir->VirtualAddress))
+	{
+		for(; importTable->Characteristics; ++importTable)
+		{
+			auto * dllName = (const char *)LookupRVA(importTable->Name);
+
+			if(dllName && !_stricmp(dllName, name))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 // steam EXE will have the .bind section
-bool IsSteamImage(const UInt8 * base)
+static bool IsSteamImage(const UInt8 * base)
 {
 	return GetImageSection(base, ".bind") != NULL;
 }
 
-bool IsUPXImage(const UInt8 * base)
+static bool IsUPXImage(const UInt8 * base)
 {
 	return GetImageSection(base, "UPX0") != NULL;
 }
 
-bool IsWinStoreImage(const UInt8 * base)
+static bool IsWinStoreImage(const UInt8 * base)
 {
 	return GetImageSection(base, ".xbld") != NULL;
+}
+
+static bool IsGOGImage(const UInt8 * base)
+{
+	return HasImportedLibrary(base, "Galaxy64.dll");
 }
 
 bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
@@ -170,21 +220,23 @@ bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
 		if(fileBase)
 		{
 			// scan for packing type
-			bool	isSteam = IsSteamImage(fileBase);
-			bool	isUPX = IsUPXImage(fileBase);
 			bool	isWinStore = IsWinStoreImage(fileBase);
 
-			if(isUPX)
+			if(IsUPXImage(fileBase))
 			{
 				hookInfo->procType = kProcType_Packed;
 			}
-			else if(isSteam)
+			else if(IsSteamImage(fileBase))
 			{
 				hookInfo->procType = kProcType_Steam;
 			}
-			else if(isWinStore)
+			else if(IsWinStoreImage(fileBase))
 			{
 				hookInfo->procType = kProcType_WinStore;
+			}
+			else if(IsGOGImage(fileBase))
+			{
+				hookInfo->procType = kProcType_GOG;
 			}
 			else
 			{
@@ -252,6 +304,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	case kProcType_Normal:		_MESSAGE("normal exe"); break;
 	case kProcType_Packed:		_MESSAGE("packed exe"); break;
 	case kProcType_WinStore:	_MESSAGE("winstore exe"); break;
+	case kProcType_GOG:			_MESSAGE("gog exe"); break;
 	case kProcType_Unknown:
 	default:					_MESSAGE("unknown exe type"); break;
 	}
@@ -311,6 +364,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 		case kProcType_Steam:
 		case kProcType_Normal:
 		case kProcType_WinStore:
+		case kProcType_GOG:
 			*dllSuffix = "";
 
 			result = true;
@@ -331,6 +385,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 		{
 		case kProcType_Steam:
 		case kProcType_Normal:
+		case kProcType_GOG:
 			*dllSuffix = versionStr;
 
 			result = true;
