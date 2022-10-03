@@ -617,6 +617,19 @@ void PluginManager::LogPluginLoadError(const LoadedPlugin & pluginSrc, const cha
 		s_currentPluginHandle);
 }
 
+struct BetterPluginName
+{
+	const char * dllName;
+	const char * userReportedName;
+};
+
+// some plugins have non-descriptive names resulting in bad bug reports
+static const BetterPluginName kBetterPluginNames[] =
+{
+	{ "skee64.dll", "RaceMenu" },
+	{ nullptr, nullptr }
+};
+
 void PluginManager::ReportPluginErrors()
 {
 #if 0
@@ -639,7 +652,23 @@ void PluginManager::ReportPluginErrors()
 	for(auto & plugin : m_erroredPlugins)
 	{
 		message += "\n";
-		message += plugin.dllName + ": " + plugin.errorState;
+
+		bool foundReplacementName = false;
+		for(auto * iter = kBetterPluginNames; iter->dllName; ++iter)
+		{
+			if(!_stricmp(iter->dllName, plugin.dllName.c_str()))
+			{
+				foundReplacementName = true;
+
+				message += iter->userReportedName;
+				message += " (" + plugin.dllName + ")";
+			}
+		}
+		if(!foundReplacementName)
+			message += plugin.dllName;
+
+		message += ": ";
+		message += plugin.errorState;
 
 		if(plugin.errorCode)
 		{
