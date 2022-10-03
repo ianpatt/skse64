@@ -325,6 +325,49 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	// convert version resource to internal version format
 	UInt32 versionInternal = MAKE_EXE_VERSION(version >> 48, version >> 32, version >> 16);
 
+	// version mismatch could mean exe type mismatch
+	if(version != kCurVersion)
+	{
+#if GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_BETHESDA
+		const int expectedProcType = kProcType_Steam;
+		const char * expectedProcTypeName = "Steam";
+#elif GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_GOG
+		const int expectedProcType = kProcType_GOG;
+		const char * expectedProcTypeName = "GOG";
+#else
+#error unknown runtime type
+#endif
+
+		// we only care about steam/gog for this check
+		const char * foundProcTypeName = nullptr;
+
+		switch(hookInfo->procType)
+		{
+			case kProcType_Steam:
+				foundProcTypeName = "Steam";
+				break;
+
+			case kProcType_GOG:
+				foundProcTypeName = "GOG";
+				break;
+		}
+
+		if(foundProcTypeName && (hookInfo->procType != expectedProcType))
+		{
+			// different build
+			PrintLoaderError(
+				"This version of SKSE is compatible with the %s version of the game.\n"
+				"You have the %s version of the game. Please download the correct version from the website.\n"
+				"Runtime: %d.%d.%d\n"
+				"SKSE64: %d.%d.%d",
+				expectedProcTypeName, foundProcTypeName,
+				GET_EXE_VERSION_MAJOR(versionInternal), GET_EXE_VERSION_MINOR(versionInternal), GET_EXE_VERSION_BUILD(versionInternal),
+				SKSE_VERSION_INTEGER, SKSE_VERSION_INTEGER_MINOR, SKSE_VERSION_INTEGER_BETA);
+
+			return false;
+		}
+	}
+
 	if(version < kCurVersion)
 	{
 #if SKSE_TARGETING_BETA_VERSION
