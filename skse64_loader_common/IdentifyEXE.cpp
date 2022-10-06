@@ -201,6 +201,11 @@ static bool IsGOGImage(const UInt8 * base)
 	return HasImportedLibrary(base, "Galaxy64.dll");
 }
 
+static bool IsEpicImage(const UInt8 * base)
+{
+	return HasImportedLibrary(base, "eossdk-win64-shipping.dll");
+}
+
 bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
 {
 	// open and map the file in to memory
@@ -237,6 +242,10 @@ bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
 			else if(IsGOGImage(fileBase))
 			{
 				hookInfo->procType = kProcType_GOG;
+			}
+			else if(IsEpicImage(fileBase))
+			{
+				hookInfo->procType = kProcType_Epic;
 			}
 			else
 			{
@@ -305,6 +314,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	case kProcType_Packed:		_MESSAGE("packed exe"); break;
 	case kProcType_WinStore:	_MESSAGE("winstore exe"); break;
 	case kProcType_GOG:			_MESSAGE("gog exe"); break;
+	case kProcType_Epic:		_MESSAGE("epic exe"); break;
 	case kProcType_Unknown:
 	default:					_MESSAGE("unknown exe type"); break;
 	}
@@ -312,6 +322,12 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	if(hookInfo->procType == kProcType_WinStore)
 	{
 		PrintLoaderError("The Windows Store (gamepass) version of Skyrim is not supported.");
+		return false;
+	}
+	
+	if(hookInfo->procType == kProcType_Epic)
+	{
+		PrintLoaderError("The Epic Store version of Skyrim is not supported.");
 		return false;
 	}
 
