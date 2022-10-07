@@ -287,7 +287,7 @@ public:
 	// used by Hooks_Event
 	PlayerControls * ctor_Hook(void);
 	MEMBER_FN_PREFIX(PlayerControls);
-	DEFINE_MEMBER_FN(ctor, PlayerControls *, 0x007405A0);
+	DEFINE_MEMBER_FN(ctor, PlayerControls *, 0x007400A0);
 };
 STATIC_ASSERT(offsetof(PlayerControls, runMode) == 0x049);
 STATIC_ASSERT(offsetof(PlayerControls, remapMode) == 0x050);
@@ -435,7 +435,7 @@ public:
 	static InputStringHolder *	GetSingleton(void)
 	{
 		// 8BDB97B9BE3B9EBCCFB4F3BA9237EDC8341B354C+B
-		static RelocPtr<InputStringHolder*> g_inputStringHolder(0x02FBEB40);
+		static RelocPtr<InputStringHolder*> g_inputStringHolder(0x02FB8B40);
 		return *g_inputStringHolder;
 	}
 };

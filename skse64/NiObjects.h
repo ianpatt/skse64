@@ -123,7 +123,7 @@ public:
 
 	
 	MEMBER_FN_PREFIX(NiObject);
-	DEFINE_MEMBER_FN(DeepCopy, NiStream *, 0x00C8CA90, NiObject ** result);
+	DEFINE_MEMBER_FN(DeepCopy, NiStream *, 0x00C8C1F0, NiObject ** result);
 };
 STATIC_ASSERT(sizeof(NiObject) == 0x10);
 
@@ -219,7 +219,7 @@ public:
 
 	MEMBER_FN_PREFIX(NiAVObject);
 	// A5B2FC7D42E72BA4F6A679BAC0BAE17C12A4AFE1+E3
-	DEFINE_MEMBER_FN(UpdateNode, void, 0x00C90980, ControllerUpdateContext * ctx);
+	DEFINE_MEMBER_FN(UpdateNode, void, 0x00C900E0, ControllerUpdateContext * ctx);
 };
 STATIC_ASSERT(offsetof(NiAVObject, m_localTransform) == 0x48);
 STATIC_ASSERT(offsetof(NiAVObject, m_worldTransform) == 0x7C);
@@ -262,11 +262,11 @@ public:
 	UInt32	pad1C;		// 1C
 
 	MEMBER_FN_PREFIX(BSFaceGenModel);
-	DEFINE_MEMBER_FN(ctor, void, 0x003EE300);
-	DEFINE_MEMBER_FN(CopyFrom, void, 0x003EE3A0, BSFaceGenModel * other);
-	DEFINE_MEMBER_FN(SetModelData, bool, 0x003EEB20, const char * meshPath, void * unk1, UInt8 unk2);
-	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EE980, BSFixedString * morphName, TESModelTri * triModel, NiAVObject ** headNode, float relative, UInt8 unk1);
-	DEFINE_MEMBER_FN(ApplyRaceMorph, UInt8, 0x003EE830, BSFixedString* morphName, TESModelTri* triModel, NiAVObject** headNode, float relative, UInt8 unk1);
+	DEFINE_MEMBER_FN(ctor, void, 0x003EE290);
+	DEFINE_MEMBER_FN(CopyFrom, void, 0x003EE330, BSFaceGenModel * other);
+	DEFINE_MEMBER_FN(SetModelData, bool, 0x003EEAB0, const char * meshPath, void * unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003EE910, BSFixedString * morphName, TESModelTri * triModel, NiAVObject ** headNode, float relative, UInt8 unk1);
+	DEFINE_MEMBER_FN(ApplyRaceMorph, UInt8, 0x003EE7C0, BSFixedString* morphName, TESModelTri* triModel, NiAVObject** headNode, float relative, UInt8 unk1);
 };
 
 // 18
@@ -277,7 +277,7 @@ public:
 	
 
 	MEMBER_FN_PREFIX(BSFaceGenMorphData);
-	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003F1820, const char ** morphName, NiAVObject * faceTrishape, float relative, UInt8 unk2);
+	DEFINE_MEMBER_FN(ApplyMorph, UInt8, 0x003F17B0, const char ** morphName, NiAVObject * faceTrishape, float relative, UInt8 unk2);
 };
 
 // 20
