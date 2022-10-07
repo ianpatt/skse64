@@ -1,3 +1,8 @@
+2.2.3
+- detect and report that the Epic Store version is unsupported
+- remove need for skse64_steam_loader, also improves plugin compatibility for GOG version
+- better reporting for often-misread plugin names
+
 2.2.2
 - fix crash when sheathing right-hand weapon (thanks SlavicPotato for letting me know about the missing address)
 
