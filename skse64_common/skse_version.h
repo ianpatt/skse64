@@ -4,8 +4,8 @@
 // these have to be macros so they can be used in the .rc
 #define SKSE_VERSION_INTEGER		2
 #define SKSE_VERSION_INTEGER_MINOR	2
-#define SKSE_VERSION_INTEGER_BETA	2
-#define SKSE_VERSION_VERSTRING		"0, 2, 2, 2"
+#define SKSE_VERSION_INTEGER_BETA	3
+#define SKSE_VERSION_VERSTRING		"0, 2, 2, 3"
 #define SKSE_VERSION_PADDEDSTRING	"0001"
 #define SKSE_VERSION_RELEASEIDX		69
 
@@ -55,7 +55,7 @@
 // information about the state of the game at the time of release
 #define SKSE_TARGETING_BETA_VERSION	0
 #define CURRENT_RELEASE_RUNTIME		RUNTIME_VERSION_1_6_640
-#define CURRENT_RELEASE_SKSE_STR	"2.2.2"
+#define CURRENT_RELEASE_SKSE_STR	"2.2.3"
 
 #if GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_BETHESDA
 #define SAVE_FOLDER_NAME "Skyrim Special Edition"
