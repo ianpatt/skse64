@@ -1,4 +1,4 @@
-Skyrim Script Extender 64 v2.2.2 beta
+Skyrim Script Extender 64 v2.2.3 beta
 by Ian Patterson and Stephen Abel (ianpatt and behippo)
 Thanks to: Paul Connelly (scruggsywuggsy the ferret), gibbed, Purple Lunchbox, snakster
 Special thanks to eternity for the help getting this finished. Can't thank you enough.
@@ -7,7 +7,13 @@ The Skyrim Script Extender 64, or SKSE64 for short, is a modder's resource that 
 
 Compatibility:
 
-SKSE64 will support the latest version of Skyrim SE available on Steam, and _only_ this version (currently 1.6.640 with any combination of numbers after that). When a new version is released, we will update as soon as possible; please be patient. The editor does not currently need modification, however a custom set of .pex/psc files must be installed.
+SKSE64 will support the latest version of Skyrim available on Steam and GOG. Please make sure you download the correct version for your store.
+- Steam: 1.6.640
+- GOG: 1.6.659
+
+Updates if needed will be available as soon as possible. Do not email to let us know that a new version has been released; we already know. Please be patient.
+
+The Epic Store, Windows Store (gamepass), and console versions are not supported.
 
 [ Installation ]
 
@@ -50,7 +56,7 @@ If your mod requires SKSE64, please provide a link to the main SKSE website <htt
  - See PluginAPI.h for instructions, as well as the example plugin project included with the rest of the source code. If you include any of the SKSE source code, you are required to make your source code available.
 
 * Can I include SKSE as part of a mod pack/collection or otherwise rehost the files?
- - No. Providing a link to https://skse.silverlock.org/ is the suggested method of distribution. Exceptions may be given under applicable circumstances; contact us at the email addresses below. This means that if you see this file available for download anywhere other than https://skse.silverlock.org or https://www.github.com/ianpatt/skse64, that service is violating copyright. I don't like having to explicitly spell this out, but my hand has been forced.
+ - No. Providing a link to https://skse.silverlock.org/ is the suggested method of distribution. Exceptions may be given under applicable circumstances; contact us at the email addresses below. This means that if you see this file available for download anywhere other than https://skse.silverlock.org,  https://www.github.com/ianpatt/skse64, or on Nexus by any user other than https://www.nexusmods.com/users/2166624, that service is violating copyright. I don't like having to explicitly spell this out, but my hand has been forced.
 
 * Do I need to keep old SKSE DLLs around for backwards compatibility?
  - No, they are only needed if you want to run old versions of the runtime with the last version of SKSE released for that version. Feel free to delete any skse_*.dll files that are not included with the main archive.
