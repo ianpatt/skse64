@@ -1,3 +1,6 @@
+2.2.4
+- use -- to stop argument parsing in the loader. useful for %command% tricks
+
 2.2.3
 - detect and report that the Epic Store version is unsupported
 - remove need for skse64_steam_loader, also improves plugin compatibility for GOG version
