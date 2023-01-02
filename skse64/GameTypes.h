@@ -277,7 +277,7 @@ public:
 		Heap_Free(entries);																// Free the old block
 		entries = newBlock;																// Assign the new block
 		capacity = numEntries;															// Capacity is now the number of total entries in the block
-		count = min(capacity, count);													// Count stays the same, or is truncated to capacity
+		count = (std::min)(capacity, count);													// Count stays the same, or is truncated to capacity
 		return true;
 	}
 
@@ -792,11 +792,6 @@ public:
 		return curIt;
 	}
 
-	const _Node* FindString(char* str, Iterator prev) const
-	{
-		return Find(StringFinder_CI(str), prev);
-	}
-
 	template <class Op>
 	UInt32 CountIf(Op& op) const
 	{
@@ -825,7 +820,7 @@ public:
 
 	T * RemoveNth(SInt32 n) 
 	{
-		Item* pRemoved = NULL;
+		T* pRemoved = NULL;
 		if (n == 0) {
 			pRemoved =  m_listHead.RemoveMe();
 		} else if (n > 0) {
@@ -839,7 +834,7 @@ public:
 
 	T * ReplaceNth(SInt32 n, T* item) 
 	{
-		Item* pReplaced = NULL;
+		T* pReplaced = NULL;
 		NodePos nodePos = GetNthNode(n);
 		if (nodePos.node && nodePos.index == n) {
 			pReplaced = nodePos.node->item;
