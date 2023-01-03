@@ -181,6 +181,11 @@ bool Options::Read(int argc, char ** argv)
 				{
 					m_forceSteamLoader = true;
 				}
+				else if(!_stricmp(arg, "-"))
+				{
+					// terminator for arguments
+					break;
+				}
 				else
 				{
 					_ERROR("unknown switch (%s)", arg);
@@ -233,6 +238,7 @@ void Options::PrintUsage(void)
 	_MESSAGE("  -launchsteam - attempt to launch steam if it is not running");
 	_MESSAGE("  -affinity <mask> - set the processor affinity mask");
 	_MESSAGE("  -forcesteamloader - override exe type detection and use steam loader");
+	_MESSAGE("  -- - ignore arguments after this marker");
 }
 
 bool Options::Verify(void)

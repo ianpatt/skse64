@@ -60,7 +60,7 @@ namespace papyrusOutfit
 void papyrusSoulGem::RegisterFuncs(VMClassRegistry* registry)
 {
 	registry->RegisterFunction(
-		new NativeFunction0 <TESSoulGem, UInt32>("GetSoulSize", "SoulGem", papyrusSoulGem::GetGemSize, registry));
+		new NativeFunction0 <TESSoulGem, UInt32>("GetSoulSize", "SoulGem", papyrusSoulGem::GetSoulSize, registry));
 
 	registry->RegisterFunction(
 		new NativeFunction0 <TESSoulGem, UInt32> ("GetGemSize", "SoulGem", papyrusSoulGem::GetGemSize, registry));
