@@ -4,6 +4,20 @@
 
 class PlayerCharacter;
 
+class Main
+{
+public:
+    virtual ~Main();
+
+    UInt64 unk08;    // 08
+    UInt64 unk10;    // 10
+    UInt64 unk18;    // 18
+    UInt64 unk20;    // 20
+    UInt32 threadId; // 28
+    // ... More
+};
+extern RelocPtr <Main*> g_main;
+
 class Heap
 {
 public:
