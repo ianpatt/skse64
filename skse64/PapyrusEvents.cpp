@@ -211,10 +211,6 @@ EventResult InputEventHandler::ReceiveEvent(InputEvent ** evns, InputEventDispat
 					else
 						keyCode = keyMask;
 
-					// Valid scancode?
-					if (keyCode >= InputMap::kMaxMacros)
-						continue;
-
 					BSFixedString	control	= *t->GetControlID();
 					float			timer	= t->timer;
 
@@ -226,27 +222,38 @@ EventResult InputEventHandler::ReceiveEvent(InputEvent ** evns, InputEventDispat
 						// Used by scaleform skse.GetLastControl
 						SetLastControlDown(control.data, keyCode);
 
-						g_inputKeyEventRegs.ForEach(
-							keyCode,
-							EventQueueFunctor1<SInt32>(BSFixedString("OnKeyDown"), (SInt32)keyCode)
+						// Valid scancode?
+						if (keyCode < InputMap::kMaxMacros) {
+							g_inputKeyEventRegs.ForEach(
+								keyCode,
+								EventQueueFunctor1<SInt32>(BSFixedString("OnKeyDown"), (SInt32)keyCode)
 							);
-						g_inputControlEventRegs.ForEach(
-							control,
-							EventQueueFunctor1<BSFixedString>(BSFixedString("OnControlDown"), control)
+						}
+
+						if (strlen(control.c_str()) > 0) {
+							g_inputControlEventRegs.ForEach(
+								control,
+								EventQueueFunctor1<BSFixedString>(BSFixedString("OnControlDown"), control)
 							);
+						}
 					}
 					else if (isUp)
 					{
 						SetLastControlUp(control.data, keyCode);
 
-						g_inputKeyEventRegs.ForEach(
-							keyCode,
-							EventQueueFunctor2<SInt32, float>(BSFixedString("OnKeyUp"), (SInt32)keyCode, timer)
+						if (keyCode < InputMap::kMaxMacros) {
+							g_inputKeyEventRegs.ForEach(
+								keyCode,
+								EventQueueFunctor2<SInt32, float>(BSFixedString("OnKeyUp"), (SInt32)keyCode, timer)
 							);
-						g_inputControlEventRegs.ForEach(
-							control,
-							EventQueueFunctor2<BSFixedString, float>(BSFixedString("OnControlUp"), control, timer)
+						}
+
+						if (strlen(control.c_str()) > 0) {
+							g_inputControlEventRegs.ForEach(
+								control,
+								EventQueueFunctor2<BSFixedString, float>(BSFixedString("OnControlUp"), control, timer)
 							);
+						}
 					}
 				}
 				break;
