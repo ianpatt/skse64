@@ -65,6 +65,7 @@
 #include "PapyrusInput.h"
 #include "PapyrusTree.h"
 #include "PapyrusWeather.h"
+#include "PapyrusLocation.h"
 
 #include "xbyak/xbyak.h"
 
@@ -273,6 +274,9 @@ void RegisterPapyrusFunctions_Hook(VMClassRegistry ** registryPtr)
 
 	// GameData
 	papyrusGameData::RegisterFuncs(registry);
+
+	// Location
+	papyrusLocation::RegisterFuncs(registry);
 
 //#ifdef _PPAPI
 	// Plugins
