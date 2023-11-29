@@ -25,16 +25,17 @@ endFunction
 
 ; also DEPRECATED
 Function ModFavorPointsWithGlobal(GlobalVariable FavorPointsGlobal)
-	ModFavorPoints(FavorPointsGlobal.GetValueInt())
+	ModFavorPoints(FavorPointsGlobal.GetValue() as int)
 endFunction
 
 ;this function will make an actor a friend of the player if allowed
 Function MakePlayerFriend()
-	ActorBase myBase = GetActorBase()
+	ActorBase myBase = GetBaseObject() as ActorBase
 	if myBase.IsUnique()
-		if GetRelationshipRank(Game.GetPlayer())== 0
+		Actor plyr = game.GetPlayer()
+		if GetRelationshipRank(plyr) == 0
 ; 			debug.trace(self + " MakePlayerFriend called on neutral actor - changed to FRIEND.")
-			SetRelationshipRank(Game.GetPlayer(), 1)
+			SetRelationshipRank(plyr, 1)
 		else
 ; 			debug.trace(self + " MakePlayerFriend called on non-neutral actor - NO EFFECT.")
 		endif
