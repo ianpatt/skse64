@@ -8,7 +8,7 @@ The Skyrim Script Extender 64, or SKSE64 for short, is a modder's resource that 
 Compatibility:
 
 SKSE64 will support the latest version of Skyrim available on Steam and GOG. Please make sure you download the correct version for your store.
-- Steam: 1.6.1126
+- Steam: 1.6.1127
 - GOG: 1.6.659
 
 Updates if needed will be available as soon as possible. Do not email to let us know that a new version has been released; we already know. Please be patient.

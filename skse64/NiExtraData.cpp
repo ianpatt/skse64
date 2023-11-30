@@ -4,11 +4,11 @@
 // ??_7BSFaceGenBaseMorphExtraData@@6B@
 RelocAddr<uintptr_t> s_BSFaceGenBaseMorphExtraDataVtbl(0x0183C318);
 // ??_7NiStringsExtraData@@6B@
-RelocAddr<uintptr_t> s_NiStringsExtraDataVtbl(0x019A2D00);
+RelocAddr<uintptr_t> s_NiStringsExtraDataVtbl(0x019A2D70);
 // ??_7NiBinaryExtraData@@6B@
-RelocAddr<uintptr_t> s_NiBinaryExtraDataVtbl(0x019A75E0);
+RelocAddr<uintptr_t> s_NiBinaryExtraDataVtbl(0x019A7650);
 // ??_7NiBooleanExtraData@@6B@
-RelocAddr<uintptr_t> s_NiBooleanExtraDataVtbl(0x019A7798);
+RelocAddr<uintptr_t> s_NiBooleanExtraDataVtbl(0x019A7808);
 
 NiExtraData* NiExtraData::Create(UInt32 size, uintptr_t vtbl)
 {
