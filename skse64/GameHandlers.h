@@ -32,7 +32,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(WeaponRightSwingHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DA90, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B7CA0, Actor * form, UInt32 unk04);
 };
 
 class WeaponLeftSwingHandler : public IHandlerFunctor<Actor, UInt32>
@@ -42,7 +42,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(WeaponLeftSwingHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DB20, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B7D30, Actor * form, UInt32 unk04);
 };
 
 class RightHandSpellFireHandler : public IHandlerFunctor<Actor, UInt32>
@@ -52,7 +52,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(RightHandSpellFireHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DCE0, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B7EF0, Actor * form, UInt32 unk04);
 };
 
 class LeftHandSpellFireHandler : public IHandlerFunctor<Actor, UInt32>
@@ -62,7 +62,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(LeftHandSpellFireHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DC90, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B7EA0, Actor * form, UInt32 unk04);
 };
 
 class RightHandSpellCastHandler : public IHandlerFunctor<Actor, UInt32>
@@ -72,7 +72,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(RightHandSpellCastHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DEA0, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B80B0, Actor * form, UInt32 unk04);
 };
 
 class LeftHandSpellCastHandler : public IHandlerFunctor<Actor, UInt32>
@@ -82,7 +82,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(LeftHandSpellCastHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DE50, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B8060, Actor * form, UInt32 unk04);
 };
 
 class VoiceSpellCastHandler : public IHandlerFunctor<Actor, UInt32>
@@ -92,7 +92,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(VoiceSpellCastHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DEF0, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B8100, Actor * form, UInt32 unk04);
 };
 
 class VoiceSpellFireHandler : public IHandlerFunctor<Actor, UInt32>
@@ -102,7 +102,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(VoiceSpellFireHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DD30, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B7F40, Actor * form, UInt32 unk04);
 };
 
 class BowDrawnHandler : public IHandlerFunctor<Actor, UInt32>
@@ -112,7 +112,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(BowDrawnHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075F150, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B9360, Actor * form, UInt32 unk04);
 };
 
 class BowReleaseHandler : public IHandlerFunctor<Actor, UInt32>
@@ -122,7 +122,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(BowReleaseHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075F170, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B9380, Actor * form, UInt32 unk04);
 };
 
 class WeaponBeginDrawRightHandler : public IHandlerFunctor<Actor, UInt32>
@@ -132,7 +132,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(WeaponBeginDrawRightHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075DF80, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B8190, Actor * form, UInt32 unk04);
 };
 
 class WeaponBeginSheatheRightHandler : public IHandlerFunctor<Actor, UInt32>
@@ -142,7 +142,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(WeaponBeginSheatheRightHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075E030, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B8240, Actor * form, UInt32 unk04);
 };
 
 class RightHandWeaponDrawHandler : public IHandlerFunctor<Actor, UInt32>
@@ -152,7 +152,7 @@ public:
 	virtual	UInt8	Process(Actor * form, UInt32 unk04);
 
 	MEMBER_FN_PREFIX(RightHandWeaponDrawHandler);
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075E0A0, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B82B0, Actor * form, UInt32 unk04);
 };
 
 class RightHandWeaponSheatheHandler : public IHandlerFunctor<Actor, UInt32>
@@ -163,5 +163,5 @@ public:
 
 	MEMBER_FN_PREFIX(RightHandWeaponSheatheHandler);
 	// ??_7RightHandWeaponSheatheHandler@@6B@ + 8
-	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x0075E200, Actor * form, UInt32 unk04);
+	DEFINE_MEMBER_FN(Process_Origin, UInt8, 0x007B8410, Actor * form, UInt32 unk04);
 };

@@ -21,11 +21,11 @@ class BSTaskPool
 {
 public:
 	MEMBER_FN_PREFIX(BSTaskPool);
-	DEFINE_MEMBER_FN(SetNiGeometryTexture, UInt32, 0x005FCF50, NiAVObject * geometry, BGSTextureSet * textureSet);
+	DEFINE_MEMBER_FN(SetNiGeometryTexture, UInt32, 0x00657040, NiAVObject * geometry, BGSTextureSet * textureSet);
 
 	void ProcessTasks(void);
 
-	DEFINE_MEMBER_FN(ProcessTaskQueue_HookTarget, void, 0x005FAA90);
+	DEFINE_MEMBER_FN(ProcessTaskQueue_HookTarget, void, 0x00654B80);
 
 	static BSTaskPool *	GetSingleton(void);
 };

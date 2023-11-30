@@ -78,10 +78,10 @@ public:
 	void	Release(void);
 
 	MEMBER_FN_PREFIX(VMClassInfo);
-	DEFINE_MEMBER_FN(Destroy, void, 0x0135FEB0);
-	DEFINE_MEMBER_FN(GetVariable, SInt32, 0x01361140, BSFixedString * name);
+	DEFINE_MEMBER_FN(Destroy, void, 0x0141D3E0);
+	DEFINE_MEMBER_FN(GetVariable, SInt32, 0x0141E670, BSFixedString * name);
 	// 
-	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x01364880, const char * fnName);
+	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x01421DB0, const char * fnName);
 };
 
 // This type is not fully decoded or correctly sized, just enough to use the functor
@@ -391,15 +391,15 @@ public:
 
 	// Used by Hooks_Papyrus
 	// 
-	DEFINE_MEMBER_FN(UnregisterFromSleep_Internal, void, 0x00963EA0, UInt64 handle);	// AE: using one function earlier due to inlining
-	DEFINE_MEMBER_FN(RevertGlobalData_Internal, bool, 0x0096DB90);
+	DEFINE_MEMBER_FN(UnregisterFromSleep_Internal, void, 0x009C2780, UInt64 handle);	// AE: using one function earlier due to inlining
+	DEFINE_MEMBER_FN(RevertGlobalData_Internal, bool, 0x009CC470);
 	// 4DF4B0288419C72FBF262CE2DBBAAFE7D9713C51+390
-	DEFINE_MEMBER_FN(SaveRegSleepEventHandles_Internal, bool, 0x0096EF50, void * handleReaderWriter, void * saveStorageWrapper);
+	DEFINE_MEMBER_FN(SaveRegSleepEventHandles_Internal, bool, 0x009CD830, void * handleReaderWriter, void * saveStorageWrapper);
 	// 4F9ECB23ABD5935D4160213D8A06DB7A94E6B988+2FB
-	DEFINE_MEMBER_FN(LoadRegSleepEventHandles_Internal, bool, 0x009701F0, void * handleReaderWriter, void * loadStorageWrapper);	// AE: using one function earlier due to inlining
+	DEFINE_MEMBER_FN(LoadRegSleepEventHandles_Internal, bool, 0x009CEAD0, void * handleReaderWriter, void * loadStorageWrapper);	// AE: using one function earlier due to inlining
 
 	// 96B4034421813AABF0DBF8B2B00A84CC25FB9CA0+112
-	DEFINE_MEMBER_FN(QueueDelayFunctor_Internal, bool, 0x00964D10, void** pFunctor);
+	DEFINE_MEMBER_FN(QueueDelayFunctor_Internal, bool, 0x009C35F0, void** pFunctor);
 
 	bool QueueDelayFunctor(void** pFunctor)
 	{
@@ -437,7 +437,7 @@ public:
 		VMValue	* Get(UInt32 idx)	{ return (idx < m_size) ? &m_data[idx] : NULL; }
 
 		MEMBER_FN_PREFIX(Output);
-		DEFINE_MEMBER_FN(Resize, bool, 0x0095F5B0, UInt32 len);
+		DEFINE_MEMBER_FN(Resize, bool, 0x009BDE90, UInt32 len);
 	};
 
 	virtual bool	Copy(Output * dst) = 0;

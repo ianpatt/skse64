@@ -220,8 +220,8 @@ public:
 	UInt64	unk220[2];						// 220
 
 	MEMBER_FN_PREFIX(BSFaceGenAnimationData);
-	DEFINE_MEMBER_FN(SetExpression, void, 0x003DD950, UInt32 type, float value);
-	DEFINE_MEMBER_FN(Reset, void, 0x003DD250, float value, UInt8 unk1, UInt8 unk2, UInt8 unk3, UInt8 unk4);
+	DEFINE_MEMBER_FN(SetExpression, void, 0x0041D450, UInt32 type, float value);
+	DEFINE_MEMBER_FN(Reset, void, 0x0041CD50, float value, UInt8 unk1, UInt8 unk2, UInt8 unk3, UInt8 unk4);
 
 	// Alternatives to inlined functions
 	void SetPhonome(UInt32 type, float value)

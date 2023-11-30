@@ -7,7 +7,7 @@
 #include "skse64/PluginManager.h"
 #include "skse64_common/BranchTrampoline.h"
 
-RelocAddr <uintptr_t> PlayerControls_ctor_Call(0x005E4E50 + 0xD75);
+RelocAddr <uintptr_t> PlayerControls_ctor_Call(0x0063EE50 + 0xD7A);
 
 PlayerControls * PlayerControls::ctor_Hook(void)
 {

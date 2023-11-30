@@ -18,8 +18,8 @@ public:
 	virtual ~BSScaleformImageLoader();
 	virtual GImageInfoBase*	LoadImage(const char * url);
 
-	DEFINE_MEMBER_FN_1(AddVirtualImage, UInt8, 0x00FA00C0, NiTexture ** texture);
-	DEFINE_MEMBER_FN_1(ReleaseVirtualImage, UInt8, 0x00FA0540, NiTexture ** texture);
+	DEFINE_MEMBER_FN_1(AddVirtualImage, UInt8, 0x00FAE350, NiTexture ** texture);
+	DEFINE_MEMBER_FN_1(ReleaseVirtualImage, UInt8, 0x00FAE7D0, NiTexture ** texture);
 };
 
 class GFxLoader
@@ -34,7 +34,7 @@ public:
 	static GFxLoader * GetSingleton();
 
 	MEMBER_FN_PREFIX(GFxLoader);
-	DEFINE_MEMBER_FN(ctor, GFxLoader *, 0x00F23110);
+	DEFINE_MEMBER_FN(ctor, GFxLoader *, 0x00FAABA0);
 
-	DEFINE_MEMBER_FN(LoadMovie, bool, 0x00F23840, IMenu* menu, GFxMovieView** viewOut, const char* name, int scaleMode, float backGroundAlpha);	// probably in subclass
+	DEFINE_MEMBER_FN(LoadMovie, bool, 0x00FAB2D0, IMenu* menu, GFxMovieView** viewOut, const char* name, int scaleMode, float backGroundAlpha);	// probably in subclass
 };
