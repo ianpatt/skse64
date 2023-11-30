@@ -1,4 +1,4 @@
-Skyrim Script Extender 64 v2.2.3 beta
+Skyrim Script Extender 64 v2.2.4 beta
 by Ian Patterson and Stephen Abel (ianpatt and behippo)
 Thanks to: Paul Connelly (scruggsywuggsy the ferret), gibbed, Purple Lunchbox, snakster
 Special thanks to eternity for the help getting this finished. Can't thank you enough.
@@ -8,7 +8,7 @@ The Skyrim Script Extender 64, or SKSE64 for short, is a modder's resource that 
 Compatibility:
 
 SKSE64 will support the latest version of Skyrim available on Steam and GOG. Please make sure you download the correct version for your store.
-- Steam: 1.6.640
+- Steam: 1.6.1126
 - GOG: 1.6.659
 
 Updates if needed will be available as soon as possible. Do not email to let us know that a new version has been released; we already know. Please be patient.
@@ -72,7 +72,7 @@ If your mod requires SKSE64, please provide a link to the main SKSE website <htt
 
 [ Contact the SKSE Team ]
 
-Before contacting us, make sure that your game launches properly without SKSE64 first. If SKSE64 doesn't appear to be working, follow the steps in the FAQ first, then send us skse64.log, skse64_loader.log, and skse64_steam_loader.log as attachments. These files may be found in <My Documents>\My Games\Skyrim Special Edition\SKSE\.
+Before contacting us, make sure that your game launches properly without SKSE64 first. If SKSE64 doesn't appear to be working, follow the steps in the FAQ first, then send us skse64.log and skse64_loader.log as attachments. These files may be found in <My Documents>\My Games\Skyrim Special Edition\SKSE\. Make sure you have "show file extensions" enabled.
 
 ### MAKE SURE TO INCLUDE YOUR LOG FILES AS ATTACHMENTS ###
 We cannot help you solve load order problems. Do not email when a new version of the game is released.

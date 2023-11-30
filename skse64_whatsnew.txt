@@ -1,6 +1,7 @@
 2.2.4
 - use -- to stop argument parsing in the loader. useful for %command% tricks
 - SoulGem::GetSoulSize now returns the correct value instead of the gem size (thanks for the bug report from Ingvion)
+- support for 1.6.1126
 
 2.2.3
 - detect and report that the Epic Store version is unsupported
