@@ -757,3 +757,9 @@ int Property Motion_Keyframed = 4 AutoReadOnly
 int Property Motion_Fixed = 5 AutoReadOnly
 int Property Motion_ThinBoxIntertia = 6 AutoReadOnly
 int Property Motion_Character = 7 AutoReadOnly
+
+; added in 1.6.1126
+Bool Function IsContainerEmpty() Native
+Function RemoveAllStolenItems(ObjectReference akTransferTo) Native
+Function SetContainerAllowStolenItems(Bool setAllowStolenItems) Native
+Int Function GetAllItemsCount() Native
