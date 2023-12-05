@@ -1,6 +1,6 @@
 #include "GameMenus.h"
 
-RelocAddr <_CreateUIMessageData> CreateUIMessageData(0x0061BBE0);
+RelocAddr <_CreateUIMessageData> CreateUIMessageData(0x0061BF60);
 
 IMenu::IMenu() :
 	view(NULL),

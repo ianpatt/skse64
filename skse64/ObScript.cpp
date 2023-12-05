@@ -7,4 +7,4 @@ RelocPtr <ObScriptCommand>	g_firstObScriptCommand(0x01FCEA10);
 RelocPtr <ObScriptCommand>	g_firstConsoleCommand(0x01FDD0B0);
 
 // 42E5B9018CCF84B813403067F1D963D8C753ED8D+4C
-RelocAddr <_ObScript_ExtractArgs> ObScript_ExtractArgs(0x0033E3B0);
+RelocAddr <_ObScript_ExtractArgs> ObScript_ExtractArgs(0x0033E550);
