@@ -144,7 +144,7 @@ public:
 	virtual	EventResult ReceiveEvent(InputEvent ** evn, InputEventDispatcher * dispatcher) = 0;
 };
 
-// 128 
+// 130
 class InputManager
 {
 public:
@@ -167,7 +167,9 @@ public:
 		kContext_MapDebug,
 		kContext_Lockpicking,
 		kContext_Favor,
-		kContextCount = 17
+		kContext_Unknown,	// added in 1.6.1130
+
+		kContextCount,
 	};
 
 	struct InputContext
@@ -191,14 +193,15 @@ public:
 	void*			unkPtr000;					// 000
 	BSTEventSource<void *>	unk008;				// 008 - TODO: template type
 	InputContext	* context[kContextCount];	// 060
-	tArray<void*>	unk0E8;						// 0E8
-	tArray<void*>	unk100;						// 100
-	UInt32			unk118;						// 118 - init'd to 0xFFFFFFFF
-	UInt32			unk11C;						// 11C - init'd to 0x80000000
-	UInt8			allowTextInput;				// 120
-	UInt8			unk121;						// 121
-	UInt8			unk122;						// 122
-	UInt8			pad[5];						// 123
+	tArray<void*>	unk0F0;						// 0F0
+	tArray<void*>	unk108;						// 108
+	UInt32			unk120;						// 120 - init'd to 0xFFFFFFFF
+	UInt32			unk124;						// 124 - init'd to 0x80000000
+	UInt8			allowTextInput;				// 128
+	UInt8			unk129;						// 129
+	UInt8			unk12A;						// 12A
+	UInt8			pad12B;						// 12B
+	UInt32			unk12C;						// 12C
 
 	static InputManager *	GetSingleton(void);
 
@@ -208,7 +211,7 @@ public:
 
 	BSFixedString	GetMappedControl(UInt32 buttonID, UInt32 deviceType, UInt32 contextIdx);
 };
-STATIC_ASSERT(sizeof(InputManager) == 0x128);
+STATIC_ASSERT(sizeof(InputManager) == 0x130);
 
 // 10
 class PlayerInputHandler
