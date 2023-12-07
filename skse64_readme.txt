@@ -1,4 +1,4 @@
-Skyrim Script Extender 64 v2.2.4 beta
+Skyrim Script Extender 64 v2.2.5 beta
 by Ian Patterson and Stephen Abel (ianpatt and behippo)
 Thanks to: Paul Connelly (scruggsywuggsy the ferret), gibbed, Purple Lunchbox, snakster
 Special thanks to eternity for the help getting this finished. Can't thank you enough.
