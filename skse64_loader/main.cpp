@@ -114,6 +114,27 @@ int main(int argc, char ** argv)
 		IFileStream	fileCheck;
 		if(!fileCheck.Open(procPath.c_str()))
 		{
+			DWORD err = GetLastError();
+			if(err)
+				_MESSAGE("exe open check error = %08X", err);
+
+			bool msStore = false;
+
+			if(err == ERROR_ACCESS_DENIED)
+			{
+				// this might be ms store
+				std::string manifestPath = runtimeDir + "appxmanifest.xml";
+
+				if(fileCheck.Open(manifestPath.c_str()))
+				{
+					msStore = true;
+				}
+			}
+
+			if(msStore)
+			{
+				PrintLoaderError("You have the MS Store/Gamepass version of Skyrim, which is not compatible with SKSE.");
+			}
 			if(usedCustomRuntimeName)
 			{
 				// hurr durr
@@ -121,7 +142,7 @@ int main(int argc, char ** argv)
 			}
 			else
 			{
-				PrintLoaderError("Couldn't find %s.", procName.c_str());
+				PrintLoaderError("Couldn't find %s. (%08X)", procName.c_str(), err);
 			}
 
 			return 1;
