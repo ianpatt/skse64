@@ -18,10 +18,8 @@ public:
 	{
 		if(perk)
 		{
-			UInt32 added = GetPerkCount(perk);
-
-			if (added)
-				return (added == node_recursion_limit);
+			if (GetPerkCount(perk) >= node_recursion_limit)
+				return (true);
 			bool addPerk = true;
 			if(m_actor) {
 				if(!CALL_MEMBER_FN(m_actor, HasPerk)(perk))
