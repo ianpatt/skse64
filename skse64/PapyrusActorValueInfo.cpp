@@ -8,6 +8,7 @@
 class MatchSkillPerks : public BGSSkillPerkTreeNode::PerkVisitor
 {
 	Actor * m_actor;
+	const UInt32 node_recursion_limit = 4;
 	bool m_unowned; // Only perks the actor doesn't own, or only perks the actor does own
 	bool m_allRanks; // Walk all ranks for all perks
 public:
@@ -17,6 +18,10 @@ public:
 	{
 		if(perk)
 		{
+			UInt32 added = GetPerkCount(perk);
+
+			if (added)
+				return (added == node_recursion_limit);
 			bool addPerk = true;
 			if(m_actor) {
 				if(!CALL_MEMBER_FN(m_actor, HasPerk)(perk))
@@ -52,6 +57,7 @@ public:
 		return false;
 	}
 	virtual void AddPerk(BGSPerk * perk) = 0;
+	virtual UInt32 GetPerkCount(BGSPerk *perk) = 0;
 };
 
 class PerkFormListVisitor : public MatchSkillPerks
@@ -67,6 +73,16 @@ public:
 	{
 		CALL_MEMBER_FN(m_formList, AddFormToList)(perk);
 	}
+
+	virtual UInt32 GetPerkCount(BGSPerk *perk)
+	{
+		TESForm *base = perk;
+		UInt32 count = 0;
+
+		for (UInt32 i = (*m_formList).forms.count - 1; i < INT_MAX; --i)
+			count += (*m_formList).forms.GetNthItem(i, base);
+		return (count);
+	}
 };
 
 class PerkArrayVisitor : public MatchSkillPerks
@@ -80,6 +96,16 @@ public:
 	virtual void AddPerk(BGSPerk * perk)
 	{
 		m_perks->push_back(perk);
+	}
+
+	virtual UInt32 GetPerkCount(BGSPerk *perk)
+	{
+		std::vector<BGSPerk*>::const_iterator offbounds = (*m_perks).cend();
+		UInt32 count = 0;
+
+		for (std::vector<BGSPerk*>::const_iterator i = (*m_perks).cbegin(); i != offbounds; ++i)
+			count += (*i == perk);
+		return (count);
 	}
 };
 
