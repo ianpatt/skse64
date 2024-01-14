@@ -246,7 +246,45 @@ public:
 
 namespace papyrusObjectReference
 {
-	UInt32 GetNumItems(TESObjectREFR* pContainerRef)
+	bool AdditemsBulk(TESObjectREFR *container, VMArray<TESForm*> forms, VMArray<SInt32> counts, bool remove = false)
+	{
+		ExtraContainerChanges *dst = (ExtraContainerChanges*)(*container).extraData.GetByType(kExtraData_ContainerChanges);
+
+		if (dst && (*dst).data && (*(*dst).data).objList && forms.Length() == counts.Length() )
+		{	InventoryEntryData	*entry;
+			TESForm				*item;
+			SInt32				count;
+
+			for (UInt32 idx = forms.Length() -1; idx < INT_MAX; --idx)
+			{	forms.Get(&item, idx);
+				counts.Get(&count, idx);
+				if (!(item && count) )
+					continue ;
+				tList<InventoryEntryData>::Iterator lst = (*(*(*dst).data).objList).Begin();
+
+				while ((entry = lst.Get()) && (*entry).type != item)
+					++lst;
+				switch ((!!entry << 1) | remove)
+				{   case 0b00:
+						entry = (InventoryEntryData*)Heap_Allocate(sizeof(InventoryEntryData) );
+						new (entry) InventoryEntryData(item, count);
+						(*(*(*dst).data).objList).Insert(entry);
+					break ;
+					case 0b01:
+					break ;
+					case 0b10:
+					case 0b11:
+						if (((*entry).countDelta += (count ^ -remove) + remove) < 0)
+							(*entry).countDelta = 0;
+					break ;
+				}
+			}
+			return (true);
+		}
+		return (false);
+	} 
+
+	UInt32 GetNumItems(TESObjectREFR *pContainerRef)
 	{
 		if (!pContainerRef)
 			return 0;
@@ -276,8 +314,41 @@ namespace papyrusObjectReference
 
 		return count;
 	}
-	
 
+	SInt32 GetItemCountCached(TESObjectREFR *src, TESForm *item)
+	{
+		static std::map<TESForm*, SInt32>	cache;
+		static TESObjectREFR				*last = nullptr;
+
+		if (!(src && item) )
+		{	cache.clear();
+			last = nullptr;
+			return (-1);
+		}
+		if (last != src)
+		{	last = src;
+			cache.clear();
+			ExtraContainerChanges			*changes = (ExtraContainerChanges*)(*src).extraData.GetByType(kExtraData_ContainerChanges);
+			EntryDataList					*itemlst = changes ? (*(*changes).data).objList : nullptr;
+			TESContainer					*container = DYNAMIC_CAST((*src).baseForm, TESForm, TESContainer);
+
+			for (tList<InventoryEntryData>::Iterator item = itemlst ? (*itemlst).Begin() : nullptr; !item.End(); ++item)
+			{	SInt32 total = 0;
+
+				if (container)
+					total += (*container).CountItem((**item).type);
+				if ((**item).countDelta > -1)
+					total += (**item).countDelta;
+				cache.emplace((**item).type, total);
+			}
+		}
+		std::map<TESForm*, SInt32>::iterator pos = cache.find(item);
+
+		if (pos != cache.end() )
+			return (*pos).second;
+		return (-1);
+	}
+	
 	TESForm* GetNthForm(TESObjectREFR* pContainerRef, UInt32 n)
 	{
 		if (!pContainerRef)
@@ -432,6 +503,41 @@ namespace papyrusObjectReference
 		}
 	}
 
+	float RestoreItemCharge(TESObjectREFR *container, TESObjectWEAP *weapon, bool all = false)
+	{
+		if (container && weapon)
+		{	ExtraContainerChanges	*changes = (ExtraContainerChanges*)(*container).extraData.GetByType(kExtraData_ContainerChanges);
+			InventoryEntryData		*entry = nullptr;
+
+			if (!changes || !(*changes).data)
+				return (0.f);
+			if ((entry = (*(*changes).data).FindItemEntry(weapon) ) )
+			{	ExtendDataList	*xtradata_list = (*entry).extendDataList;
+				BaseExtraList	*xdata = nullptr;
+				float			recharged = 0.f;
+
+				for (ExtendDataList::Iterator xlist = (*xtradata_list).Begin(); xdata = xlist.Get(); ++xlist)
+				{	ExtraCharge *charge = (ExtraCharge*)(*xdata).GetByType(kExtraData_Charge);
+					
+					if (charge)
+					{	ExtraEnchantment *xenchant;
+						const float initial = (*charge).charge;
+
+						if ((*weapon).enchantable.enchantment)
+							(*charge).charge = (float)(int)(*weapon).enchantable.maxCharge;
+						else if ((xenchant = (ExtraEnchantment*)(*xdata).GetByType(kExtraData_Enchantment) ) )
+							(*charge).charge = (float)(int)(*xenchant).maxCharge;
+						recharged += (*charge).charge - initial;
+						if (recharged && !all)
+							break ;
+					}
+				}
+				return (recharged);
+			}
+		}
+		return (0.f);
+	}
+
 	EnchantmentItem * GetEnchantment(TESObjectREFR* object)
 	{
 		if (!object)
@@ -481,6 +587,20 @@ namespace papyrusObjectReference
 	bool SetDisplayName(TESObjectREFR* object, BSFixedString value, bool force)
 	{
 		return referenceUtils::SetDisplayName(&object->extraData, value, force);
+	}
+
+	UInt32 GetDisplayValue(TESObjectREFR *container, TESForm *item)
+	{
+		UInt32 cost = 0;
+
+		if (container && item)
+		{	ExtraContainerChanges	*inventory = (ExtraContainerChanges*)(*container).extraData.GetByType(kExtraData_ContainerChanges);
+			InventoryEntryData		*invdata;
+
+			if (inventory && (invdata = (*(*inventory).data).FindItemEntry(item) ) )
+				cost = CALL_MEMBER_FN(invdata, GetValue)();
+		}
+		return (cost);
 	}
 
 	TESObjectREFR * GetEnableParent(TESObjectREFR* object)
@@ -579,7 +699,13 @@ namespace papyrusObjectReference
 void papyrusObjectReference::RegisterFuncs(VMClassRegistry* registry)
 {
 	registry->RegisterFunction(
+		new NativeFunction3<TESObjectREFR, bool, VMArray<TESForm*>, VMArray<SInt32>, bool>("GetNumItems", "ObjectReference", papyrusObjectReference::AdditemsBulk, registry));
+
+	registry->RegisterFunction(
 		new NativeFunction0<TESObjectREFR, UInt32>("GetNumItems", "ObjectReference", papyrusObjectReference::GetNumItems, registry));
+
+	registry->RegisterFunction(
+		new NativeFunction1<TESObjectREFR, SInt32, TESForm*>("GetItemCountCached", "ObjectReference", papyrusObjectReference::GetItemCountCached, registry));
 
 	registry->RegisterFunction(
 		new NativeFunction1<TESObjectREFR, TESForm*, UInt32>("GetNthForm", "ObjectReference", papyrusObjectReference::GetNthForm, registry));
@@ -613,6 +739,9 @@ void papyrusObjectReference::RegisterFuncs(VMClassRegistry* registry)
 		new NativeFunction1<TESObjectREFR, void, float>("SetItemCharge", "ObjectReference", papyrusObjectReference::SetItemCharge, registry));
 
 	registry->RegisterFunction(
+		new NativeFunction2<TESObjectREFR, float, TESObjectWEAP*, bool>("RestoreItemCharge", "ObjectReference", papyrusObjectReference::RestoreItemCharge, registry));
+
+	registry->RegisterFunction(
 		new NativeFunction0<TESObjectREFR, EnchantmentItem*>("GetEnchantment", "ObjectReference", papyrusObjectReference::GetEnchantment, registry));
 
 	registry->RegisterFunction(
@@ -630,6 +759,9 @@ void papyrusObjectReference::RegisterFuncs(VMClassRegistry* registry)
 
 	registry->RegisterFunction(
 		new NativeFunction2<TESObjectREFR, bool, BSFixedString, bool>("SetDisplayName", "ObjectReference", papyrusObjectReference::SetDisplayName, registry));
+
+	registry->RegisterFunction(
+		new NativeFunction1<TESObjectREFR, UInt32, TESForm*>("GetDisplayValue", "ObjectReference", papyrusObjectReference::GetDisplayValue, registry));
 
 	registry->RegisterFunction(
 		new NativeFunction0<TESObjectREFR, void>("ResetInventory", "ObjectReference", papyrusObjectReference::ResetInventory, registry));

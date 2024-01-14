@@ -1,9 +1,35 @@
 
 ; Container-only functions
+
+;Quietly adds or removes count[] instances of every form in items[] to the container.
+;Intended as a fast way to add large quantity of items to a container without sending OnItemAdded event notifications
+;and causing stack dumps from an overwhelmed VM. Returns true if items were added, false otherwise.
+;Note that:
+;1.Extra data will not be copied.
+;2.If removing items from an actor, the caller must make sure no removed item is equipped or issues will ensue.
+;3.Both items[] and count[] must have the exact same size.
+bool Function AddItemsBulk(Form[] items, int[] count, bool remove = false) native
+
+;Returns the number of instances of the passed form, present in the container.
+;In the first call, container items are cached and subsequent calls return the cached value instead of querying the container again.
+;Intended as a faster alternative to GetItemCount, to be used when several calls are required and the contents of the
+;accessed container is not expected to change.
+;If items is None, or if called on a different container, the cache is cleared and its contents refreshed.
+int Function GetItemCountCached(Form item) native
+
 int Function GetNumItems() native
 Form Function GetNthForm(int index) native
 float Function GetTotalItemWeight() native
 float Function GetTotalArmorWeight() native
+
+;Restores the charge of the passed weapon if found in the container.
+;If "all" is set to true, every enchanted instance found will be recharged, otherwise only the first one will.
+;Returns how much charge was restored to the weapon(s).
+float Function RestoreItemCharge(Weapon wepn, bool all) native
+
+;Returns the final cost of the item as shown in the UI, after all factors like enchantments and tempering are calculated.
+;If there's more than one instance of the same form in the container, only the first one is returned
+int Function GetDisplayValue(form item) native
 
 ; Tree and Flora only functions
 bool Function IsHarvested() native
