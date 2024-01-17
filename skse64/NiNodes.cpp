@@ -4,7 +4,7 @@
 NiBoneNames * NiBoneNames::GetSingleton(void)
 {
 	// 33EBA690BF2A27ACE16840951CA740822F8A4756+9A
-	static RelocAddr <NiBoneNames *> addr(0x020E9070);
+	static RelocAddr <NiBoneNames *> addr(0x020F6370);
 	return addr;
 }
 

@@ -70,16 +70,16 @@
 #include "xbyak/xbyak.h"
 
 typedef void(*_RegisterPapyrusFunctions)(VMClassRegistry ** registry);
-RelocAddr<_RegisterPapyrusFunctions> RegisterPapyrusFunctions(0x00A19F70);
-RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x009BE2E0 + 0xCC3);
+RelocAddr<_RegisterPapyrusFunctions> RegisterPapyrusFunctions(0x00A19B20);
+RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x009BDE90 + 0xCC3);
 
-RelocAddr<uintptr_t> UnregisterFromSleep_Enter(0x009C34F0 + 0x14B);
-RelocAddr<uintptr_t> RevertGlobalData_Enter(0x009CA4C0 + 0x22);
-RelocAddr<uintptr_t> RevertGlobalData_Enter2(0x009CAA00 + 0x288);
-RelocAddr<uintptr_t> SaveRegsSleep_Enter(0x009CCF40 + 0x390);
-RelocAddr<uintptr_t> LoadRegsSleep_Enter(0x009CE020 + 0x2FB);
+RelocAddr<uintptr_t> UnregisterFromSleep_Enter(0x009C30A0 + 0x14B);
+RelocAddr<uintptr_t> RevertGlobalData_Enter(0x009CA070 + 0x22);
+RelocAddr<uintptr_t> RevertGlobalData_Enter2(0x009CA5B0 + 0x288);
+RelocAddr<uintptr_t> SaveRegsSleep_Enter(0x009CCAF0 + 0x390);
+RelocAddr<uintptr_t> LoadRegsSleep_Enter(0x009CDBD0 + 0x2FB);
 
-RelocAddr<uintptr_t> kDFQueueHook_Base(0x009D05D0);
+RelocAddr<uintptr_t> kDFQueueHook_Base(0x009D0180);
 uintptr_t  kDFQueueHook_HookAddr = kDFQueueHook_Base + 0x6E;
 uintptr_t kDFQueueHook_Entry_retn = kDFQueueHook_Base + 0x73;
 

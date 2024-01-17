@@ -24,33 +24,33 @@ void Hooks_Handlers_Init(void)
 }
 
 // ??_7WeaponRightSwingHandler@@6B@
-RelocAddr <uintptr_t> WeaponRightSwingHandler_Vtable(0x018AF918);
+RelocAddr <uintptr_t> WeaponRightSwingHandler_Vtable(0x018B98A8);
 // ??_7WeaponLeftSwingHandler@@6B@
-RelocAddr <uintptr_t> WeaponLeftSwingHandler_Vtable(0x018AF930);
+RelocAddr <uintptr_t> WeaponLeftSwingHandler_Vtable(0x018B98C0);
 // ??_7RightHandSpellFireHandler@@6B@
-RelocAddr <uintptr_t> RightHandSpellFireHandler_Vtable(0x018AF9C0);
+RelocAddr <uintptr_t> RightHandSpellFireHandler_Vtable(0x018B9950);
 // ??_7LeftHandSpellFireHandler@@6B@
-RelocAddr <uintptr_t> LeftHandSpellFireHandler_Vtable(0x018AF9A8);
+RelocAddr <uintptr_t> LeftHandSpellFireHandler_Vtable(0x018B9938);
 // ??_7RightHandSpellCastHandler@@6B@
-RelocAddr <uintptr_t> RightHandSpellCastHandler_Vtable(0x018AFA08);
+RelocAddr <uintptr_t> RightHandSpellCastHandler_Vtable(0x018B9998);
 // ??_7LeftHandSpellCastHandler@@6B@
-RelocAddr <uintptr_t> LeftHandSpellCastHandler_Vtable(0x018AF9F0);
+RelocAddr <uintptr_t> LeftHandSpellCastHandler_Vtable(0x018B9980);
 // ??_7VoiceSpellFireHandler@@6B@
-RelocAddr <uintptr_t> VoiceSpellFireHandler_Vtable(0x018AF9D8);
+RelocAddr <uintptr_t> VoiceSpellFireHandler_Vtable(0x018B9968);
 // ??_7VoiceSpellCastHandler@@6B@
-RelocAddr <uintptr_t> VoiceSpellCastHandler_Vtable(0x018AFA20);
+RelocAddr <uintptr_t> VoiceSpellCastHandler_Vtable(0x018B99B0);
 // ??_7BowDrawnHandler@@6B@
-RelocAddr <uintptr_t> BowDrawnHandler_Vtable(0x018AFD50);
+RelocAddr <uintptr_t> BowDrawnHandler_Vtable(0x018B9CE0);
 // ??_7BowReleaseHandler@@6B@
-RelocAddr <uintptr_t> BowReleaseHandler_Vtable(0x018AFD68);
+RelocAddr <uintptr_t> BowReleaseHandler_Vtable(0x018B9CF8);
 // ??_7WeaponBeginDrawRightHandler@@6B@
-RelocAddr <uintptr_t> WeaponBeginDrawRightHandler_Vtable(0x018AFA38);
+RelocAddr <uintptr_t> WeaponBeginDrawRightHandler_Vtable(0x018B99C8);
 // ??_7WeaponBeginSheatheRightHandler@@6B@
-RelocAddr <uintptr_t> WeaponBeginSheatheRightHandler_Vtable(0x018AFA50);
+RelocAddr <uintptr_t> WeaponBeginSheatheRightHandler_Vtable(0x018B99E0);
 // ??_7RightHandWeaponDrawHandler@@6B@
-RelocAddr <uintptr_t> RightHandWeaponDrawHandler_Vtable(0x018AFA68);
+RelocAddr <uintptr_t> RightHandWeaponDrawHandler_Vtable(0x018B99F8);
 // ??_7RightHandWeaponSheatheHandler@@6B@
-RelocAddr <uintptr_t> RightHandWeaponSheatheHandler_Vtable(0x018AFA80);
+RelocAddr <uintptr_t> RightHandWeaponSheatheHandler_Vtable(0x018B9A10);
 
 void Hooks_Handlers_Commit(void)
 {

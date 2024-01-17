@@ -40,11 +40,11 @@ class EventDispatcher
 	// Note: in SE there are multiple identical copies of all these functions 
 	MEMBER_FN_PREFIX(EventDispatcher);
 	// 9FCA8C7632C2FC6D6E342E554B43402121BC4E44+66
-	DEFINE_MEMBER_FN(AddEventSink_Internal, void, 0x005DBFE0, SinkT * eventSink);
+	DEFINE_MEMBER_FN(AddEventSink_Internal, void, 0x005DC8C0, SinkT * eventSink);
 	// ??_7BGSProcedureShoutExecState@@6B@ xref +21 last call
-	DEFINE_MEMBER_FN(RemoveEventSink_Internal, void, 0x0047E220, SinkT * eventSink);
+	DEFINE_MEMBER_FN(RemoveEventSink_Internal, void, 0x0047E310, SinkT * eventSink);
 	// FB59C2DDF89F5248DF43230E39A6FECF8C997BA6+466
-	DEFINE_MEMBER_FN(SendEvent_Internal, void, 0x001C29F0, EventArgT * evn);
+	DEFINE_MEMBER_FN(SendEvent_Internal, void, 0x001C2AE0, EventArgT * evn);
 
 public:
 

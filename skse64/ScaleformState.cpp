@@ -1,7 +1,7 @@
 #include "ScaleformState.h"
 #include "skse64/GameAPI.h"
 
-RelocAddr<BSScaleformTranslator::_GetCachedString> BSScaleformTranslator::GetCachedString(0x00CE8B20);
+RelocAddr<BSScaleformTranslator::_GetCachedString> BSScaleformTranslator::GetCachedString(0x00CED360);
 
 void SKSEGFxLogger::LogMessageVarg(UInt32 messageType, const char* fmt, va_list args)
 {

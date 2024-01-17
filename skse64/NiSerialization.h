@@ -21,9 +21,9 @@ public:
 	virtual bool	SavePath(const char * path);
 
 	MEMBER_FN_PREFIX(NiStream);
-	DEFINE_MEMBER_FN(ctor, NiStream *, 0x00D1A740);
-	DEFINE_MEMBER_FN(dtor, void, 0x00D1A9A0);
-	DEFINE_MEMBER_FN(AddObject, void, 0x00D1ABA0, NiObject * object);
+	DEFINE_MEMBER_FN(ctor, NiStream *, 0x00D1EF80);
+	DEFINE_MEMBER_FN(dtor, void, 0x00D1F1E0);
+	DEFINE_MEMBER_FN(AddObject, void, 0x00D1F3E0, NiObject * object);
 
 //	void	** _vtbl;								// 000
 	UInt64	pad004[(0x218 - 0x008) >> 3];			// 008
@@ -55,7 +55,7 @@ class BSStream : public NiStream
 {
 public:
 	MEMBER_FN_PREFIX(BSStream);
-	DEFINE_MEMBER_FN(dtor, void, 0x00195CD0);
+	DEFINE_MEMBER_FN(dtor, void, 0x00195DC0);
 
 	UInt64	unk620;
 	UInt64	unk628;
@@ -69,6 +69,6 @@ public:
 	virtual ~DeepCopyStream();
 
 	MEMBER_FN_PREFIX(DeepCopyStream);
-	DEFINE_MEMBER_FN(SaveStream, bool, 0x00D1B040, char ** buffer, UInt32 * length);
-	DEFINE_MEMBER_FN(LoadStream, bool, 0x00D1AFF0, char * buffer, UInt32 length);
+	DEFINE_MEMBER_FN(SaveStream, bool, 0x00D1F880, char ** buffer, UInt32 * length);
+	DEFINE_MEMBER_FN(LoadStream, bool, 0x00D1F830, char * buffer, UInt32 length);
 };

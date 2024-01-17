@@ -3258,5 +3258,6 @@ extern const void * RTTI_hkxVertexFloatDataChannel;
 extern const void * RTTI_hkxVertexIntDataChannel;
 extern const void * RTTI_hkxVertexSelectionChannel;
 extern const void * RTTI_hkxVertexVectorDataChannel;
+extern const void * RTTI_noCreationsDownloadedCallback;
 extern const void * RTTI_std__exception;
 extern const void * RTTI_type_info;

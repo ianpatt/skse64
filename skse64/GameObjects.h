@@ -462,8 +462,8 @@ public:
 	UInt64				unk88;	// 88
 
 	MEMBER_FN_PREFIX(MagicItem);
-	DEFINE_MEMBER_FN(GetCostliestEffectItem, EffectItem *, 0x0014C380, int arg1, bool arg2);
-	DEFINE_MEMBER_FN(GetEffectiveMagickaCost, float, 0x0014C100, Character* caster);
+	DEFINE_MEMBER_FN(GetCostliestEffectItem, EffectItem *, 0x0014C470, int arg1, bool arg2);
+	DEFINE_MEMBER_FN(GetEffectiveMagickaCost, float, 0x0014C1F0, Character* caster);
 };
 
 STATIC_ASSERT(sizeof(MagicItem) == 0x90);
@@ -798,10 +798,10 @@ public:
 	UInt64			unk260;			// 260
 
 	MEMBER_FN_PREFIX(TESNPC);
-	DEFINE_MEMBER_FN(GetSex, char, 0x003A8D00);	// return (formType == 0x2B) ? (actorData.flags & 1) : -1;
-	DEFINE_MEMBER_FN(HasOverlays, bool, 0x003C1A50);
+	DEFINE_MEMBER_FN(GetSex, char, 0x003A8DF0);	// return (formType == 0x2B) ? (actorData.flags & 1) : -1;
+	DEFINE_MEMBER_FN(HasOverlays, bool, 0x003C1B40);
 
-	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x003BEA20, BGSHeadPart * target);	// Swaps a headPart of the same type as target with target
+	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x003BEB10, BGSHeadPart * target);	// Swaps a headPart of the same type as target with target
 
 	struct MorphAction {
 		BSFaceGenNiNode * faceNode;
@@ -810,9 +810,9 @@ public:
 		float	value;
 	};
 	
-	DEFINE_MEMBER_FN(UpdateNeck, void, 0x003B8ED0, BSFaceGenNiNode * faceNode);	// Updates the neck seam when weight changed
+	DEFINE_MEMBER_FN(UpdateNeck, void, 0x003B8FC0, BSFaceGenNiNode * faceNode);	// Updates the neck seam when weight changed
 
-	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x003B8C90, NiColorA * result, TintMask * tintMask, bool fromTint);	// Computes RGB SkinTone from RGBA TintMask
+	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x003B8D80, NiColorA * result, TintMask * tintMask, bool fromTint);	// Computes RGB SkinTone from RGBA TintMask
 
 	void SetFaceTexture(BGSTextureSet * textureSet);
 	void SetHairColor(BGSColorForm * hairColor);
