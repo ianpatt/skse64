@@ -341,19 +341,21 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	// convert version resource to internal version format
 	UInt32 versionInternal = MAKE_EXE_VERSION(version >> 48, version >> 32, version >> 16);
 
-	// version mismatch could mean exe type mismatch
-	if(version != kCurVersion)
-	{
 #if GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_BETHESDA
-		const int expectedProcType = kProcType_Steam;
+		const UInt32 expectedProcType = kProcType_Steam;
+		const UInt32 unexpectedProcType = kProcType_GOG;
 		const char * expectedProcTypeName = "Steam";
 #elif GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_GOG
-		const int expectedProcType = kProcType_GOG;
+		const UInt32 expectedProcType = kProcType_GOG;
+		const UInt32 unexpectedProcType = kProcType_Steam;
 		const char * expectedProcTypeName = "GOG";
 #else
 #error unknown runtime type
 #endif
 
+	// version mismatch could mean exe type mismatch
+	if((version != kCurVersion) || (hookInfo->procType == unexpectedProcType))
+	{
 		// we only care about steam/gog for this check
 		const char * foundProcTypeName = nullptr;
 
