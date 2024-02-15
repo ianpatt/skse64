@@ -28,12 +28,12 @@ public:
 	UInt64						unk80;				// 80
 	ID3D11RenderTargetView1		* renderView;		// 88
 	ID3D11ShaderResourceView1	* resourceView;		// 90
-	UInt64						unk2788[(0x2788 - 0x90) >> 3];
-	CRITICAL_SECTION			lock;				// 2790
+	UInt64						unk27E8[(0x27E8 - 0x90) >> 3];
+	CRITICAL_SECTION			lock;				// 27F0 - Moved in 1.6.1130
 
 	// 141415050 - CreateRenderTargets
 
-	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00DBB7B0, UInt32 width, UInt32 height);
+	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00E49C20, UInt32 width, UInt32 height);
 };
 
 extern RelocPtr <BSRenderManager> g_renderManager;

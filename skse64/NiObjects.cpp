@@ -2,14 +2,14 @@
 #include "skse64/NiExtraData.h"
 
 // 2789403034E226069B9EC04A8AC7BD367AF61384+BC
-RelocPtr<float> g_worldToCamMatrix(0x02FE1910);
+RelocPtr<float> g_worldToCamMatrix(0x031AE7C0);
 // 2789403034E226069B9EC04A8AC7BD367AF61384+13E
-RelocPtr<NiRect<float>> g_viewPort(0x02FE2EB8);
+RelocPtr<NiRect<float>> g_viewPort(0x031AFD80);
 
-RelocAddr<_WorldPtToScreenPt3_Internal> WorldPtToScreenPt3_Internal(0x00CA08F0);
+RelocAddr<_WorldPtToScreenPt3_Internal> WorldPtToScreenPt3_Internal(0x00D2E1A0);
 
-RelocAddr<_NiAllocate> NiAllocate(0x00C5C2C0);
-RelocAddr<_NiFree> NiFree(0x00C5C560);
+RelocAddr<_NiAllocate> NiAllocate(0x00CE97F0);
+RelocAddr<_NiFree> NiFree(0x00CE9A90);
 
 void NiRefObject::IncRef(void)
 {

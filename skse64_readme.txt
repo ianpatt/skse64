@@ -1,4 +1,4 @@
-Skyrim Script Extender 64 v2.2.4 beta
+Skyrim Script Extender 64 v2.2.6 beta
 by Ian Patterson and Stephen Abel (ianpatt and behippo)
 Thanks to: Paul Connelly (scruggsywuggsy the ferret), gibbed, Purple Lunchbox, snakster
 Special thanks to eternity for the help getting this finished. Can't thank you enough.
@@ -8,8 +8,8 @@ The Skyrim Script Extender 64, or SKSE64 for short, is a modder's resource that 
 Compatibility:
 
 SKSE64 will support the latest version of Skyrim available on Steam and GOG. Please make sure you download the correct version for your store.
-- Steam: 1.6.1126
-- GOG: 1.6.659
+- Steam: 1.6.1170
+- GOG: 1.6.1170
 
 Updates if needed will be available as soon as possible. Do not email to let us know that a new version has been released; we already know. Please be patient.
 

@@ -1,12 +1,12 @@
 #include "GameForms.h"
 #include "GameObjects.h"
 
-RelocAddr <_LookupFormByID> LookupFormByID(0x001A0B70);
+RelocAddr <_LookupFormByID> LookupFormByID(0x001DFFD0);
 
 BGSDefaultObjectManager *BGSDefaultObjectManager::GetSingleton(void)
 {
 	// 28B3F9E3FED2F18B102E5B767FD2BE747CAB4002+37
-	static RelocPtr<BGSDefaultObjectManager> g_BGSDefaultObjectManager(0x01F51410);
+	static RelocPtr<BGSDefaultObjectManager> g_BGSDefaultObjectManager(0x020F6A00);
 	return g_BGSDefaultObjectManager;
 }
 
@@ -66,7 +66,7 @@ void TESForm::CopyFromEx(TESForm * rhsForm)
 float GetFormWeight(TESForm *form)
 {
 	// 3894EDBBE3D9FBC367A71D7ABC60B87A407F3E3D+30
-	static RelocAddr<uintptr_t> GetFormWeight_Address(0x001AEA40);
+	static RelocAddr<uintptr_t> GetFormWeight_Address(0x001EDF20);
 
 	return ((_GetFormWeight)(GetFormWeight_Address.GetUIntPtr())) (form);
 }

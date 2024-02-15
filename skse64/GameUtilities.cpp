@@ -1,4 +1,4 @@
 #include "skse64/GameUtilities.h"
 
-RelocAddr <_CalculateCRC32_64> CalculateCRC32_64(0x00C3D430);
-RelocAddr <_CalculateCRC32_32> CalculateCRC32_32(0x00C3D3B0);
+RelocAddr <_CalculateCRC32_64> CalculateCRC32_64(0x00CC9F20);
+RelocAddr <_CalculateCRC32_32> CalculateCRC32_32(0x00CC9EA0);

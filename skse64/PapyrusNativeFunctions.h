@@ -117,14 +117,14 @@ public:
 	virtual bool				Run(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunctionBase);
-	DEFINE_MEMBER_FN(Impl_dtor, void, 0x013737C0);
-	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 6
-	DEFINE_MEMBER_FN(Impl_GetParam, UInt64 *, 0x01372E90, UInt32 idx, BSFixedString * nameOut, UInt64 * typeOut);
-	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x01373090, UInt64 unk0, UInt64 unk1, VMClassRegistry * registry, VMState * unk3);
-	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x10
-	DEFINE_MEMBER_FN(Impl_Fn10, BSFixedString *, 0x01372F70);
-	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x12
-	DEFINE_MEMBER_FN(Impl_Fn12, bool, 0x01372F90, UInt32 idx, UInt64 out);
+	DEFINE_MEMBER_FN(Impl_dtor, void, 0x0143F3D0);
+	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 6 (+0x30)
+	DEFINE_MEMBER_FN(Impl_GetParam, UInt64 *, 0x0143EAA0, UInt32 idx, BSFixedString * nameOut, UInt64 * typeOut);
+	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x0143ECA0, UInt64 unk0, UInt64 unk1, VMClassRegistry * registry, VMState * unk3);
+	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x10 (+0x80)
+	DEFINE_MEMBER_FN(Impl_Fn10, BSFixedString *, 0x0143EB80);
+	// ??_7?$NativeFunction1@VActiveEffect@@XPEAVTESForm@@@BSScript@@6B@ entry 0x12 (+0x90)
+	DEFINE_MEMBER_FN(Impl_Fn12, bool, 0x0143EBA0, UInt32 idx, UInt64 out);
 
 	DEFINE_STATIC_HEAP(Heap_Allocate, Heap_Free);
 
@@ -156,8 +156,8 @@ public:
 	virtual bool				Run(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunction);
-	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x01373570, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
-	DEFINE_MEMBER_FN(Impl_dtor, void, 0x013737C0);	// same as NativeFunctionBase dtor
+	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x0143F180, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
+	DEFINE_MEMBER_FN(Impl_dtor, void, 0x0143F3D0);	// same as NativeFunctionBase dtor
 
 	void	DebugRunHook(VMValue * baseValue, VMClassRegistry * registry, UInt32 arg2, VMValue * resultValue, VMState * state);
 

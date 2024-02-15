@@ -3,6 +3,7 @@
 #include "common/IFileStream.h"
 #include "skse64_common/Utilities.h"
 #include "skse64_common/SafeWrite.h"
+#include "skse64_common/skse_version.h"
 #include <dbghelp.h>
 #include <shlobj.h>
 
@@ -119,7 +120,7 @@ void Hooks_Debug_Init(void)
 			char	myDocumentsPath[MAX_PATH];
 			ASSERT(SUCCEEDED(SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, SHGFP_TYPE_CURRENT, myDocumentsPath)));
 
-			sprintf_s(s_crashDumpPath, sizeof(s_crashDumpPath), "%s\\My Games\\Skyrim Special Edition\\SKSE\\Crashdumps\\%04d-%02d-%02d_%02d.%02d.%02d.dmp", myDocumentsPath,
+			sprintf_s(s_crashDumpPath, sizeof(s_crashDumpPath), "%s\\My Games\\" SAVE_FOLDER_NAME "\\SKSE\\Crashdumps\\%04d-%02d-%02d_%02d.%02d.%02d.dmp", myDocumentsPath,
 				s_launchTime.wYear, s_launchTime.wMonth, s_launchTime.wDay,
 				s_launchTime.wHour, s_launchTime.wMinute, s_launchTime.wSecond);
 

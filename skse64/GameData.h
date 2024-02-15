@@ -361,7 +361,7 @@ public:
 	UInt32 LoadScripts_Hook();
 
 	MEMBER_FN_PREFIX(DataHandler);
-	DEFINE_MEMBER_FN(LoadScripts, UInt32, 0x0017D8D0);
+	DEFINE_MEMBER_FN(LoadScripts, UInt32, 0x001BC9F0);
 };
 
 STATIC_ASSERT(offsetof(DataHandler, regionList) == 0xD00);
@@ -410,8 +410,8 @@ public:
 	static EquipManager *   GetSingleton(void);
 
 	MEMBER_FN_PREFIX(EquipManager);
-	DEFINE_MEMBER_FN(EquipItem, void, 0x0066F520, Actor * actor, TESForm * item, BaseExtraList * extraData, SInt32 count, BGSEquipSlot * equipSlot, bool withEquipSound, bool preventUnequip, bool showMsg, void * unk);
-	DEFINE_MEMBER_FN(UnequipItem, bool, 0x0066FD10, Actor * actor, TESForm * item, BaseExtraList * extraData, SInt32 count, BGSEquipSlot * equipSlot, bool unkFlag1, bool preventEquip, bool unkFlag2, bool unkFlag3, void * unk);
+	DEFINE_MEMBER_FN(EquipItem, void, 0x006CBA50, Actor * actor, TESForm * item, BaseExtraList * extraData, SInt32 count, BGSEquipSlot * equipSlot, bool withEquipSound, bool preventUnequip, bool showMsg, void * unk);
+	DEFINE_MEMBER_FN(UnequipItem, bool, 0x006CC240, Actor * actor, TESForm * item, BaseExtraList * extraData, SInt32 count, BGSEquipSlot * equipSlot, bool unkFlag1, bool preventEquip, bool unkFlag2, bool unkFlag3, void * unk);
 };
 
 
@@ -491,8 +491,8 @@ public:
 	{
 	public:
 		MEMBER_FN_PREFIX(MorphDatabase);
-		DEFINE_MEMBER_FN(GetFaceGenModelMapEntry, bool, 0x003EF300, const char * meshPath, BSFaceGenModelMap ** entry);
-		DEFINE_MEMBER_FN(SetFaceGenModelMapEntry, void, 0x003EF1B0, const char * meshPath, BSFaceGenModel * model);
+		DEFINE_MEMBER_FN(GetFaceGenModelMapEntry, bool, 0x0042EDA0, const char * meshPath, BSFaceGenModelMap ** entry);
+		DEFINE_MEMBER_FN(SetFaceGenModelMapEntry, void, 0x0042EC50, const char * meshPath, BSFaceGenModel * model);
 
 		UInt64	unk00;	// 00
 		UInt32	unk08;	// 08
@@ -527,8 +527,8 @@ public:
 	UInt8			pad61[7];					// 61
 
 	MEMBER_FN_PREFIX(FaceGen);
-	DEFINE_MEMBER_FN(RegenerateHead, void, 0x003EC430, BSFaceGenNiNode * headNode, BGSHeadPart * head, TESNPC * npc);
-	DEFINE_MEMBER_FN(ApplyMorph, void, 0x003EBD30, BSFaceGenNiNode* faceGenNode, BGSHeadPart* headPart, BSFixedString* morphName, float relative);
+	DEFINE_MEMBER_FN(RegenerateHead, void, 0x0042BED0, BSFaceGenNiNode * headNode, BGSHeadPart * head, TESNPC * npc);
+	DEFINE_MEMBER_FN(ApplyMorph, void, 0x0042B7D0, BSFaceGenNiNode* faceGenNode, BGSHeadPart* headPart, BSFixedString* morphName, float relative);
 };
 STATIC_ASSERT(offsetof(FaceGen, isReset) == 0x58);
 
@@ -674,11 +674,11 @@ public:
 	}
 
 	MEMBER_FN_PREFIX(PersistentFormManager);
-	DEFINE_MEMBER_FN(CreateOffensiveEnchantment, EnchantmentItem *, 0x005D2800, tArray<MagicItem::EffectItem> * effectArray);
-	DEFINE_MEMBER_FN(CreateDefensiveEnchantment, EnchantmentItem *, 0x005D28A0, tArray<MagicItem::EffectItem> * effectArray);
-	DEFINE_MEMBER_FN(CreatePoison, void, 0x005D29F0, tArray<MagicItem::EffectItem> * effectArray, AlchemyItem ** poison);
-	DEFINE_MEMBER_FN(CreatePotion, void, 0x005D2940, AlchemyItem ** potion, tArray<MagicItem::EffectItem> * effectArray);
-	DEFINE_MEMBER_FN(ScheduleForDeletion, void, 0x005D2D20, TESForm *);
+	DEFINE_MEMBER_FN(CreateOffensiveEnchantment, EnchantmentItem *, 0x0062E890, tArray<MagicItem::EffectItem> * effectArray);
+	DEFINE_MEMBER_FN(CreateDefensiveEnchantment, EnchantmentItem *, 0x0062E930, tArray<MagicItem::EffectItem> * effectArray);
+	DEFINE_MEMBER_FN(CreatePoison, void, 0x0062EA80, tArray<MagicItem::EffectItem> * effectArray, AlchemyItem ** poison);
+	DEFINE_MEMBER_FN(CreatePotion, void, 0x0062E9D0, AlchemyItem ** potion, tArray<MagicItem::EffectItem> * effectArray);
+	DEFINE_MEMBER_FN(ScheduleForDeletion, void, 0x0062EDB0, TESForm *);
 };
 STATIC_ASSERT(sizeof(PersistentFormManager) == 0xD0);
 
@@ -862,14 +862,14 @@ public:
 	UInt8				unk370[0x60];		// 370 - TODO:  .?AV?$BSTCommonStaticMessageQueue@V?$BSTSmartPointer@VRequest@saveload@bgs@@UBSTSmartPointerIntrusiveRefCount@@@@$07@@
 	
 	private:
-	DEFINE_MEMBER_FN(Save_Internal, bool, 0x005B9C70, int unk1, UInt32 unk2, const char * name);
-	DEFINE_MEMBER_FN(Load_Internal, bool, 0x005BA3B0, const char * name, int unk1, UInt32 unk2, UInt32 unk3);
+	DEFINE_MEMBER_FN(Save_Internal, bool, 0x00611FA0, int unk1, UInt32 unk2, const char * name);
+	DEFINE_MEMBER_FN(Load_Internal, bool, 0x006126E0, const char * name, int unk1, UInt32 unk2, UInt32 unk3);
 
-	DEFINE_MEMBER_FN(SaveGame_HookTarget, void, 0x005AFBE0, UInt64 *unk0);
-	DEFINE_MEMBER_FN(LoadGame_HookTarget, bool, 0x005B02F0, UInt64 *unk0, UInt32 unk1, UInt32 unk2, void *unk3);
+	DEFINE_MEMBER_FN(SaveGame_HookTarget, void, 0x00607AE0, UInt64 *unk0);
+	DEFINE_MEMBER_FN(LoadGame_HookTarget, bool, 0x006081F0, UInt64 *unk0, UInt32 unk1, UInt32 unk2, void *unk3);
 
-	DEFINE_MEMBER_FN(ProcessEvents_Internal, void, 0x005BCF20);
-	DEFINE_MEMBER_FN(DeleteSavegame, void, 0x005B9C00, const char * saveName, UInt32 unk1);
+	DEFINE_MEMBER_FN(ProcessEvents_Internal, void, 0x00615310);
+	DEFINE_MEMBER_FN(DeleteSavegame, void, 0x00611F30, const char * saveName, UInt32 unk1);
 };
 STATIC_ASSERT(offsetof(BGSSaveLoadManager, thread) == 0x2B0);
 STATIC_ASSERT(offsetof(BGSSaveLoadManager::Thread, hThread) == 0x30);

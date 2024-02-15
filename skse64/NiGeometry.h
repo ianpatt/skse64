@@ -40,7 +40,7 @@ class NiTriBasedGeom : public NiGeometry
 {
 public:
 	// 9D070CBFB7F7B861F270D5D29E210A479261131B+C2
-	DEFINE_MEMBER_FN_1(ctor, NiTriBasedGeom *, 0x00CCE9B0, NiTriShapeData * geometry);
+	DEFINE_MEMBER_FN_1(ctor, NiTriBasedGeom *, 0x00D5C260, NiTriShapeData * geometry);
 };
 
 class NiTriShape : public NiTriBasedGeom
@@ -130,7 +130,7 @@ public:
 	UInt32		unk17C;			// 17C
 
 	// 
-	DEFINE_MEMBER_FN_0(ctor, BSDynamicTriShape *, 0x00CACD10);
+	DEFINE_MEMBER_FN_0(ctor, BSDynamicTriShape *, 0x00D3A5C0);
 };
 STATIC_ASSERT(sizeof(BSDynamicTriShape) == 0x180);
 
@@ -425,8 +425,8 @@ public:
 	NiSkinInstance * Clone();
 
 	MEMBER_FN_PREFIX(NiSkinInstance);
-	DEFINE_MEMBER_FN(Copy, NiSkinInstance*, 0x00C8C000);
-	DEFINE_MEMBER_FN(ctor, NiSkinInstance *, 0x00CB9D40);
+	DEFINE_MEMBER_FN(Copy, NiSkinInstance*, 0x00D198B0);
+	DEFINE_MEMBER_FN(ctor, NiSkinInstance *, 0x00D475F0);
 };
 STATIC_ASSERT(offsetof(NiSkinInstance, lock) == 0x60);
 STATIC_ASSERT(sizeof(NiSkinInstance) == 0x88);

@@ -25,7 +25,7 @@ public:
 
 	static NiNode * Create(UInt16 arrBufLen = 0);
 
-	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00C910B0, UInt16 arrBufLen);
+	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00D1E960, UInt16 arrBufLen);
 };
 STATIC_ASSERT(sizeof(NiNode) == 0x128);
 
@@ -38,7 +38,7 @@ public:
 	static BSFadeNode * Create();
 
 	// 905B699D46B52EE8B3BD44B9DAFBC2F728A310B5+81
-	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x013AEE80);
+	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x0147AAB0);
 };
 STATIC_ASSERT(sizeof(BSFadeNode) == 0x158);
 
@@ -68,7 +68,7 @@ public:
 	};
 
 	MEMBER_FN_PREFIX(BSFaceGenNiNode);
-	DEFINE_MEMBER_FN(AdjustHeadMorph, void, 0x003F33F0, UInt32 unk04, UInt32 unk08, float delta);
+	DEFINE_MEMBER_FN(AdjustHeadMorph, void, 0x00432E90, UInt32 unk04, UInt32 unk08, float delta);
 };
 
 //STATIC_ASSERT(sizeof(BSFaceGenNiNode) == 0xEC);
