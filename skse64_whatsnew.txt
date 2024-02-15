@@ -1,5 +1,5 @@
 2.2.6
-- support for 1.6.1170
+- support for 1.6.1170 (1.6.1179 for gog)
 
 2.2.5
 - update InputManager, fix custom text input controls
