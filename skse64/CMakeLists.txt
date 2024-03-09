@@ -417,7 +417,7 @@ target_link_libraries(
 	${PROJECT_NAME}
 	PUBLIC
 		skse64::skse64_common
-		Xbyak::xbyak
+		xbyak::xbyak
 		xse::common
 )
 
