@@ -17,36 +17,11 @@ public:
 	{
 		if(perk && !GetPerkAdded(perk))
 		{
-			bool addPerk = true;
-			if(m_actor) {
-				if(!CALL_MEMBER_FN(m_actor, HasPerk)(perk))
-					addPerk = m_unowned;
-				else
-					addPerk = !m_unowned;
-			}
-
-			if(addPerk) {
-				AddPerk(perk);
-			}
-
-			if(m_allRanks) {
-				BGSPerk * nextPerk = perk->nextPerk;
-				while(nextPerk) {
-					addPerk = true;
-					if(m_actor) {
-						if(!CALL_MEMBER_FN(m_actor, HasPerk)(nextPerk))
-							addPerk = m_unowned;
-						else
-							addPerk = !m_unowned;
-					}
-
-					if(addPerk) {
-						AddPerk(nextPerk);
-					}
-
-					nextPerk = nextPerk->nextPerk;
-				}
-			}
+			do
+			{	if (!m_actor || (!CALL_MEMBER_FN(m_actor, HasPerk)(perk) ? m_unowned : !m_unowned) )
+					AddPerk(perk);
+				perk = m_allRanks ? perk->nextPerk : nullptr;
+			}	while (perk);
 		}
 
 		return false;
