@@ -13,6 +13,7 @@ namespace papyrusPerk
 	void RegisterFuncs(VMClassRegistry* registry);
 
 	BGSPerk * GetNextPerk(BGSPerk * perk);
+	UInt32 GetSkillRequirement(BGSPerk *perk, BSFixedString actorvalue);
 	UInt32 GetNumEntries(BGSPerk * perk);
 	UInt32 GetNthEntryRank(BGSPerk * perk, UInt32 n);
 	UInt32 GetNthEntryPriority(BGSPerk * perk, UInt32 n);
