@@ -5,6 +5,7 @@
 
 class TESObjectREFR;
 class TESForm;
+class TESObjectWEAP;
 class EnchantmentItem;
 class VMClassRegistry;
 class EffectSetting;
@@ -13,7 +14,10 @@ class BGSListForm;
 namespace papyrusObjectReference
 {
 	void RegisterFuncs(VMClassRegistry* registry);
+	bool AdditemsBulk(TESObjectREFR* pContainerRef, VMArray<TESForm*> items, VMArray<SInt32> counts, bool remove);
 	UInt32 GetNumItems(TESObjectREFR* pContainerRef);
+	VMResultArray<UInt32> GetItemsCount(TESObjectREFR *pContainerRef, VMArray<TESForm*> items);
+	SInt32 GetItemCountCached(TESObjectREFR *pContainerRef, TESForm *item, const bool refresh);
 	TESForm* GetNthForm(TESObjectREFR* pContainerRef, UInt32 n);
 	float GetTotalItemWeight(TESObjectREFR* pContainerRef);
 	float GetTotalArmorWeight(TESObjectREFR* pContainerRef);
@@ -22,6 +26,7 @@ namespace papyrusObjectReference
 	float GetItemCharge(TESObjectREFR* object);
 	float GetItemMaxCharge(TESObjectREFR* object);
 	void SetItemCharge(TESObjectREFR* object, float value);
+	float RestoreItemCharge(TESObjectREFR*, TESObjectWEAP*, bool);
 	EnchantmentItem * GetEnchantment(TESObjectREFR* object);
 
 	void CreateEnchantment(TESObjectREFR* object, float maxCharge, VMArray<EffectSetting*> effects, VMArray<float> magnitudes, VMArray<UInt32> areas, VMArray<UInt32> durations);
@@ -31,6 +36,7 @@ namespace papyrusObjectReference
 	bool IsOffLimits(TESObjectREFR * obj);
 	BSFixedString GetDisplayName(TESObjectREFR* object);
 	bool SetDisplayName(TESObjectREFR* object, BSFixedString value, bool force);
+	UInt32 GetDisplayValue(TESObjectREFR *pContainerRef, TESForm *item);
 	TESObjectREFR * GetEnableParent(TESObjectREFR* object);
 
 	bool IsHarvested(TESObjectREFR* pProduceRef);
