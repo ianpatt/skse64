@@ -644,6 +644,16 @@ public:
 		m_listHead.item = item;
 	}
 
+	bool Remove(T *item)
+	{
+		_Node *prev = nullptr;
+		_Node *curr = &m_listHead;
+
+		while (curr && (*curr).item != item)
+			prev = curr, curr = (*curr).next;
+		return (curr &&	(*curr).Remove(prev) );
+	}
+
 	void Push(T * item)
 	{
 		_Node * tail = Tail();
