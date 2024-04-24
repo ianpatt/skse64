@@ -251,7 +251,8 @@ namespace papyrusObjectReference
 		ExtraContainerChanges *dst = (ExtraContainerChanges*)(*container).extraData.GetByType(kExtraData_ContainerChanges);
 
 		if (dst && (*dst).data && (*(*dst).data).objList && forms.Length() == counts.Length() )
-		{	InventoryEntryData	*entry;
+		{	TESContainer		*basecont = DYNAMIC_CAST((*container).baseForm, TESForm, TESContainer);
+			InventoryEntryData	*entry;
 			TESForm				*item;
 			SInt32				count;
 
@@ -261,6 +262,7 @@ namespace papyrusObjectReference
 				if (!item || count <= 0)
 					continue ;
 				tList<InventoryEntryData>::Iterator lst = (*(*(*dst).data).objList).Begin();
+				const SInt32 static_cnt = basecont ? (*basecont).CountItem(item) : 0;
 
 				while ((entry = lst.Get() ) && (*entry).type != item)
 					++lst;
@@ -273,11 +275,12 @@ namespace papyrusObjectReference
 					case 0b01:
 					break ;
 					case 0b10:
-						if (((*entry).countDelta += count) < count)
+						if (((*entry).countDelta += count) + static_cnt < count)
 							(*entry).countDelta += (count - (*entry).countDelta);
 					break ;
 					case 0b11:
-						if (((*entry).countDelta -= count) <= 0)
+						(*entry).countDelta -= count;
+						if (!static_cnt ? (*entry).countDelta < 1 : (*entry).countDelta == 0)
 						{	(*(*(*dst).data).objList).Remove(entry);
 							(*entry).Delete();
 						}
