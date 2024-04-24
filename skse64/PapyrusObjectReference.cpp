@@ -292,7 +292,7 @@ namespace papyrusObjectReference
 		return (false);
 	} 
 
-	SInt32 GetItemCountCached(TESObjectREFR *src, TESForm *item, const bool refresh = false)
+	static SInt32 GetItemCountCached(TESObjectREFR *src, TESForm *item, const bool refresh = false)
 	{
 		static std::map<TESForm*, SInt32> cache;
 		static TESObjectREFR *last = nullptr;
@@ -724,9 +724,6 @@ void papyrusObjectReference::RegisterFuncs(VMClassRegistry* registry)
 
 	registry->RegisterFunction(
 		new NativeFunction1<TESObjectREFR, VMResultArray<UInt32>, VMArray<TESForm*> >("GetItemsCount", "ObjectReference", papyrusObjectReference::GetItemsCount, registry));
-
-	registry->RegisterFunction(
-		new NativeFunction2<TESObjectREFR, SInt32, TESForm*, bool>("GetItemCountCached", "ObjectReference", papyrusObjectReference::GetItemCountCached, registry));
 
 	registry->RegisterFunction(
 		new NativeFunction1<TESObjectREFR, TESForm*, UInt32>("GetNthForm", "ObjectReference", papyrusObjectReference::GetNthForm, registry));

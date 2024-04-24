@@ -12,20 +12,6 @@
 ;	Usage: player.AddItemsBulk(item_list, items_count)
 bool Function AddItemsBulk(Form[] items, int[] count, bool remove = false) native
 
-;Returns how many instances of the passed form are present in the container (-1 if the container was not scanned).
-;Container contents are cached in the first call and subsequent calls return the cached values instead of querying the
-;container again. Intended as a faster alternative to GetItemCount, to be used when several calls are required in quick
-;succession and the contents of the container are not expected to change.
-;NOTES:
-;If called on a different container from last, the cache is rebuilt from the new container before looking up the item.
-;If refresh is true, the cache is rebuilt before looking up the item.
-;If item is NONE, the cache is cleared and -1 is returned.
-;The function is bottlenecked by frametime, which at a typical avg of 16ms, only allows ~60 calls per second.
-;While faster than "GetItemCount", which only manages ~10-14 calls per second, it's still not be ideal if processing
-;many items in a time sensitive manner. Consider using the new GetItemsCount in such circumstances.
-;	Usage: container.GetItemCountCached(my_item)
-int Function GetItemCountCached(Form item, bool rebuild = false) native
-
 ;Returns an array, each element containing the number of instances of items[x] present in the container.
 ;The array is filled in such a way that its first element will contain the count of items' first element, and so on.
 ;Intended to be used when large quantities of items need to be processed as fast as possible.

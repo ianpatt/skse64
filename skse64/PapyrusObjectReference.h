@@ -17,7 +17,6 @@ namespace papyrusObjectReference
 	bool AdditemsBulk(TESObjectREFR* pContainerRef, VMArray<TESForm*> items, VMArray<SInt32> counts, bool remove);
 	UInt32 GetNumItems(TESObjectREFR* pContainerRef);
 	VMResultArray<UInt32> GetItemsCount(TESObjectREFR *pContainerRef, VMArray<TESForm*> items);
-	SInt32 GetItemCountCached(TESObjectREFR *pContainerRef, TESForm *item, const bool refresh);
 	TESForm* GetNthForm(TESObjectREFR* pContainerRef, UInt32 n);
 	float GetTotalItemWeight(TESObjectREFR* pContainerRef);
 	float GetTotalArmorWeight(TESObjectREFR* pContainerRef);
