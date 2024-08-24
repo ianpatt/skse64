@@ -43,10 +43,16 @@ bool __cdecl Hook_Crosshair_LookupREFRByHandle(UInt32 & refHandle, NiPointer<TES
 {
 	bool result = LookupREFRByHandle(refHandle, refrOut);
 
+	// when player controls are disabled the game spams this function every frame, don't send multiple null objects in a row
+	bool sendEvent = refrOut || g_curCrosshairRef;
+
 	g_curCrosshairRef = refrOut;
 
-	SKSECrosshairRefEvent evn(refrOut);
-	g_crosshairRefEventDispatcher.SendEvent(&evn);
+	if(sendEvent)
+	{
+		SKSECrosshairRefEvent evn(refrOut);
+		g_crosshairRefEventDispatcher.SendEvent(&evn);
+	}
 
 	return result;
 }
