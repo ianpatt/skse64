@@ -2,6 +2,7 @@
 #include "GameObjects.h"
 
 RelocAddr <_LookupFormByID> LookupFormByID(0x001E01A0);
+RelocAddr <_LookupFormByEditorID> LookupFormByEditorID(0x001E0370);
 
 BGSDefaultObjectManager *BGSDefaultObjectManager::GetSingleton(void)
 {

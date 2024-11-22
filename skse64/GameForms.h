@@ -33,6 +33,9 @@ struct ModInfo;
 typedef TESForm* (*_LookupFormByID)(UInt32 id);
 extern RelocAddr <_LookupFormByID> LookupFormByID;
 
+typedef TESForm* (*_LookupFormByEditorID)(const char* edid);
+extern RelocAddr <_LookupFormByEditorID> LookupFormByEditorID;
+
 class FormMatcher
 {
 public:
