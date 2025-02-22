@@ -29,7 +29,11 @@ void NiRefObject::DecRef(void)
 
 int ExtraDataCompare(const void * ls, const void * rs)
 {
-	return (int)((*(NiExtraData**)ls)->m_pcName - (*(NiExtraData**)rs)->m_pcName);
+	auto lhs = (*(NiExtraData**)ls)->m_pcName;
+	auto rhs = (*(NiExtraData**)rs)->m_pcName;
+
+	// difference truncated to an int loses important bits
+	return (lhs > rhs) - (lhs < rhs);
 }
 
 void NiObjectNET::AddExtraData(NiExtraData * extraData)
