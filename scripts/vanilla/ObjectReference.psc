@@ -8,23 +8,24 @@ bool FUNCTION rampRumble(float power = 0.5, float duration = 0.25, float falloff
 ; 		debug.traceStack(self + " called rampRumble() but parameter 'power' was invalid.  Must be a non-zero float less than 1.0",1)
 		; throw the warning, but don't return false - value gets clamped anyway
 	endif
-	float playerDist = game.getplayer().getDistance(self)
+    Actor plyr = game.GetPlayer()
+	float playerDist = (plyr).getDistance(self)
 	; ignore if the player is too far away
 	if playerDist < falloff
-		float intensity = (1 - (playerDist / falloff))
+		float intensity = (1.0 - (playerDist / falloff))
 		; ramp actual intensity down based on parameter value
 		intensity = intensity*power		
 		if intensity > 1.0
 			; clamp to prevent invalid values
 ; 			debug.traceStack(self + " called for too much controller/camera shake.  Clamped to 1.0", 0)
 			intensity = 1.0 
-		elseif intensity <= 0
+		elseif intensity <= 0.0
 			; clamp to prevent invalid values
 ; 			debug.traceStack(self + " called for too little controller/camera shake", 0)
-			intensity = 0
+			intensity = 0.0
 			return false
 		endif
-		game.shakeCamera(game.getPlayer(), intensity)
+		game.shakeCamera(plyr, intensity)
 		game.shakeController(intensity, intensity, duration)
 		return true
 	else
@@ -48,7 +49,7 @@ bool Function IsNearPlayer()
 		else
 			; both in an exterior -- no means of testing 
 			;  worldspace at the moment, so this will do.
-			if (player.GetDistance(self) > 3000)
+			if (player.GetDistance(self) > 3000.0)
 				; pretty darned far away -- safe
 				return false
 			else
@@ -86,7 +87,7 @@ function MoveToWhenUnloaded(ObjectReference akTarget, float afXOffset = 0.0, flo
 	while self.GetCurrentLocation().IsLoaded() || akTarget.GetCurrentLocation().IsLoaded()
 		;do nothing
 ; 		debug.trace(self + "MoveToWhenUnloaded() waiting for current location and target location to be unloaded before moving. If called by a quest stage fragment, this may cause that quest stage to not complete until this function finishes (and if it's a startup stage, the quest will not report itself as running until the stage finishes.).", 1)
-		Utility.Wait(5)	;when this function is threaded we can increase this wait time... I set it lower for testing purposes so it reevaluates faster when I need to purge cell buffers in the Civil War when calling moveto on the player between Civil War campaigns
+		Utility.Wait(5.0)	;when this function is threaded we can increase this wait time... I set it lower for testing purposes so it reevaluates faster when I need to purge cell buffers in the Civil War when calling moveto on the player between Civil War campaigns
 	EndWhile
 	self.MoveTo(akTarget, afXOffset, afYOffset, afZOffset)
 EndFunction
@@ -97,7 +98,7 @@ Function DeleteWhenAble()
 	While GetParentCell() && GetParentCell().IsAttached()
 		;do nothing
 ; 		debug.trace(self + "DeleteWhenAble() waiting for current location to be unloaded before deleting. If called by a quest stage fragment, this may cause that quest stage to not complete until this function finishes (and if it's a startup stage, the quest will not report itself as running until the stage finishes.).", 1)
-		Utility.Wait(5) ;when this function is threaded we can increase this wait time... I set it lower for testing purposes so it reevaluates faster when I need to purge cell buffers in the Civil War when calling moveto on the player between Civil War campaigns
+		Utility.Wait(5.0) ;when this function is threaded we can increase this wait time... I set it lower for testing purposes so it reevaluates faster when I need to purge cell buffers in the Civil War when calling moveto on the player between Civil War campaigns
 	EndWhile
 	Delete()
 EndFunction
