@@ -19,28 +19,28 @@ static bool IsTaskQueueEmpty()
 void BSTaskPool::ProcessTasks()
 {
 	CALL_MEMBER_FN(this, ProcessTaskQueue_HookTarget)();
-	
+
 	// create temporary vector array to copy queue contents into
 	std::vector<TaskDelegate*> tasks_vector;
 
-    // copy queue contents until queue is empty (this is to prevent an infinite loop in some cases)
+	// copy queue contents until queue is empty (this is to prevent an infinite loop in some cases)
 	while (!IsTaskQueueEmpty())
 	{
 		s_taskQueueLock.Enter();
-		TaskDelegate * cmd = s_tasks.front();
-        tasks_vector.push_back(cmd);
+		TaskDelegate* cmd = s_tasks.front();
+		tasks_vector.push_back(cmd);
 		s_tasks.pop();
 		s_taskQueueLock.Leave();
 	}
 
 	// run copied delegates
-    for (TaskDelegate* cmd : tasks_vector) {
-        cmd->Run();
-        cmd->Dispose();
-    }
+	for (TaskDelegate* cmd : tasks_vector) {
+		cmd->Run();
+		cmd->Dispose();
+	}
 }
 
-void TaskInterface::AddTask(TaskDelegate * cmd)
+void TaskInterface::AddTask(TaskDelegate* cmd)
 {
 	s_taskQueueLock.Enter();
 	s_tasks.push(cmd);
@@ -49,7 +49,7 @@ void TaskInterface::AddTask(TaskDelegate * cmd)
 
 void Hooks_Threads_Init(void)
 {
-	
+
 }
 
 // 691ACD40B8430FBDA081477DEB2A9948ACC235F1+11F
