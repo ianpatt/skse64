@@ -623,11 +623,24 @@ struct BetterPluginName
 	const char * userReportedName;
 };
 
+struct BetterPluginError
+{
+	const char * dllName;
+	UInt32 errorCode;
+	const char * errorText;
+};
+
 // some plugins have non-descriptive names resulting in bad bug reports
 static const BetterPluginName kBetterPluginNames[] =
 {
 	{ "skee64.dll", "RaceMenu" },
 	{ nullptr, nullptr }
+};
+
+static const BetterPluginError kBetterPluginError[] =
+{
+	{ "EngineFixes.dll", ERROR_MOD_NOT_FOUND, "SSE Engine Fixes (Part 2) not installed. Read the mod page." },
+	{ nullptr, 0, nullptr }
 };
 
 void PluginManager::ReportPluginErrors()
@@ -666,6 +679,16 @@ void PluginManager::ReportPluginErrors()
 		}
 		if(!foundReplacementName)
 			message += plugin.dllName;
+
+		for(auto * iter = kBetterPluginError; iter->dllName; ++iter)
+		{
+			if(!_stricmp(iter->dllName, plugin.dllName.c_str()) && (iter->errorCode == plugin.errorCode))
+			{
+				plugin.errorState = iter->errorText;
+
+				break;
+			}
+		}
 
 		message += ": ";
 		message += plugin.errorState;
