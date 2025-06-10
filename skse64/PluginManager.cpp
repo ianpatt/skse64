@@ -13,6 +13,7 @@ PluginManager	g_pluginManager;
 
 PluginManager::LoadedPlugin *	PluginManager::s_currentLoadingPlugin = NULL;
 PluginHandle					PluginManager::s_currentPluginHandle = 0;
+PluginHandle					PluginManager::s_dispatchingPluginHandle = 0;
 UInt32							s_trampolineLog = 1;
 
 extern EventDispatcher<SKSEModCallbackEvent>	g_modCallbackEventDispatcher;
@@ -431,10 +432,7 @@ void PluginManager::InstallPlugins(void)
 		plugin.info.version = plugin.version.pluginVersion;
 	}
 
-	// alert any listeners that plugin load has finished
-	Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostLoad, NULL, 0, NULL);
-	// second post-load dispatch
-	Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostPostLoad, NULL, 0, NULL);
+	CallPostLoad();
 }
 
 const char * PluginManager::SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSEInterface * skse)
@@ -731,6 +729,38 @@ void PluginManager::UpdateAddressLibraryPrompt()
 	}
 }
 
+void PluginManager::CallPostLoad()
+{
+	PluginHandle crashingPlugin = 0;
+
+	__try
+	{
+		// alert any listeners that plugin load has finished
+		Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostLoad, NULL, 0, NULL);
+		// second post-load dispatch
+		Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostPostLoad, NULL, 0, NULL);
+	}
+	__except(EXCEPTION_EXECUTE_HANDLER)
+	{
+		crashingPlugin = s_currentPluginHandle;
+	}
+
+	if(crashingPlugin)
+	{
+		// usually index matches handle except under strange cases
+		for(size_t i = 0; i < m_plugins.size(); i++)
+		{
+			auto & plugin = m_plugins[i];
+
+			if(plugin.internalHandle == crashingPlugin)
+			{
+				LogPluginLoadError(plugin, "crashed during postload");
+				break;
+			}
+		}
+	}
+}
+
 void * PluginManager::GetEventDispatcher(UInt32 dispatcherId)
 {
 	void	* result = nullptr;
@@ -878,8 +908,11 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 	const char* senderName = g_pluginManager.GetPluginNameFromHandle(sender);
 	if (!senderName)
 		return false;
+
 	for (std::vector<PluginListener>::iterator iter = s_pluginListeners[sender].begin(); iter != s_pluginListeners[sender].end(); ++iter)
 	{
+		s_dispatchingPluginHandle = iter->listener;
+
 		SKSEMessagingInterface::Message msg;
 		msg.data = data;
 		msg.type = messageType;
@@ -901,6 +934,9 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 			numRespondents++;
 		}
 	}
+
+	s_dispatchingPluginHandle = 0;
+
 	_DMESSAGE("dispatched message.");
 	return numRespondents ? true : false;
 }

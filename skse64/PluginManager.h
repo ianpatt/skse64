@@ -66,6 +66,8 @@ private:
 	void			ReportPluginErrors();
 	void			UpdateAddressLibraryPrompt();
 
+	void			CallPostLoad();
+
 	typedef std::vector <LoadedPlugin>	LoadedPluginList;
 
 	std::string			m_pluginDirectory;
@@ -77,6 +79,8 @@ private:
 
 	static LoadedPlugin		* s_currentLoadingPlugin;
 	static PluginHandle		s_currentPluginHandle;
+
+	static PluginHandle		s_dispatchingPluginHandle;
 };
 
 class PluginErrorDialogBox
