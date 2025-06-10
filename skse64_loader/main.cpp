@@ -12,9 +12,6 @@
 
 IDebugLog gLog;
 
-static void PrintModuleInfo(UInt32 procID);
-static void PrintProcessInfo();
-
 int main(int argc, char ** argv)
 {
 	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\" SAVE_FOLDER_NAME "\\SKSE\\skse64_loader.log");
@@ -281,12 +278,6 @@ int main(int argc, char ** argv)
 	bool	injectionSucceeded = false;
 	UInt32	procType = procHookInfo.procType;
 
-	if(g_options.m_forceSteamLoader)
-	{
-		_MESSAGE("forcing steam loader");
-		procType = kProcType_Steam;
-	}
-
 	// inject the dll
 	switch(procType)
 	{
@@ -320,14 +311,6 @@ int main(int argc, char ** argv)
 			_WARNING("Try running skse64_loader as an administrator, or check for conflicts with a virus scanner.");
 		}
 
-		if(g_options.m_moduleInfo)
-		{
-			Sleep(1000 * 3);	// wait 3 seconds
-
-			PrintModuleInfo(procInfo.dwProcessId);
-			PrintProcessInfo();
-		}
-
 		if(g_options.m_waitForClose)
 			WaitForSingleObject(procInfo.hProcess, INFINITE);
 	}
@@ -337,65 +320,4 @@ int main(int argc, char ** argv)
 	CloseHandle(procInfo.hThread);
 
 	return 0;
-}
-
-static void PrintModuleInfo(UInt32 procID)
-{
-	HANDLE	snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, procID);
-	if(snap != INVALID_HANDLE_VALUE)
-	{
-		MODULEENTRY32	module;
-
-		module.dwSize = sizeof(module);
-
-		if(Module32First(snap, &module))
-		{
-			do 
-			{
-				_MESSAGE("%08Xx%08X %08X %s %s", module.modBaseAddr, module.modBaseSize, module.hModule, module.szModule, module.szExePath);
-			}
-			while(Module32Next(snap, &module));
-		}
-		else
-		{
-			_ERROR("PrintModuleInfo: Module32First failed (%d)", GetLastError());
-		}
-
-		CloseHandle(snap);
-	}
-	else
-	{
-		_ERROR("PrintModuleInfo: CreateToolhelp32Snapshot failed (%d)", GetLastError());
-	}
-}
-
-static void PrintProcessInfo()
-{
-	HANDLE	snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	if(snap != INVALID_HANDLE_VALUE)
-	{
-		PROCESSENTRY32	proc;
-
-		proc.dwSize = sizeof(PROCESSENTRY32);
-		
-		if(Process32First(snap, &proc))
-		{
-			do
-			{
-				_MESSAGE("%s", proc.szExeFile);
-				proc.dwSize = sizeof(PROCESSENTRY32);
-			}
-			while (Process32Next(snap, &proc));
-		}
-		else
-		{
-			_ERROR("PrintProcessInfo: Process32First failed (%d)", GetLastError());
-		}
-
-		CloseHandle(snap);
-	}
-	else
-	{
-		_ERROR("PrintProcessInfo: CreateToolhelp32Snapshot failed (%d)", GetLastError());
-	}
 }
