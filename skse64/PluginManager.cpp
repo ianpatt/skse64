@@ -924,6 +924,7 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 			if (iter->listener == target)
 			{
 				iter->handleMessage(&msg);
+				s_dispatchingPluginHandle = 0;
 				return true;
 			}
 		}
