@@ -742,7 +742,7 @@ void PluginManager::CallPostLoad()
 	}
 	__except(EXCEPTION_EXECUTE_HANDLER)
 	{
-		crashingPlugin = s_currentPluginHandle;
+		crashingPlugin = s_dispatchingPluginHandle;
 	}
 
 	if(crashingPlugin)
