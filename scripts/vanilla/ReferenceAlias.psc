@@ -44,16 +44,18 @@ endFunction
 
 ; Convenience fucntion
 Actor Function GetActorRef()
-	return GetActorReference()
+	return GetReference() as Actor
 endFunction
 
 
 ; Convenience function - jduvall
 bool Function TryToAddToFaction(Faction FactionToAddTo)
-	Actor ActorRef = GetActorReference()
+	Actor ActorRef = GetReference() as Actor
 	
 	if ActorRef
-		ActorRef.AddToFaction(FactionToAddTo)
+		if (!ActorRef.IsInFaction(FactionToAddTo))
+			ActorRef.SetFactionRank(FactionToAddTo, 0)
+		endif
 		Return True
 	EndIf
 
@@ -62,7 +64,7 @@ EndFunction
 
 ; Convenience function - jduvall
 bool Function TryToRemoveFromFaction(Faction FactionToRemoveFrom)
-	Actor ActorRef = GetActorReference()
+	Actor ActorRef = GetReference() as Actor
 	
 	if ActorRef
 		ActorRef.RemoveFromFaction(FactionToRemoveFrom)
@@ -74,7 +76,7 @@ EndFunction
 
 ; Convenience function - jduvall
 bool Function TryToStopCombat()
-	Actor ActorRef = GetActorReference()
+	Actor ActorRef = GetReference() as Actor
 	
 	if ActorRef
 		ActorRef.StopCombat()
@@ -134,7 +136,7 @@ EndFunction
 
 ; Convenience function - jduvall
 bool Function TryToEvaluatePackage()
-	Actor ActorRef = GetActorReference()
+	Actor ActorRef = GetReference() as Actor
 	
 	if ActorRef
 		ActorRef.EvaluatePackage()
@@ -146,7 +148,7 @@ EndFunction
 
 ; Convenience function - jduvall
 bool Function TryToKill()
-	Actor ActorRef = GetActorReference()
+	Actor ActorRef = GetReference() as Actor
 	
 	if ActorRef
 		ActorRef.Kill()
