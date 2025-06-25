@@ -99,6 +99,10 @@ Function DeleteWhenAble()
 ; 		debug.trace(self + "DeleteWhenAble() waiting for current location to be unloaded before deleting. If called by a quest stage fragment, this may cause that quest stage to not complete until this function finishes (and if it's a startup stage, the quest will not report itself as running until the stage finishes.).", 1)
 		Utility.Wait(5) ;when this function is threaded we can increase this wait time... I set it lower for testing purposes so it reevaluates faster when I need to purge cell buffers in the Civil War when calling moveto on the player between Civil War campaigns
 	EndWhile
+	;Disable before Delete to avoid permanent ash piles of world encounter aliases, and compared to the polling above, this chunk of codes should have litte performance impact.
+	if !IsDisabled()
+		Disable()
+	EndIf
 	Delete()
 EndFunction
 
