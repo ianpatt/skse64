@@ -58,33 +58,52 @@ jobs:
     - name: Set Version for ${{ matrix.name }}
       run: |
         Write-Host "=== BEFORE modification ==="
-        Get-Content skse64/cmake/versioning.cmake | Select-String -Pattern "SKSE_VERSION|RUNTIME_VERSION"
+        Get-Content skse64/skse64_common/skse_version.h | Select-String -Pattern "SKSE_VERSION_INTEGER"
 
-        $content = Get-Content skse64/cmake/versioning.cmake -Raw
+        # Read the header file (THIS is where the actual version is defined!)
+        $content = Get-Content skse64/skse64_common/skse_version.h -Raw
+
         # Set SKSE version (controls which game addresses are used)
-        $content = $content -replace 'set\(SKSE_VERSION_MAJOR \d+\)', "set(SKSE_VERSION_MAJOR ${{ matrix.skse_major }})"
-        $content = $content -replace 'set\(SKSE_VERSION_MINOR \d+\)', "set(SKSE_VERSION_MINOR ${{ matrix.skse_minor }})"
-        $content = $content -replace 'set\(SKSE_VERSION_PATCH \d+\)', "set(SKSE_VERSION_PATCH ${{ matrix.skse_patch }})"
-        # Set runtime version (game version)
-        $content = $content -replace 'set\(RUNTIME_VERSION_MAJOR \d+\)', "set(RUNTIME_VERSION_MAJOR ${{ matrix.runtime_major }})"
-        $content = $content -replace 'set\(RUNTIME_VERSION_MINOR \d+\)', "set(RUNTIME_VERSION_MINOR ${{ matrix.runtime_minor }})"
-        $content = $content -replace 'set\(RUNTIME_VERSION_PATCH \d+\)', "set(RUNTIME_VERSION_PATCH ${{ matrix.runtime_patch }})"
-        $content | Set-Content skse64/cmake/versioning.cmake -NoNewline
+        # Lines look like: #define SKSE_VERSION_INTEGER		2
+        $content = $content -replace '#define SKSE_VERSION_INTEGER\s+\d+', "#define SKSE_VERSION_INTEGER`t`t${{ matrix.skse_major }}"
+        $content = $content -replace '#define SKSE_VERSION_INTEGER_MINOR\s+\d+', "#define SKSE_VERSION_INTEGER_MINOR`t${{ matrix.skse_minor }}"
+        $content = $content -replace '#define SKSE_VERSION_INTEGER_BETA\s+\d+', "#define SKSE_VERSION_INTEGER_BETA`t${{ matrix.skse_patch }}"
+
+        # Update VERSTRING to match: "0, major, minor, patch"
+        $verString = "0, ${{ matrix.skse_major }}, ${{ matrix.skse_minor }}, ${{ matrix.skse_patch }}"
+        $content = $content -replace '#define SKSE_VERSION_VERSTRING\s+"[^"]+"', "#define SKSE_VERSION_VERSTRING`t`t`"$verString`""
+
+        # Update CURRENT_RELEASE_SKSE_STR
+        $releaseStr = "${{ matrix.skse_major }}.${{ matrix.skse_minor }}.${{ matrix.skse_patch }}"
+        $content = $content -replace '#define CURRENT_RELEASE_SKSE_STR\s+"[^"]+"', "#define CURRENT_RELEASE_SKSE_STR`t`"$releaseStr`""
+
+        $content | Set-Content skse64/skse64_common/skse_version.h -NoNewline
+
+        # Also update cmake/versioning.cmake for runtime version
+        $cmakeContent = Get-Content skse64/cmake/versioning.cmake -Raw
+        $cmakeContent = $cmakeContent -replace 'set\(RUNTIME_VERSION_MAJOR \d+\)', "set(RUNTIME_VERSION_MAJOR ${{ matrix.runtime_major }})"
+        $cmakeContent = $cmakeContent -replace 'set\(RUNTIME_VERSION_MINOR \d+\)', "set(RUNTIME_VERSION_MINOR ${{ matrix.runtime_minor }})"
+        $cmakeContent = $cmakeContent -replace 'set\(RUNTIME_VERSION_PATCH \d+\)', "set(RUNTIME_VERSION_PATCH ${{ matrix.runtime_patch }})"
+        $cmakeContent | Set-Content skse64/cmake/versioning.cmake -NoNewline
 
         Write-Host "=== AFTER modification for ${{ matrix.name }} ==="
-        Get-Content skse64/cmake/versioning.cmake | Select-String -Pattern "SKSE_VERSION|RUNTIME_VERSION"
+        Get-Content skse64/skse64_common/skse_version.h | Select-String -Pattern "SKSE_VERSION_INTEGER"
 
-        # Verify the changes
-        $check = Get-Content skse64/cmake/versioning.cmake -Raw
-        if ($check -notmatch "SKSE_VERSION_MAJOR ${{ matrix.skse_major }}") {
-          Write-Error "FAILED to set SKSE_VERSION_MAJOR!"
+        # Verify the changes in header file
+        $check = Get-Content skse64/skse64_common/skse_version.h -Raw
+        if ($check -notmatch "#define SKSE_VERSION_INTEGER\s+${{ matrix.skse_major }}") {
+          Write-Error "FAILED to set SKSE_VERSION_INTEGER!"
           exit 1
         }
-        if ($check -notmatch "RUNTIME_VERSION_PATCH ${{ matrix.runtime_patch }}") {
-          Write-Error "FAILED to set RUNTIME_VERSION_PATCH!"
+        if ($check -notmatch "#define SKSE_VERSION_INTEGER_MINOR\s+${{ matrix.skse_minor }}") {
+          Write-Error "FAILED to set SKSE_VERSION_INTEGER_MINOR!"
           exit 1
         }
-        Write-Host "Version verification PASSED"
+        if ($check -notmatch "#define SKSE_VERSION_INTEGER_BETA\s+${{ matrix.skse_patch }}") {
+          Write-Error "FAILED to set SKSE_VERSION_INTEGER_BETA!"
+          exit 1
+        }
+        Write-Host "Version verification PASSED - SKSE ${{ matrix.skse_major }}.${{ matrix.skse_minor }}.${{ matrix.skse_patch }} for Skyrim ${{ matrix.name }}"
       shell: pwsh
 
     - name: Build and install common library

@@ -1,5 +1,52 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.14 - THE ACTUAL FIX: Modify Correct Version File (January 25, 2026)
+
+### The Real Problem
+
+**Why v2.0.20.12 and v2.0.20.13 didn't work:**
+- GitHub Actions workflow was modifying `cmake/versioning.cmake`
+- But the actual C++ code uses `#define` macros in `skse64_common/skse_version.h`
+- CMake variables don't affect preprocessor macros!
+- All builds kept showing version 2.2.6 because the header was never modified
+
+**The Actual Fix:**
+- Workflow now modifies `skse64_common/skse_version.h` directly
+- Changes `#define SKSE_VERSION_INTEGER_MINOR` from 2 → 0 for SE builds
+- Changes `#define SKSE_VERSION_INTEGER_BETA` from 6 → 20 for SE builds
+- Updates `SKSE_VERSION_VERSTRING` and `CURRENT_RELEASE_SKSE_STR` to match
+- Added verification that fails build if header not modified correctly
+
+**Files Modified:**
+- [.github/workflows/build.yml](.github/workflows/build.yml) - Now modifies header file, not CMake file
+
+**Why This Matters:**
+- SE builds will ACTUALLY show version 2.0.20 (not 2.2.6!)
+- SKSE will use correct SE memory addresses (not AE addresses)
+- No more ACCESS_VIOLATION crashes on startup
+- All optimizations can work properly
+
+**User Impact:**
+- This should FINALLY produce working builds
+- Console log will show `version = 2.0.20` for SE builds
+- v2.0.20-SE-optimized-1 worked because it had correct hardcoded version in header
+- v2.0.20.6-13 were all broken because workflow never actually changed the version
+
+---
+
+## v2.0.20.13 - PowerShell Fix (Still Broken - Wrong File!) (January 25, 2026)
+
+**What Was Attempted:**
+- Fixed PowerShell `Get-Content` to use `-Raw` flag
+- Added verification that fails build if version not set
+- Still didn't work!
+
+**Why It Didn't Work:**
+- Was modifying the wrong file (`cmake/versioning.cmake`)
+- C++ code reads from `skse64_common/skse_version.h`, not CMake variables
+
+---
+
 ## v2.0.20.12 - CRITICAL FIX + Re-enable All Optimizations (January 25, 2026)
 
 ### Re-Enabled Performance Optimizations
