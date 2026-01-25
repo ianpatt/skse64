@@ -491,9 +491,12 @@ namespace Serialization
 
 				UInt32	pluginIdx = kPluginHandle_Invalid;
 
-				for(PluginCallbackList::iterator iter = s_pluginCallbacks.begin(); iter != s_pluginCallbacks.end(); ++iter)
-					if(iter->hadUID && (iter->uid == s_pluginHeader.signature))
-						pluginIdx = iter - s_pluginCallbacks.begin();
+				// Performance: Use hash map for O(1) lookup instead of O(n) linear search
+				auto it = s_uidToIndexMap.find(s_pluginHeader.signature);
+				if(it != s_uidToIndexMap.end())
+				{
+					pluginIdx = it->second;
+				}
 
 				try
 				{
