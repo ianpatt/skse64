@@ -57,7 +57,10 @@ jobs:
 
     - name: Set Version for ${{ matrix.name }}
       run: |
-        $content = Get-Content skse64/cmake/versioning.cmake
+        Write-Host "=== BEFORE modification ==="
+        Get-Content skse64/cmake/versioning.cmake | Select-String -Pattern "SKSE_VERSION|RUNTIME_VERSION"
+
+        $content = Get-Content skse64/cmake/versioning.cmake -Raw
         # Set SKSE version (controls which game addresses are used)
         $content = $content -replace 'set\(SKSE_VERSION_MAJOR \d+\)', "set(SKSE_VERSION_MAJOR ${{ matrix.skse_major }})"
         $content = $content -replace 'set\(SKSE_VERSION_MINOR \d+\)', "set(SKSE_VERSION_MINOR ${{ matrix.skse_minor }})"
@@ -66,9 +69,22 @@ jobs:
         $content = $content -replace 'set\(RUNTIME_VERSION_MAJOR \d+\)', "set(RUNTIME_VERSION_MAJOR ${{ matrix.runtime_major }})"
         $content = $content -replace 'set\(RUNTIME_VERSION_MINOR \d+\)', "set(RUNTIME_VERSION_MINOR ${{ matrix.runtime_minor }})"
         $content = $content -replace 'set\(RUNTIME_VERSION_PATCH \d+\)', "set(RUNTIME_VERSION_PATCH ${{ matrix.runtime_patch }})"
-        $content | Set-Content skse64/cmake/versioning.cmake
-        Write-Host "=== Version Configuration for ${{ matrix.name }} ==="
-        Get-Content skse64/cmake/versioning.cmake
+        $content | Set-Content skse64/cmake/versioning.cmake -NoNewline
+
+        Write-Host "=== AFTER modification for ${{ matrix.name }} ==="
+        Get-Content skse64/cmake/versioning.cmake | Select-String -Pattern "SKSE_VERSION|RUNTIME_VERSION"
+
+        # Verify the changes
+        $check = Get-Content skse64/cmake/versioning.cmake -Raw
+        if ($check -notmatch "SKSE_VERSION_MAJOR ${{ matrix.skse_major }}") {
+          Write-Error "FAILED to set SKSE_VERSION_MAJOR!"
+          exit 1
+        }
+        if ($check -notmatch "RUNTIME_VERSION_PATCH ${{ matrix.runtime_patch }}") {
+          Write-Error "FAILED to set RUNTIME_VERSION_PATCH!"
+          exit 1
+        }
+        Write-Host "Version verification PASSED"
       shell: pwsh
 
     - name: Build and install common library
