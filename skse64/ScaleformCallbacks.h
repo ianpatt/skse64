@@ -5,7 +5,7 @@
 #include "skse64/ScaleformValue.h"
 #include "skse64_common/Utilities.h"
 #include <typeinfo>
-#include <map>
+#include <unordered_map>
 
 // see RakNet/DependentExtensions/GFx3/FxGameDelegate.h
 
@@ -46,7 +46,7 @@ public:
 	//DEFINE_MEMBER_FN(Destroy, GFxFunctionHandler *, 0, UInt32 flags);
 };
 
-typedef std::map <const std::type_info *, GFxFunctionHandler *>	FunctionHandlerCache;
+typedef std::unordered_map<const std::type_info *, GFxFunctionHandler *>	FunctionHandlerCache;  // O(1) lookup
 extern FunctionHandlerCache g_functionHandlerCache;
 
 template <typename T>

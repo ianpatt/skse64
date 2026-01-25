@@ -20,7 +20,7 @@
 #include "GameData.h"
 #include "GameExtraData.h"
 #include <new>
-#include <list>
+#include <vector>
 #include <unordered_map>
 #include "PapyrusEvents.h"
 #include "PapyrusVM.h"
@@ -826,7 +826,7 @@ public:
 	}
 };
 
-typedef std::list<SInt32>								IndexStorageList;
+typedef std::vector<SInt32>								IndexStorageList;  // vector for better cache locality
 typedef std::unordered_map<std::string,IndexStorageList>	IndexStorageTable;
 
 IndexStorageTable	s_indexTable;
