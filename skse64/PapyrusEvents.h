@@ -108,11 +108,18 @@ public:
 		reg.handle = handle;
 		if (params)
 			reg.params = *params;
-		
+
 		this->Lock();
 
-		if (this->m_data[key].insert(reg).second)
+		bool inserted = this->m_data[key].insert(reg).second;
+		if (inserted)
+		{
 			policy->AddRef(handle);
+			size_t totalRegs = 0;
+			for (auto& pair : this->m_data)
+				totalRegs += pair.second.size();
+			_MESSAGE("RegistrationMapHolder::Register: handle=%016llX, total registrations=%d", handle, totalRegs);
+		}
 
 		this->Release();
 	}
@@ -128,14 +135,17 @@ public:
 		if (params)
 			reg.params = *params;
 
-#ifdef _DEBUG
-		_MESSAGE("Executed PapyrusEvents::Register - %016llX", reg.handle);
-#endif
-		
 		this->Lock();
 
-		if (this->m_data[key].insert(reg).second)
+		bool inserted = this->m_data[key].insert(reg).second;
+		if (inserted)
+		{
 			policy->AddRef(reg.handle);
+			size_t totalRegs = 0;
+			for (auto& pair : this->m_data)
+				totalRegs += pair.second.size();
+			_MESSAGE("RegistrationMapHolder::Register: handle=%016llX, type=%u, total registrations=%d", reg.handle, type, totalRegs);
+		}
 
 		this->Release();
 	}
@@ -216,8 +226,19 @@ public:
 		auto handles = this->m_data.find(key);
 
 		if (handles != this->m_data.end())
+		{
+			size_t handlerCount = handles->second.size();
+			_MESSAGE("RegistrationMapHolder::ForEach: Dispatching to %d handlers", handlerCount);
+			size_t processed = 0;
 			for (auto iter = handles->second.begin(); iter != handles->second.end(); ++iter)
+			{
 				functor(*iter);
+				processed++;
+				if (processed % 50 == 0)  // Log progress every 50 handlers for large modlists
+					_MESSAGE("RegistrationMapHolder::ForEach: Processed %d / %d handlers", processed, handlerCount);
+			}
+			_MESSAGE("RegistrationMapHolder::ForEach: Completed dispatching %d handlers", handlerCount);
+		}
 
 		this->Release();
 	}
@@ -352,11 +373,15 @@ public:
 		reg.handle = handle;
 		if (params)
 			reg.params = *params;
-		
+
 		this->Lock();
 
-		if (this->m_data.insert(reg).second)
+		bool inserted = this->m_data.insert(reg).second;
+		if (inserted)
+		{
 			policy->AddRef(handle);
+			_MESSAGE("RegistrationSetHolder::Register: handle=%016llX, total registrations=%d", handle, this->m_data.size());
+		}
 
 		this->Release();
 	}
@@ -371,11 +396,15 @@ public:
 		reg.handle = policy->Create(type, (void *)classType);
 		if (params)
 			reg.params = *params;
-		
+
 		this->Lock();
 
-		if (this->m_data.insert(reg).second)
+		bool inserted = this->m_data.insert(reg).second;
+		if (inserted)
+		{
 			policy->AddRef(reg.handle);
+			_MESSAGE("RegistrationSetHolder::Register: handle=%016llX, type=%u, total registrations=%d", reg.handle, type, this->m_data.size());
+		}
 
 		this->Release();
 	}
@@ -418,8 +447,17 @@ public:
 	{
 		this->Lock();
 
+		size_t handlerCount = this->m_data.size();
+		_MESSAGE("RegistrationSetHolder::ForEach: Dispatching to %d handlers", handlerCount);
+		size_t processed = 0;
 		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
+		{
 			functor(*iter);
+			processed++;
+			if (processed % 50 == 0)  // Log progress every 50 handlers for large modlists
+				_MESSAGE("RegistrationSetHolder::ForEach: Processed %d / %d handlers", processed, handlerCount);
+		}
+		_MESSAGE("RegistrationSetHolder::ForEach: Completed dispatching %d handlers", handlerCount);
 
 		this->Release();
 	}

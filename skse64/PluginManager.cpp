@@ -380,11 +380,19 @@ const char * PluginManager::CheckAddressLibrary(void)
 
 void PluginManager::InstallPlugins(void)
 {
+	_MESSAGE("InstallPlugins: Starting installation of %d plugins", m_plugins.size());
+
 	for(size_t i = 0; i < m_plugins.size(); i++)
 	{
 		auto & plugin = m_plugins[i];
 
-		_MESSAGE("loading plugin \"%s\"", plugin.version.name);
+		// Verbose: Log progress every 25 plugins for large modlists
+		if (i > 0 && i % 25 == 0)
+		{
+			_MESSAGE("InstallPlugins: Progress: %d / %d plugins loaded", i, m_plugins.size());
+		}
+
+		_MESSAGE("loading plugin \"%s\" (%d/%d)", plugin.version.name, i + 1, m_plugins.size());
 
 		s_currentLoadingPlugin = &plugin;
 		s_currentPluginHandle = plugin.internalHandle;
@@ -784,14 +792,18 @@ void PluginManager::UpdateAddressLibraryPrompt()
 
 void PluginManager::CallPostLoad()
 {
+	_MESSAGE("CallPostLoad: Starting post-load message dispatch");
 	PluginHandle crashingPlugin = 0;
 
 	__try
 	{
 		// alert any listeners that plugin load has finished
+		_MESSAGE("CallPostLoad: Dispatching kMessage_PostLoad");
 		Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostLoad, NULL, 0, NULL);
+		_MESSAGE("CallPostLoad: Dispatching kMessage_PostPostLoad");
 		// second post-load dispatch
 		Dispatch_Message(0, SKSEMessagingInterface::kMessage_PostPostLoad, NULL, 0, NULL);
+		_MESSAGE("CallPostLoad: Post-load messages dispatched successfully");
 	}
 	__except(EXCEPTION_EXECUTE_HANDLER)
 	{
@@ -937,18 +949,18 @@ bool PluginManager::RegisterListener(PluginHandle listener, const char* sender, 
 
 bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, void * data, UInt32 dataLen, const char* receiver)
 {
-	_MESSAGE("dispatch message (%d) to plugin listeners", messageType);
+	_MESSAGE("Dispatch_Message: type=%d, sender=%d, receiver=%s", messageType, sender, receiver ? receiver : "(broadcast)");
 	UInt32 numRespondents = 0;
 	PluginHandle target = kPluginHandle_Invalid;
 
 	if (!s_pluginListeners.size())	// no listeners yet registered
 	{
-		_MESSAGE("no listeners registered");
+		_MESSAGE("Dispatch_Message: no listeners registered");
 		return false;
 	}
 	else if (sender >= s_pluginListeners.size())
 	{
-		_MESSAGE("sender is not in the list");
+		_MESSAGE("Dispatch_Message: sender %d is not in the list (size=%d)", sender, s_pluginListeners.size());
 		return false;
 	}
 
@@ -956,12 +968,21 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 	{
 		target = g_pluginManager.LookupHandleFromName(receiver);
 		if (target == kPluginHandle_Invalid)
+		{
+			_MESSAGE("Dispatch_Message: receiver '%s' not found", receiver);
 			return false;
+		}
 	}
 
 	const char* senderName = g_pluginManager.GetPluginNameFromHandle(sender);
 	if (!senderName)
+	{
+		_MESSAGE("Dispatch_Message: sender handle %d has no name", sender);
 		return false;
+	}
+
+	size_t listenerCount = s_pluginListeners[sender].size();
+	_MESSAGE("Dispatch_Message: Dispatching to %d listeners for sender '%s'", listenerCount, senderName);
 
 	for (std::vector<PluginListener>::iterator iter = s_pluginListeners[sender].begin(); iter != s_pluginListeners[sender].end(); ++iter)
 	{
@@ -977,22 +998,26 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 		{
 			if (iter->listener == target)
 			{
+				_MESSAGE("Dispatch_Message: Sending message type %u to target plugin %u", messageType, iter->listener);
 				iter->handleMessage(&msg);
 				s_dispatchingPluginHandle = 0;
+				_MESSAGE("Dispatch_Message: Target message handler completed");
 				return true;
 			}
 		}
 		else
 		{
-			_DMESSAGE("sending message type %u to plugin %u", messageType, iter->listener);
+			const char* listenerName = g_pluginManager.GetPluginNameFromHandle(iter->listener);
+			_MESSAGE("Dispatch_Message: Sending message type %u to plugin %u (%s)", messageType, iter->listener, listenerName ? listenerName : "unknown");
 			iter->handleMessage(&msg);
+			_MESSAGE("Dispatch_Message: Message handler completed for plugin %u", iter->listener);
 			numRespondents++;
 		}
 	}
 
 	s_dispatchingPluginHandle = 0;
 
-	_DMESSAGE("dispatched message.");
+	_MESSAGE("Dispatch_Message: Dispatched to %d respondents", numRespondents);
 	return numRespondents ? true : false;
 }
 
