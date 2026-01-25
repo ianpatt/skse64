@@ -35,3 +35,6 @@ scripts/merged
 
 # cmake
 build/*
+
+# claude code cli
+.claude/

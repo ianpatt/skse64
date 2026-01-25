@@ -5,6 +5,7 @@
 #include "skse64_common/skse_version.h"
 #include <vector>
 #include <unordered_map>
+#include <chrono>
 #include <shlobj.h>
 #include "GameData.h"
 #include "skse64/InternalSerialization.h"
@@ -473,6 +474,9 @@ namespace Serialization
 				iter->hadData = false;
 			
 			// Performance: Build UID hash map once for O(1) lookups instead of O(n) per chunk
+			_MESSAGE("Building UID hash map for %d plugin callbacks...", s_pluginCallbacks.size());
+			auto start = std::chrono::high_resolution_clock::now();
+
 			s_uidToIndexMap.clear();
 			for(UInt32 i = 0; i < s_pluginCallbacks.size(); i++)
 			{
@@ -481,6 +485,10 @@ namespace Serialization
 					s_uidToIndexMap[s_pluginCallbacks[i].uid] = i;
 				}
 			}
+
+			auto end = std::chrono::high_resolution_clock::now();
+			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+			_MESSAGE("UID hash map built in %lld microseconds (%d entries)", duration.count(), s_uidToIndexMap.size());
 
 			// iterate through plugin data chunks
 			while(s_currentFile.GetRemain() >= sizeof(PluginHeader))

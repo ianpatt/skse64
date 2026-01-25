@@ -9,6 +9,7 @@
 #include "skse64_common/BranchTrampoline.h"
 #include "resource.h"
 #include <cctype>
+#include <chrono>
 
 PluginManager	g_pluginManager;
 
@@ -459,6 +460,9 @@ void PluginManager::InstallPlugins(void)
 	}
 
 	// Performance: Build hash map for O(1) plugin name lookups
+	_MESSAGE("Building plugin name hash map for %d plugins...", m_plugins.size());
+	auto start = std::chrono::high_resolution_clock::now();
+
 	for(size_t i = 0; i < m_plugins.size(); i++)
 	{
 		if(m_plugins[i].version.name && m_plugins[i].version.name[0])
@@ -469,6 +473,10 @@ void PluginManager::InstallPlugins(void)
 			m_pluginsByName[name] = m_plugins[i].internalHandle;
 		}
 	}
+
+	auto end = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+	_MESSAGE("Plugin name hash map built in %lld microseconds", duration.count());
 
 	CallPostLoad();
 }
