@@ -100,8 +100,8 @@ With **400 plugins**, this optimized build provides:
 
 ```bash
 # Clone the repository
-git clone https://github.com/cashcon57/skse-for-modlists.git
-cd skse-for-modlists
+git clone https://github.com/cashcon57/skse64forModlists.git
+cd skse64forModlists
 
 # Create build directory
 mkdir build
@@ -138,7 +138,7 @@ We recommend testing with your specific modlist:
 
 ## Technical Details
 
-See [PERFORMANCE_OPTIMIZATIONS.md](PERFORMANCE_OPTIMIZATIONS.md) for:
+See [PERFORMANCE_OPTIMIZATIONS.md](https://github.com/cashcon57/skse64forModlists/blob/master/PERFORMANCE_OPTIMIZATIONS.md) for:
 - Detailed explanation of each optimization
 - Code changes with examples
 - Performance analysis
@@ -166,7 +166,7 @@ Same license as original SKSE64. See [skse64_license.txt](skse64_license.txt).
 ## Support
 
 ### Issues
-- For **optimization-specific issues**, please open an issue in this repository
+- For **optimization-specific issues**, please open an issue at [github.com/cashcon57/skse64forModlists](https://github.com/cashcon57/skse64forModlists/issues)
 - For **general SKSE issues**, please report to the [original SKSE64 repository](https://github.com/ianpatt/skse64)
 
 ### Discussion

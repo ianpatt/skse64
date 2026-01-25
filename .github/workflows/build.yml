@@ -106,7 +106,7 @@ jobs:
 
           ## Technical Details
 
-          See [PERFORMANCE_OPTIMIZATIONS.md](https://github.com/cashcon57/skse-for-modlists/blob/master/PERFORMANCE_OPTIMIZATIONS.md) for complete documentation.
+          See [PERFORMANCE_OPTIMIZATIONS.md](https://github.com/cashcon57/skse64forModlists/blob/master/PERFORMANCE_OPTIMIZATIONS.md) for complete documentation.
         draft: false
         prerelease: false
       env:
