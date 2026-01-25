@@ -183,9 +183,11 @@ UInt32 PluginManager::GetNumPlugins(void)
 PluginInfo * PluginManager::GetInfoByName(const char * name)
 {
 	// Performance: Use hash map for O(1) lookup instead of O(n) linear search
+	// Use thread_local string to reuse capacity and avoid repeated allocations
 	if(name && name[0])
 	{
-		std::string lowerName = name;
+		thread_local std::string lowerName;
+		lowerName = name;
 		for(char& c : lowerName) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 
 		auto it = m_pluginsByName.find(lowerName);
@@ -1010,9 +1012,13 @@ PluginHandle PluginManager::LookupHandleFromName(const char* pluginName)
 		return 0;
 
 	// Performance: Use hash map for O(1) lookup instead of O(n) linear search
+	// Use thread_local string to reuse capacity and avoid repeated allocations
 	if(pluginName && pluginName[0])
 	{
-		std::string lowerName = pluginName;
+		// Thread-local string reuses its capacity across calls (avoids heap reallocation)
+		thread_local std::string lowerName;
+		lowerName = pluginName;
+
 		for(char& c : lowerName) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 
 		auto it = m_pluginsByName.find(lowerName);

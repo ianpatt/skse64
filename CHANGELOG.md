@@ -2,6 +2,24 @@
 
 ## Latest Optimizations (January 24, 2026)
 
+### String Allocation Micro-Optimization
+
+**What Changed:**
+- Plugin name lookups now use `thread_local std::string` instead of creating temporary strings
+- Reuses string capacity across calls to avoid repeated heap allocations
+- Affects `LookupHandleFromName()` and `GetInfoByName()`
+
+**Impact:**
+- Reduces heap allocations during inter-plugin message dispatch
+- String capacity is reused: after first call, typical plugin names don't reallocate
+- Micro-optimization but helps during frequent plugin communication
+
+**Files Modified:**
+- [PluginManager.cpp:185-196](skse64/PluginManager.cpp#L185-L196)
+- [PluginManager.cpp:1007-1027](skse64/PluginManager.cpp#L1007-L1027)
+
+---
+
 ### Cache-Line Alignment for Hot Data Structures
 
 **What Changed:**
