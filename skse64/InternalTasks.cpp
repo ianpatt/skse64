@@ -15,14 +15,17 @@
 
 #include "Hooks_Threads.h"
 
-IThreadSafeBasicMemPool<SKSETaskUpdateTintMasks, 10>		s_updateTintMasksDelegatePool;
-IThreadSafeBasicMemPool<SKSETaskUpdateHairColor, 10>		s_updateHairColorDelegatePool;
-IThreadSafeBasicMemPool<SKSETaskUpdateWeight, 10>		s_updateWeightDelegatePool;
-IThreadSafeBasicMemPool<SKSETaskRegenHead, 10>			s_regenHeadDelegatePool;
-IThreadSafeBasicMemPool<SKSETaskChangeHeadPart, 10>		s_changeHeadPartDelegatePool;
-IThreadSafeBasicMemPool<SKSETaskUpdateWorldData, 10>		s_updateWorldDataDelegatePool;
-IThreadSafeBasicMemPool<SKSETaskUpdateExpression, 10>	s_updateExpressionDelegatePool;
-IThreadSafeBasicMemPool<SKSETaskUpdateHarvestModel, 10>	s_updateHarvestModelDelegatePool;
+// Increased pool sizes for heavy modlists (was 10, now 32)
+// Reduces dynamic allocations during gameplay with many NPCs/effects
+// Cache-line aligned for better memory access patterns
+alignas(64) IThreadSafeBasicMemPool<SKSETaskUpdateTintMasks, 32>		s_updateTintMasksDelegatePool;
+alignas(64) IThreadSafeBasicMemPool<SKSETaskUpdateHairColor, 32>		s_updateHairColorDelegatePool;
+alignas(64) IThreadSafeBasicMemPool<SKSETaskUpdateWeight, 32>			s_updateWeightDelegatePool;
+alignas(64) IThreadSafeBasicMemPool<SKSETaskRegenHead, 32>				s_regenHeadDelegatePool;
+alignas(64) IThreadSafeBasicMemPool<SKSETaskChangeHeadPart, 32>			s_changeHeadPartDelegatePool;
+alignas(64) IThreadSafeBasicMemPool<SKSETaskUpdateWorldData, 32>		s_updateWorldDataDelegatePool;
+alignas(64) IThreadSafeBasicMemPool<SKSETaskUpdateExpression, 32>		s_updateExpressionDelegatePool;
+alignas(64) IThreadSafeBasicMemPool<SKSETaskUpdateHarvestModel, 32>		s_updateHarvestModelDelegatePool;
 
 void TaskInterface::UpdateTintMasks()
 {
