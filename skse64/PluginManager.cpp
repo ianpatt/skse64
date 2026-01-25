@@ -829,7 +829,7 @@ void * PluginManager::GetEventDispatcher(UInt32 dispatcherId)
 		break;
 	}
 #else
-	_WARNING("unknown EventDispatcher %08X", id);
+	_WARNING("unknown EventDispatcher %08X", dispatcherId);
 #endif
 
 	return result;
