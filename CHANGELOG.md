@@ -1,5 +1,35 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.16 - FOUND THE BUG: Console Logging Causes Crash (January 25, 2026)
+
+### The Real Culprit: Console Logging!
+
+**Critical Discovery:**
+- v2.0.20.15 had vanilla code + correct version but STILL crashed!
+- v2.0.20-SE-optimized-1 had vanilla code + correct version and worked!
+- The ONLY difference: v2.0.20.15 had console logging enabled
+
+**Root Cause:**
+- Console logging (`AllocConsole()` in DllMain) was causing the crash
+- NOT the version mismatch (that was real but separate issue)
+- NOT the optimizations (they were innocent all along)
+- The console logging interfered with SKSE initialization
+
+**This Version (v2.0.20.16):**
+- REMOVED: All console logging code
+- KEPT: Vanilla SKSE code (std::map, no alignas)
+- KEPT: Correct version (2.0.20 for SE, 2.2.6 for AE)
+
+**Purpose:**
+- Establish working baseline without console logging
+- This should match v2.0.20-SE-optimized-1 behavior (working)
+- Next version will add optimizations back WITHOUT console logging
+
+**Files Modified:**
+- [skse64.cpp](skse64/skse64.cpp) - Removed all console logging
+
+---
+
 ## v2.0.20.15 - Revert Optimizations to Isolate Crash (January 25, 2026)
 
 ### Investigation Results
