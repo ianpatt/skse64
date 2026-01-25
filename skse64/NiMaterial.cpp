@@ -3,9 +3,9 @@
 #include "skse64/GameObjects.h"
 
 // 96D2EFF152717F366F7EAAA62CAD7EB12855423D+47
-RelocAddr<_CreateShaderMaterial> CreateShaderMaterial(0x014B7F70);
+RelocAddr<_CreateShaderMaterial> CreateShaderMaterial(0x012CFBC0);
 
-RelocAddr<_CreateFacegenTintMaterial> CreateFacegenTintMaterial(0x014BAA70);
+RelocAddr<_CreateFacegenTintMaterial> CreateFacegenTintMaterial(0x012D26F0);
 
 void BSLightingShaderMaterial::SetTextureSet(BSTextureSet * newSet)
 {

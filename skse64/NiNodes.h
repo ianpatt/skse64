@@ -23,9 +23,9 @@ public:
 
 	NiTArray <NiAVObject *>	m_children;	// 110
 
-	static NiNode * Create(UInt16 arrBufLen = 0);
+	static NiNode * Create(UInt32 arrBufLen = 0);
 
-	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00D1CF40, UInt16 arrBufLen);
+	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00C57A60, UInt16 arrBufLen);
 };
 STATIC_ASSERT(sizeof(NiNode) == 0x128);
 
@@ -37,8 +37,7 @@ public:
 
 	static BSFadeNode * Create();
 
-	// 905B699D46B52EE8B3BD44B9DAFBC2F728A310B5+81
-	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x01479A10);
+	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x0128F900);
 };
 STATIC_ASSERT(sizeof(BSFadeNode) == 0x158);
 
@@ -68,7 +67,7 @@ public:
 	};
 
 	MEMBER_FN_PREFIX(BSFaceGenNiNode);
-	DEFINE_MEMBER_FN(AdjustHeadMorph, void, 0x00432D50, UInt32 unk04, UInt32 unk08, float delta);
+	DEFINE_MEMBER_FN(AdjustHeadMorph, void, 0x003D90E0, UInt32 unk04, UInt32 unk08, float delta);
 };
 
 //STATIC_ASSERT(sizeof(BSFaceGenNiNode) == 0xEC);
@@ -154,6 +153,10 @@ public:
 	NiNode				* niNode;						// 238
 
 	MEMBER_FN_PREFIX(LocalMapCullingProcess);
+	DEFINE_MEMBER_FN(ctor, void, 0x00000000);
+	DEFINE_MEMBER_FN(CreateMapTarget, BSRenderTargetGroup **, 0x00000000, UInt32 width, UInt32 height);
+	DEFINE_MEMBER_FN(Init, void, 0x00000000);
+	DEFINE_MEMBER_FN(Process, void, 0x00000000);
 };
 
 //STATIC_ASSERT(offsetof(LocalMapCullingProcess, localMapCamera) == 0x170);
@@ -253,7 +256,6 @@ public:
 	BSFixedString	animationGraphVariables[101];
 };
 
-// this is just part of NiBoneNames starting at offset 0xB0
 class NiWeaponNodes
 {
 public:
@@ -273,5 +275,22 @@ public:
 		kNumTypes
 	};
 
+	static NiWeaponNodes * GetSingleton(void);
+
 	BSFixedString	nodes[kNumTypes];
 };
+
+typedef NiBoneNames * (* _GetBoneNames)(void);
+extern const _GetBoneNames GetBoneNames;
+
+typedef NiAVObject * (* _GetNodeByName)(NiNode * parent, BSFixedString nodeName, UInt8 unk1);
+extern const _GetNodeByName GetNodeByName;
+
+typedef BSFixedString (* _GetNodeNameByWeaponType)(UInt32 weaponType);
+extern const _GetNodeNameByWeaponType GetNodeNameByWeaponType;
+
+typedef BSFixedString (* _GetInternalNode)(UInt32 type, UInt8 unk1);
+extern const _GetInternalNode GetInternalNode;
+
+typedef UInt8 (* _SwapNodeParent)(NiNode * skeleton, BSFixedString sourceNode, BSFixedString destNode, UInt8 unk1);
+extern const _SwapNodeParent SwapNodeParent;

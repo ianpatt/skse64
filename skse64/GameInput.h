@@ -144,7 +144,7 @@ public:
 	virtual	EventResult ReceiveEvent(InputEvent ** evn, InputEventDispatcher * dispatcher) = 0;
 };
 
-// 130
+// 128 
 class InputManager
 {
 public:
@@ -166,10 +166,8 @@ public:
 		kContext_TFCMode,
 		kContext_MapDebug,
 		kContext_Lockpicking,
-		kContext_Marketplace,	// added in 1.6.1130
 		kContext_Favor,
-
-		kContextCount,
+		kContextCount = 17
 	};
 
 	struct InputContext
@@ -193,15 +191,14 @@ public:
 	void*			unkPtr000;					// 000
 	BSTEventSource<void *>	unk008;				// 008 - TODO: template type
 	InputContext	* context[kContextCount];	// 060
-	tArray<void*>	unk0F0;						// 0F0
-	tArray<void*>	unk108;						// 108
-	UInt32			unk120;						// 120 - init'd to 0xFFFFFFFF
-	UInt32			unk124;						// 124 - init'd to 0x80000000
-	UInt8			allowTextInput;				// 128
-	UInt8			unk129;						// 129
-	UInt8			unk12A;						// 12A
-	UInt8			pad12B;						// 12B
-	UInt32			unk12C;						// 12C
+	tArray<void*>	unk0E8;						// 0E8
+	tArray<void*>	unk100;						// 100
+	UInt32			unk118;						// 118 - init'd to 0xFFFFFFFF
+	UInt32			unk11C;						// 11C - init'd to 0x80000000
+	UInt8			allowTextInput;				// 120
+	UInt8			unk121;						// 121
+	UInt8			unk122;						// 122
+	UInt8			pad[5];						// 123
 
 	static InputManager *	GetSingleton(void);
 
@@ -211,7 +208,7 @@ public:
 
 	BSFixedString	GetMappedControl(UInt32 buttonID, UInt32 deviceType, UInt32 contextIdx);
 };
-STATIC_ASSERT(sizeof(InputManager) == 0x130);
+STATIC_ASSERT(sizeof(InputManager) == 0x128);
 
 // 10
 class PlayerInputHandler
@@ -290,7 +287,7 @@ public:
 	// used by Hooks_Event
 	PlayerControls * ctor_Hook(void);
 	MEMBER_FN_PREFIX(PlayerControls);
-	DEFINE_MEMBER_FN(ctor, PlayerControls *, 0x0079A4C0);
+	DEFINE_MEMBER_FN(ctor, PlayerControls *, 0x00704970);
 };
 STATIC_ASSERT(offsetof(PlayerControls, runMode) == 0x049);
 STATIC_ASSERT(offsetof(PlayerControls, remapMode) == 0x050);
@@ -437,8 +434,8 @@ public:
 
 	static InputStringHolder *	GetSingleton(void)
 	{
-		// 8BDB97B9BE3B9EBCCFB4F3BA9237EDC8341B354C+B
-		static RelocPtr<InputStringHolder*> g_inputStringHolder(0x0315CC30);
+		// 38C98DE3888C4A78379B4BC9F21B33FA74FB6E4C+32
+		static RelocPtr<InputStringHolder*> g_inputStringHolder(0x02F25250);
 		return *g_inputStringHolder;
 	}
 };

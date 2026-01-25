@@ -1,16 +1,14 @@
 #include "skse64/NiGeometry.h"
 #include "skse64/GameAPI.h"
 
-// 4772884F2DDD41847925EAA949727085D82940A1+401
-RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00D2D730);
-// 4772884F2DDD41847925EAA949727085D82940A1+414
-RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape(0x00D38A20);
+RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00C67490);
+RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape(0x00C72180);
 
 // ??_7NiTriShape@@6B@
-static const RelocPtr<uintptr_t> s_NiTriShapeVtbl(0x019B3A70);
+static const RelocPtr<uintptr_t> s_NiTriShapeVtbl(0x0176D060);
 
 // ??_7NiTriStrips@@6B@
-static const RelocPtr<uintptr_t> s_NiTriStripsVtbl(0x019B4028);
+static const RelocPtr<uintptr_t> s_NiTriStripsVtbl(0x0176D5A0);
 
 void NiGeometryData::AllocateVerts(UInt32 numVerts)
 {
@@ -65,11 +63,11 @@ NiSkinInstance * NiSkinInstance::Create()
 
 BSDismemberSkinInstance * BSDismemberSkinInstance::Create()
 {
-	typedef BSDismemberSkinInstance * (*_BSDismemberSkinInstance_Create)();
-	// 4772884F2DDD41847925EAA949727085D82940A1+2E4
-	static RelocAddr <_BSDismemberSkinInstance_Create> BSDismemberSkinInstance_Create(0x00D31970);
-
-	return BSDismemberSkinInstance_Create();
+	void* memory = Heap_Allocate(sizeof(BSDismemberSkinInstance));
+	memset(memory, 0, sizeof(BSDismemberSkinInstance));
+	BSDismemberSkinInstance* xData = (BSDismemberSkinInstance*)memory;
+	CALL_MEMBER_FN(xData, ctor)();
+	return xData;
 }
 
 NiTriShape * NiTriShape::Create(NiTriShapeData * geometry)

@@ -113,7 +113,7 @@ public:
 	void	Destroy(void);
 
 	MEMBER_FN_PREFIX(GString);
-	DEFINE_MEMBER_FN(ctor, GString *, 0x00FBB150, const char * string);
+	DEFINE_MEMBER_FN(ctor, GString *, 0x00ED3A50, const char * string);
 	
 };
 

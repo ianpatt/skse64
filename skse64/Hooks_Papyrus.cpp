@@ -65,21 +65,20 @@
 #include "PapyrusInput.h"
 #include "PapyrusTree.h"
 #include "PapyrusWeather.h"
-#include "PapyrusLocation.h"
 
 #include "xbyak/xbyak.h"
 
 typedef void(*_RegisterPapyrusFunctions)(VMClassRegistry ** registry);
-RelocAddr<_RegisterPapyrusFunctions> RegisterPapyrusFunctions(0x00A19B20);
-RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x009BDE90 + 0xCC3);
+RelocAddr<_RegisterPapyrusFunctions> RegisterPapyrusFunctions(0x00980190);
+RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x009204A0 + 0xC7F);
 
-RelocAddr<uintptr_t> UnregisterFromSleep_Enter(0x009C30A0 + 0x14B);
-RelocAddr<uintptr_t> RevertGlobalData_Enter(0x009CA070 + 0x22);
-RelocAddr<uintptr_t> RevertGlobalData_Enter2(0x009CA5B0 + 0x288);
-RelocAddr<uintptr_t> SaveRegsSleep_Enter(0x009CCAF0 + 0x390);
-RelocAddr<uintptr_t> LoadRegsSleep_Enter(0x009CDBD0 + 0x2FB);
+RelocAddr<uintptr_t> UnregisterFromSleep_Enter(0x00925180 + 0x31);
+RelocAddr<uintptr_t> RevertGlobalData_Enter(0x0092B8A0 + 0x22);
+RelocAddr<uintptr_t> RevertGlobalData_Enter2(0x0092BDE0 + 0x190);
+RelocAddr<uintptr_t> SaveRegsSleep_Enter(0x0092E290 + 0x110);
+RelocAddr<uintptr_t> LoadRegsSleep_Enter(0x0092F030 + 0x1E6);
 
-RelocAddr<uintptr_t> kDFQueueHook_Base(0x009D0180);
+RelocAddr<uintptr_t> kDFQueueHook_Base(0x00931470);
 uintptr_t  kDFQueueHook_HookAddr = kDFQueueHook_Base + 0x6E;
 uintptr_t kDFQueueHook_Entry_retn = kDFQueueHook_Base + 0x73;
 
@@ -275,9 +274,6 @@ void RegisterPapyrusFunctions_Hook(VMClassRegistry ** registryPtr)
 	// GameData
 	papyrusGameData::RegisterFuncs(registry);
 
-	// Location
-	papyrusLocation::RegisterFuncs(registry);
-
 //#ifdef _PPAPI
 	// Plugins
 	for (PapyrusPluginList::iterator iter = s_pap_plugins.begin(); iter != s_pap_plugins.end(); ++iter)
@@ -358,7 +354,7 @@ void Hooks_Papyrus_Commit()
 			DelayFunctorQueue_Entry_Code(void * buf) : Xbyak::CodeGenerator(4096, buf)
 			{
 				// Need timeBudget as parameter
-				movss(xmm0, ptr[rsp + 0xB0]);
+				movss(xmm0, ptr[rsp + 0xC0]);
 				mov(rax, (uintptr_t)DelayFunctorQueue_Hook);
 				call(rax);
 

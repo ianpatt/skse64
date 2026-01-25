@@ -61,12 +61,6 @@ add_executable(skse64::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/configuration.cmake)
 
-target_compile_definitions(
-	${PROJECT_NAME}
-	PRIVATE
-		RUNTIME_VERSION=${RUNTIME_VERSION_PACKED}
-)
-
 target_compile_features(
 	${PROJECT_NAME}
 	PUBLIC

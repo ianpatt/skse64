@@ -46,13 +46,6 @@ add_library(
 
 add_library(skse64::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-target_compile_definitions(
-	${PROJECT_NAME}
-	PRIVATE
-		RUNTIME
-		RUNTIME_VERSION=${RUNTIME_VERSION_PACKED}
-)
-
 target_compile_features(
 	${PROJECT_NAME}
 	PUBLIC

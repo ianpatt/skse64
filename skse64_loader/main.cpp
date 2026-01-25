@@ -12,9 +12,12 @@
 
 IDebugLog gLog;
 
+static void PrintModuleInfo(UInt32 procID);
+static void PrintProcessInfo();
+
 int main(int argc, char ** argv)
 {
-	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\" SAVE_FOLDER_NAME "\\SKSE\\skse64_loader.log");
+	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Skyrim Special Edition\\SKSE\\skse64_loader.log");
 	gLog.SetPrintLevel(IDebugLog::kLevel_FatalError);
 	gLog.SetLogLevel(IDebugLog::kLevel_DebugMessage);
 
@@ -111,27 +114,6 @@ int main(int argc, char ** argv)
 		IFileStream	fileCheck;
 		if(!fileCheck.Open(procPath.c_str()))
 		{
-			DWORD err = GetLastError();
-			if(err)
-				_MESSAGE("exe open check error = %08X", err);
-
-			bool msStore = false;
-
-			if(err == ERROR_ACCESS_DENIED)
-			{
-				// this might be ms store
-				std::string manifestPath = runtimeDir + "appxmanifest.xml";
-
-				if(fileCheck.Open(manifestPath.c_str()))
-				{
-					msStore = true;
-				}
-			}
-
-			if(msStore)
-			{
-				PrintLoaderError("You have the MS Store/Gamepass version of Skyrim, which is not compatible with SKSE.");
-			}
 			if(usedCustomRuntimeName)
 			{
 				// hurr durr
@@ -139,7 +121,7 @@ int main(int argc, char ** argv)
 			}
 			else
 			{
-				PrintLoaderError("Couldn't find %s. (%08X)", procName.c_str(), err);
+				PrintLoaderError("Couldn't find %s.", procName.c_str());
 			}
 
 			return 1;
@@ -278,12 +260,24 @@ int main(int argc, char ** argv)
 	bool	injectionSucceeded = false;
 	UInt32	procType = procHookInfo.procType;
 
+	if(g_options.m_forceSteamLoader)
+	{
+		_MESSAGE("forcing steam loader");
+		procType = kProcType_Steam;
+	}
+
 	// inject the dll
 	switch(procType)
 	{
 	case kProcType_Steam:
+		{
+			std::string	steamHookDllPath = runtimeDir + "\\skse64_steam_loader.dll";
+
+			injectionSucceeded = InjectDLLThread(&procInfo, steamHookDllPath.c_str(), true, g_options.m_noTimeout);
+		}
+		break;
+
 	case kProcType_Normal:
-	case kProcType_GOG:
 		injectionSucceeded = InjectDLLThread(&procInfo, dllPath.c_str(), true, g_options.m_noTimeout);
 		break;
 
@@ -311,6 +305,14 @@ int main(int argc, char ** argv)
 			_WARNING("Try running skse64_loader as an administrator, or check for conflicts with a virus scanner.");
 		}
 
+		if(g_options.m_moduleInfo)
+		{
+			Sleep(1000 * 3);	// wait 3 seconds
+
+			PrintModuleInfo(procInfo.dwProcessId);
+			PrintProcessInfo();
+		}
+
 		if(g_options.m_waitForClose)
 			WaitForSingleObject(procInfo.hProcess, INFINITE);
 	}
@@ -320,4 +322,65 @@ int main(int argc, char ** argv)
 	CloseHandle(procInfo.hThread);
 
 	return 0;
+}
+
+static void PrintModuleInfo(UInt32 procID)
+{
+	HANDLE	snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, procID);
+	if(snap != INVALID_HANDLE_VALUE)
+	{
+		MODULEENTRY32	module;
+
+		module.dwSize = sizeof(module);
+
+		if(Module32First(snap, &module))
+		{
+			do 
+			{
+				_MESSAGE("%08Xx%08X %08X %s %s", module.modBaseAddr, module.modBaseSize, module.hModule, module.szModule, module.szExePath);
+			}
+			while(Module32Next(snap, &module));
+		}
+		else
+		{
+			_ERROR("PrintModuleInfo: Module32First failed (%d)", GetLastError());
+		}
+
+		CloseHandle(snap);
+	}
+	else
+	{
+		_ERROR("PrintModuleInfo: CreateToolhelp32Snapshot failed (%d)", GetLastError());
+	}
+}
+
+static void PrintProcessInfo()
+{
+	HANDLE	snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	if(snap != INVALID_HANDLE_VALUE)
+	{
+		PROCESSENTRY32	proc;
+
+		proc.dwSize = sizeof(PROCESSENTRY32);
+		
+		if(Process32First(snap, &proc))
+		{
+			do
+			{
+				_MESSAGE("%s", proc.szExeFile);
+				proc.dwSize = sizeof(PROCESSENTRY32);
+			}
+			while (Process32Next(snap, &proc));
+		}
+		else
+		{
+			_ERROR("PrintProcessInfo: Process32First failed (%d)", GetLastError());
+		}
+
+		CloseHandle(snap);
+	}
+	else
+	{
+		_ERROR("PrintProcessInfo: CreateToolhelp32Snapshot failed (%d)", GetLastError());
+	}
 }

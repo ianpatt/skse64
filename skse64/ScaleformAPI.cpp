@@ -18,8 +18,8 @@ public:
 	virtual void	Free(void * ptr);
 };
 
-// 2868BB28215776CF08A8F2A297F7911CA4DE127B+1F
-RelocPtr<ScaleformHeap *> g_scaleformHeap(0x03292490);
+// C70DB2D0DA8EB136C1BB8E87A7E39C173A7E4C0B+21
+RelocPtr<ScaleformHeap *> g_scaleformHeap(0x03032C50);
 
 void * ScaleformHeap_Allocate(UInt32 size)
 {
@@ -31,5 +31,5 @@ void ScaleformHeap_Free(void * ptr)
 	(*(g_scaleformHeap))->Free(ptr);
 }
 
-RelocAddr<_InvokeFunction> InvokeFunction(0x00FBE900);
-RelocAddr<_GFxAllocateHeap> GFxAllocateHeap(0x0102FBD0);
+RelocAddr<_InvokeFunction> InvokeFunction(0x00ED6AC0);
+RelocAddr<_GFxAllocateHeap> GFxAllocateHeap(0x00F483C0);

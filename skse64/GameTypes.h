@@ -79,12 +79,12 @@ public:
 	//void LockForRead();
 	//void LockForWrite();
 	MEMBER_FN_PREFIX(BSReadWriteLock);
-	DEFINE_MEMBER_FN(LockForRead, void, 0x00CC90C0);
-	DEFINE_MEMBER_FN(LockForWrite, void, 0x00CC9140);
-	DEFINE_MEMBER_FN(UnlockRead, void, 0x00CC9380);
-	DEFINE_MEMBER_FN(UnlockWrite, void, 0x00CC9390);
-	DEFINE_MEMBER_FN(LockForReadAndWrite, void, 0x00CC9240);
-	DEFINE_MEMBER_FN(TryLockForWrite, bool, 0x00CC9330);
+	DEFINE_MEMBER_FN(LockForRead, void, 0x00C072D0);
+	DEFINE_MEMBER_FN(LockForWrite, void, 0x00C07350);
+	DEFINE_MEMBER_FN(UnlockRead, void, 0x00C07590);
+	DEFINE_MEMBER_FN(UnlockWrite, void, 0x00C075A0);
+	DEFINE_MEMBER_FN(LockForReadAndWrite, void, 0x00C07450);
+	DEFINE_MEMBER_FN(TryLockForWrite, bool, 0x00C07540);
 };
 STATIC_ASSERT(sizeof(BSReadWriteLock) == 0x8);
 
@@ -127,14 +127,14 @@ public:
 		const char	* data;
 
 		MEMBER_FN_PREFIX(Ref);
-		DEFINE_MEMBER_FN(ctor, Ref *, 0x00CEC5D0, const char * buf);
-		// 31D79EFB15D5E4B34BD32D03A46EAFF65C28ACFB+CB
-		DEFINE_MEMBER_FN(ctor_ref, Ref *, 0x00CEC680, const Ref & rhs);
-		DEFINE_MEMBER_FN(Set, Ref *, 0x00CEC760, const char * buf);
-		// 31D79EFB15D5E4B34BD32D03A46EAFF65C28ACFB+41
-		DEFINE_MEMBER_FN(Set_ref, Ref *, 0x00CEC820, const Ref & rhs);
-		// 46F6DC561A3C9677037E58B55951C58A08E41C47+4A
-		DEFINE_MEMBER_FN(Release, void, 0x00CED9A0);
+		DEFINE_MEMBER_FN(ctor, Ref *, 0x00C28BF0, const char * buf);
+		// E728381B6B25FD30DF9845889144E86E5CC35A25+38
+		DEFINE_MEMBER_FN(ctor_ref, Ref *, 0x00C28C80, const Ref & rhs);
+		DEFINE_MEMBER_FN(Set, Ref *, 0x00C28D60, const char * buf);
+		// F3F05A02DE2034133B5965D694745B6369FC557D+F3
+		DEFINE_MEMBER_FN(Set_ref, Ref *, 0x00C28E20, const Ref & rhs);
+		// 77D2390F6DC57138CF0E5266EB5BBB0ACABDFBE3+A0
+		DEFINE_MEMBER_FN(Release, void, 0x00C28D40);
 
 		Ref();
 		Ref(const char * buf);
@@ -186,7 +186,7 @@ public:
 	const char *	Get(void) const;
 
 	MEMBER_FN_PREFIX(BSString);
-	DEFINE_MEMBER_FN(Set, bool, 0x0010AC10, const char * str, UInt32 len);	// len default 0
+	DEFINE_MEMBER_FN(Set, bool, 0x000F9E90, const char * str, UInt32 len);	// len default 0
 
 private:
 	char	* m_data;	// 00
@@ -277,7 +277,7 @@ public:
 		Heap_Free(entries);																// Free the old block
 		entries = newBlock;																// Assign the new block
 		capacity = numEntries;															// Capacity is now the number of total entries in the block
-		count = (std::min)(capacity, count);													// Count stays the same, or is truncated to capacity
+		count = min(capacity, count);													// Count stays the same, or is truncated to capacity
 		return true;
 	}
 
@@ -792,6 +792,11 @@ public:
 		return curIt;
 	}
 
+	const _Node* FindString(char* str, Iterator prev) const
+	{
+		return Find(StringFinder_CI(str), prev);
+	}
+
 	template <class Op>
 	UInt32 CountIf(Op& op) const
 	{
@@ -820,7 +825,7 @@ public:
 
 	T * RemoveNth(SInt32 n) 
 	{
-		T* pRemoved = NULL;
+		Item* pRemoved = NULL;
 		if (n == 0) {
 			pRemoved =  m_listHead.RemoveMe();
 		} else if (n > 0) {
@@ -834,7 +839,7 @@ public:
 
 	T * ReplaceNth(SInt32 n, T* item) 
 	{
-		T* pReplaced = NULL;
+		Item* pReplaced = NULL;
 		NodePos nodePos = GetNthNode(n);
 		if (nodePos.node && nodePos.index == n) {
 			pReplaced = nodePos.node->item;

@@ -10,12 +10,11 @@
 
 static UInt32 g_forceContainerCategorization = 0;
 
-// 3E214CA2A0E6118E008E7407BDE8964B392CE849+9C
-RelocPtr<UInt32 *> g_containerMode(0x031ACDB8);
-RelocAddr<uintptr_t> kHook_ContainerMode_Base(0x008FC720);
-uintptr_t kHook_ContainerMode_Start = kHook_ContainerMode_Base + 0xAE;
-uintptr_t kHook_ContainerMode_Categories = kHook_ContainerMode_Base + 0xB7;
-uintptr_t kHook_ContainerMode_NoCategories = kHook_ContainerMode_Base + 0xCB;
+// 30A34F24A97F91365E1A3F66BF53263DEDF4B0AD+FA
+RelocPtr<UInt32 *> g_containerMode(0x02F4C328);
+RelocAddr<uintptr_t> kHook_ContainerMode_Base(0x0085F0C0);
+uintptr_t kHook_ContainerMode_Categories = kHook_ContainerMode_Base + 0x6E;
+uintptr_t kHook_ContainerMode_NoCategories = kHook_ContainerMode_Base + 0x82;
 
 void Hooks_Gameplay_EnableForceContainerCategorization(bool enable)
 {
@@ -23,19 +22,19 @@ void Hooks_Gameplay_EnableForceContainerCategorization(bool enable)
 }
 
 UInt32 g_invalidateKeywordCache = 0;
-RelocAddr<uintptr_t> kHook_BGSKeyword_Base(0x0038ACF0);
+RelocAddr<uintptr_t> kHook_BGSKeyword_Base(0x00333B30);
 uintptr_t kHook_BGSKeyword_Create_Return = kHook_BGSKeyword_Base + 6;
 
 // 4C1457C3040DCD34A7E7B2326F1EA2023930C56B+71
-RelocAddr <char *> g_gameVersion(0x01789090);
-RelocAddr <uintptr_t> kHook_ShowVersion_Offset(0x0098F210 + 0x78);
+RelocAddr <char *> g_gameVersion(0x01544EA0);
+RelocAddr <uintptr_t> kHook_ShowVersion_Offset(0x008EEE10 + 0x78);
 static char		kHook_ShowVersion_FormatString[] =
 "%s.%d (SKSE64 " __PREPRO_TOKEN_STR__(SKSE_VERSION_INTEGER) "."
 __PREPRO_TOKEN_STR__(SKSE_VERSION_INTEGER_MINOR) "."
 __PREPRO_TOKEN_STR__(SKSE_VERSION_INTEGER_BETA) " rel "
 __PREPRO_TOKEN_STR__(SKSE_VERSION_RELEASEIDX) ")";
 
-RelocAddr<uintptr_t> kHook_Crosshair_LookupREFRByHandle_Enter(0x00744E30 + 0x88);
+RelocAddr<uintptr_t> kHook_Crosshair_LookupREFRByHandle_Enter(0x006B0570 + 0x90);
 
 NiPointer<TESObjectREFR>	g_curCrosshairRef;
 
@@ -43,16 +42,10 @@ bool __cdecl Hook_Crosshair_LookupREFRByHandle(UInt32 & refHandle, NiPointer<TES
 {
 	bool result = LookupREFRByHandle(refHandle, refrOut);
 
-	// when player controls are disabled the game spams this function every frame, don't send multiple null objects in a row
-	bool sendEvent = refrOut || g_curCrosshairRef;
-
 	g_curCrosshairRef = refrOut;
 
-	if(sendEvent)
-	{
-		SKSECrosshairRefEvent evn(refrOut);
-		g_crosshairRefEventDispatcher.SendEvent(&evn);
-	}
+	SKSECrosshairRefEvent evn(refrOut);
+	g_crosshairRefEventDispatcher.SendEvent(&evn);
 
 	return result;
 }
@@ -64,7 +57,7 @@ TESObjectREFR* Hooks_Gameplay_GetCrosshairRef()
 
 static UInt8 s_disableMapMenuMouseWheel = 1;
 
-RelocAddr<uintptr_t> kHook_MapMenuMouseWheel_Enter(0x0097D4A0 + 0x187);
+RelocAddr<uintptr_t> kHook_MapMenuMouseWheel_Enter(0x008DCEA0 + 0x18B);
 
 void Hooks_Gameplay_EnableMapMenuMouseWheel(bool enable)
 {
@@ -106,8 +99,8 @@ void Hooks_Gameplay_Commit(void)
 		HookContainerMode_Code code(codeBuf);
 		g_localTrampoline.EndAlloc(code.getCurr());		
 		
-		g_branchTrampoline.Write5Branch(kHook_ContainerMode_Start, uintptr_t(code.getCode()));
-		SafeWrite16(kHook_ContainerMode_Start + 5, 0x9090);
+		g_branchTrampoline.Write5Branch(kHook_ContainerMode_Base.GetUIntPtr() + 0x65, uintptr_t(code.getCode()));		
+		SafeWrite16(kHook_ContainerMode_Base.GetUIntPtr() + 0x65 + 5, 0x9090); 		
 	}
 
 	// read config

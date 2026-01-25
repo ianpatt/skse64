@@ -6,33 +6,33 @@
 #include "HashUtil.h"
 
 // ??_7ExtraHealth@@6B@
-const RelocPtr<uintptr_t> s_ExtraHealthVtbl(0x01770910);
+const RelocPtr<uintptr_t> s_ExtraHealthVtbl(0x0152C060);
 // ??_7ExtraCharge@@6B@
-const RelocPtr<uintptr_t> s_ExtraChargeVtbl(0x01770970);
+const RelocPtr<uintptr_t> s_ExtraChargeVtbl(0x0152C0C0);
 // ??_7ExtraCount@@6B@
-const RelocPtr<uintptr_t> s_ExtraCountVtbl(0x01770890);
+const RelocPtr<uintptr_t> s_ExtraCountVtbl(0x0152BFE0);
 // ??_7ExtraTextDisplayData@@6B@
-const RelocPtr<uintptr_t> s_ExtraTextDisplayVtbl(0x01771390);
+const RelocPtr<uintptr_t> s_ExtraTextDisplayVtbl(0x0152CAE0);
 // ??_7ExtraSoul@@6B@
-const RelocPtr<uintptr_t> s_ExtraSoulVtbl(0x017740E0);
+const RelocPtr<uintptr_t> s_ExtraSoulVtbl(0x0152F2E0);
 // ??_7ExtraOwnership@@6B@
-const RelocPtr<uintptr_t> s_ExtraOwnershipVtbl(0x01770830);
+const RelocPtr<uintptr_t> s_ExtraOwnershipVtbl(0x0152BF80);
 // ??_7ExtraAliasInstanceArray@@6B@
-const RelocPtr<uintptr_t> s_ExtraAliasInstanceArrayVtbl(0x01771250);
+const RelocPtr<uintptr_t> s_ExtraAliasInstanceArrayVtbl(0x0152C9A0);
 // ??_7ExtraCannotWear@@6B@
-const RelocPtr<uintptr_t> s_ExtraCannotWearVtbl(0x017708F0);
+const RelocPtr<uintptr_t> s_ExtraCannotWearVtbl(0x0152C040);
 // ??_7ExtraHotkey@@6B@
-const RelocPtr<uintptr_t> s_ExtraHotkeyVtbl(0x017709D0);
+const RelocPtr<uintptr_t> s_ExtraHotkeyVtbl(0x0152C120);
 // ??_7ExtraForcedTarget@@6B@
-const RelocPtr<uintptr_t> s_ExtraForcedTargetVtbl(0x01771410);
+const RelocPtr<uintptr_t> s_ExtraForcedTargetVtbl(0x0152CB60);
 // ??_7ExtraReferenceHandle@@6B@
-const RelocPtr<uintptr_t> s_ExtraReferenceHandleVtbl(0x01770A10);
+const RelocPtr<uintptr_t> s_ExtraReferenceHandleVtbl(0x0152C160);
 // ??_7ExtraEnchantment@@6B@
-const RelocPtr<uintptr_t> s_ExtraEnchantmentVtbl(0x01770D30);
+const RelocPtr<uintptr_t> s_ExtraEnchantmentVtbl(0x0152C480);
 // ??_7ExtraRank@@6B@
-const RelocPtr<uintptr_t> s_ExtraRankVtbl(0x01770870);
+const RelocPtr<uintptr_t> s_ExtraRankVtbl(0x0152BFC0);
 // ??_7ExtraUniqueID@@6B@
-const RelocPtr<uintptr_t> s_ExtraUniqueIdVtbl(0x01771450);
+const RelocPtr<uintptr_t> s_ExtraUniqueIdVtbl(0x0152CBA0);
 
 ExtraHealth* ExtraHealth::Create() 
 {
@@ -430,7 +430,7 @@ void InventoryEntryData::GetEquipItemData(EquipData& stateOut, SInt32 itemId, SI
 		{
 			if (displayName)
 			{
-				SInt32 xItemId = HashItemId(displayName, type->formID);
+				SInt32 xItemId = (SInt32) HashUtil::CRC32(displayName, type->formID & 0x00FFFFFF);
 				if (itemId == xItemId)
 				{
 					if (isWorn)
@@ -547,7 +547,7 @@ void ExtraContainerChanges::Data::GetEquipItemData(InventoryEntryData::EquipData
 	if (pFullName)
 	{
 		const char * name = pFullName->name.data;
-		SInt32 baseItemId = HashItemId(name, item->formID);
+		SInt32 baseItemId = (SInt32)HashUtil::CRC32(name, item->formID & 0x00FFFFFF);
 
 		if (baseItemId == itemId)
 			matchedBaseForm = true;

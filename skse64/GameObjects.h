@@ -334,6 +334,9 @@ public:
 	const char *	textures[9];
 
 	static BSShaderTextureSet * Create();
+
+	MEMBER_FN_PREFIX(BSShaderTextureSet);
+	DEFINE_MEMBER_FN(ctor, BSShaderTextureSet *, 0x012C9320);
 };
 
 STATIC_ASSERT(sizeof(BSShaderTextureSet) == 0x58);
@@ -357,14 +360,6 @@ public:
 		UInt32	unk08;	// 08
 	};
 
-	enum Flag
-	{
-		kFlagNone = 0,
-		kFlagNoSpecularMap = 1 << 0,
-		kFlagFacegenTextures = 1 << 1,
-		kFlagHasModelSpaceNormalMap = 1 << 2
-	};
-
 	enum
 	{
 		kTextureDiffuse = 0,
@@ -384,7 +379,7 @@ public:
 
 	TESTexture		texturePaths[kNumTextures];	// 40
 	UInt64			unkC0;						// C0
-	UInt16			flags;						// C8
+	UInt16			unkC8;						// C8
 	UInt8			padCA[6];					// CA
 	Data			unkD0[kNumTextures];		// D0
 };
@@ -462,8 +457,8 @@ public:
 	UInt64				unk88;	// 88
 
 	MEMBER_FN_PREFIX(MagicItem);
-	DEFINE_MEMBER_FN(GetCostliestEffectItem, EffectItem *, 0x0014C470, int arg1, bool arg2);
-	DEFINE_MEMBER_FN(GetEffectiveMagickaCost, float, 0x0014C1F0, Character* caster);
+	DEFINE_MEMBER_FN(GetCostliestEffectItem, EffectItem *, 0x00101CC0, int arg1, bool arg2);
+	DEFINE_MEMBER_FN(GetEffectiveMagickaCost, float, 0x00101A30, Character* caster);
 };
 
 STATIC_ASSERT(sizeof(MagicItem) == 0x90);
@@ -798,10 +793,11 @@ public:
 	UInt64			unk260;			// 260
 
 	MEMBER_FN_PREFIX(TESNPC);
-	DEFINE_MEMBER_FN(GetSex, char, 0x003A8DF0);	// return (formType == 0x2B) ? (actorData.flags & 1) : -1;
-	DEFINE_MEMBER_FN(HasOverlays, bool, 0x003C1B40);
+	DEFINE_MEMBER_FN(GetSex, char, 0x003512A0);
+	DEFINE_MEMBER_FN(HasOverlays, bool, 0x00368A20);
 
-	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x003BEB10, BGSHeadPart * target);	// Swaps a headPart of the same type as target with target
+	// Swaps a headPart of the same type as target with target
+	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x00365BF0, BGSHeadPart * target);
 
 	struct MorphAction {
 		BSFaceGenNiNode * faceNode;
@@ -810,9 +806,11 @@ public:
 		float	value;
 	};
 	
-	DEFINE_MEMBER_FN(UpdateNeck, void, 0x003B8FC0, BSFaceGenNiNode * faceNode);	// Updates the neck seam when weight changed
+	// Updates the neck seam when weight changed
+	DEFINE_MEMBER_FN(UpdateNeck, void, 0x003606D0, BSFaceGenNiNode * faceNode);
 
-	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x003B8D80, NiColorA * result, TintMask * tintMask, bool fromTint);	// Computes RGB SkinTone from RGBA TintMask
+	// Computes RGB SkinTone from RGBA TintMask
+	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x00360480, NiColorA * result, TintMask * tintMask, bool fromTint);
 
 	void SetFaceTexture(BGSTextureSet * textureSet);
 	void SetHairColor(BGSColorForm * hairColor);
@@ -1456,13 +1454,15 @@ public:
 		UInt32	pad0C;			// 0C
 	};
 
-	Data40						data;						// 40
-	TESModelTextureSwap			models[2][2];				// 50
-	BGSTextureSet*				skinTextures[2];			// 130 - NAM0 - NAM1
-	BGSListForm*				skinTextureSwapLists[2];	// 140 - NAM2 - NAM3
-	tArray<TESRace*>			additionalRaces;			// 150
-	BGSFootstepSet				* footstepSet;				// 168
-	UInt64						unk170;						// 170
+	Data40						data;					// 40
+	TESModelTextureSwap			models[2][2];			// 50
+	UInt64						unk130;					// 130
+	UInt64						unk138;					// 138
+	UInt64						unk140;					// 140
+	UInt64						unk148;					// 148
+	tArray<TESRace*>			additionalRaces;		// 150
+	BGSFootstepSet				* footstepSet;			// 168
+	UInt64						unk170;					// 170
 
 	bool isValidRace(TESRace * race) const;
 	void GetNodeName(char * dstBuff, TESObjectREFR * refr, TESObjectARMO * armor, float weightOverride);

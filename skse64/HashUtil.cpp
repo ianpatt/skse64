@@ -48,14 +48,3 @@ namespace HashUtil
 		return ~result;
 	}
 }
-
-SInt32 HashItemId(const char * name, UInt32 formID)
-{
-	// light plugin
-	if((formID >> 24) == 0xFE)
-		formID &= 0x0FFF;
-	else
-		formID &= 0x00FFFFFF;
-
-	return HashUtil::CRC32(name, formID);
-}

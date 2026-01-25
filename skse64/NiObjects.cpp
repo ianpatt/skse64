@@ -1,15 +1,15 @@
 #include "skse64/NiObjects.h"
 #include "skse64/NiExtraData.h"
 
-// 2789403034E226069B9EC04A8AC7BD367AF61384+BC
-RelocPtr<float> g_worldToCamMatrix(0x031AD3A0);
-// 2789403034E226069B9EC04A8AC7BD367AF61384+13E
-RelocPtr<NiRect<float>> g_viewPort(0x031AE960);
+// A941556DD95C558F6FC490138ACEA2962E9A4F8D+2E
+RelocPtr<float> g_worldToCamMatrix(0x02F4C910);
+// A941556DD95C558F6FC490138ACEA2962E9A4F8D+B0
+RelocPtr<NiRect<float>> g_viewPort(0x02F4DED0);
 
-RelocAddr<_WorldPtToScreenPt3_Internal> WorldPtToScreenPt3_Internal(0x00D2C780);
+RelocAddr<_WorldPtToScreenPt3_Internal> WorldPtToScreenPt3_Internal(0x00C66580);
 
-RelocAddr<_NiAllocate> NiAllocate(0x00CE7DD0);
-RelocAddr<_NiFree> NiFree(0x00CE8070);
+RelocAddr<_NiAllocate> NiAllocate(0x00C24750);
+RelocAddr<_NiFree> NiFree(0x00C249B0);
 
 void NiRefObject::IncRef(void)
 {
@@ -29,11 +29,7 @@ void NiRefObject::DecRef(void)
 
 int ExtraDataCompare(const void * ls, const void * rs)
 {
-	auto lhs = (*(NiExtraData**)ls)->m_pcName;
-	auto rhs = (*(NiExtraData**)rs)->m_pcName;
-
-	// difference truncated to an int loses important bits
-	return (lhs > rhs) - (lhs < rhs);
+	return (int)((*(NiExtraData**)ls)->m_pcName - (*(NiExtraData**)rs)->m_pcName);
 }
 
 void NiObjectNET::AddExtraData(NiExtraData * extraData)

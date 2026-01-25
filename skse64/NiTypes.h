@@ -343,7 +343,7 @@ public:
 	virtual ~NiTLargeArray();
 
 	// fast, doesn't search for empty slots
-	void Append(T item)
+	void NiTLargeArray::Append(T item)
 	{
 		if(m_emptyRunStart == m_arrayBufLen)
 		{
@@ -356,7 +356,7 @@ public:
 		m_size++;
 	}
 
-	void Resize(UInt32 size)
+	void NiTLargeArray::Resize(UInt32 size)
 	{
 		// not reclaiming memory yet
 		if(size <= m_size) return;

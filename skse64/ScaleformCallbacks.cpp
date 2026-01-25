@@ -15,7 +15,7 @@ GFxFunctionHandler::~GFxFunctionHandler()
 
 FunctionHandlerCache g_functionHandlerCache;
 
-RelocAddr<FxDelegateHandler::Callback> PlaySoundCallback(0x0097A9B0);
+RelocAddr<FxDelegateHandler::Callback> PlaySoundCallback(0x008DA5C0);
 
 FxResponseArgsList::FxResponseArgsList()
 {

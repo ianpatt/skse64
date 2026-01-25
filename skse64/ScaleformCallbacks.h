@@ -3,7 +3,6 @@
 #include "skse64/ScaleformAPI.h"
 #include "skse64/ScaleformTypes.h"
 #include "skse64/ScaleformValue.h"
-#include "skse64/ScaleformMovie.h"
 #include "skse64_common/Utilities.h"
 #include <typeinfo>
 #include <map>
@@ -44,6 +43,7 @@ public:
 	virtual void	Invoke(Args * args) = 0;
 
 	MEMBER_FN_PREFIX(GFxFunctionHandler);
+	//DEFINE_MEMBER_FN(Destroy, GFxFunctionHandler *, 0, UInt32 flags);
 };
 
 typedef std::map <const std::type_info *, GFxFunctionHandler *>	FunctionHandlerCache;
