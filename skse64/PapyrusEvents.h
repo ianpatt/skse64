@@ -6,6 +6,7 @@
 #include "GameInput.h"
 #include "GameCamera.h"
 #include <map>
+#include <unordered_map>
 #include <set>
 #include "Serialization.h"
 #include "PapyrusVM.h"
@@ -75,10 +76,11 @@ public:
 };
 
 template <typename K, typename D = NullParameters>
-class RegistrationMapHolder : public SafeDataHolder<std::map<K,std::set<EventRegistration<D>>>>
+class RegistrationMapHolder : public SafeDataHolder<std::unordered_map<K,std::set<EventRegistration<D>>>>
 {
 	typedef std::set<EventRegistration<D>>	RegSet;
-	typedef std::map<K,RegSet>				RegMap;
+	// Performance: Use unordered_map for O(1) lookup instead of map's O(log n)
+	typedef std::unordered_map<K,RegSet>	RegMap;
 
 public:
 
