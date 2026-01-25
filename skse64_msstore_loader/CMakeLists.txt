@@ -27,6 +27,8 @@ set(CMAKE_EXE_LINKER_FLAGS /MANIFEST:NO) # we specify our own manifest
 
 # ---- Dependencies ----
 
+find_package(common REQUIRED CONFIG)
+
 if (NOT TARGET skse64_common)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../skse64_common skse64_common)	# bundled
 endif()
