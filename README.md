@@ -4,11 +4,29 @@
 
 ---
 
+## ⚠️ IMPORTANT: Pick the Right Version!
+
+**This branch (master) is for Skyrim Anniversary Edition 1.6.x**
+
+If you're using **Skyrim Special Edition 1.5.97** (which includes Nolvus, most Wabbajack modlists), you want the **SE branch**:
+- **[Download for SE 1.5.97](https://github.com/cashcon57/skse64forModlists/releases?q=SE)**
+- Branch: `skyrim-se-1.5.97`
+
+If you're using **Skyrim Anniversary Edition 1.6.x**, you're in the right place:
+- **[Download for AE 1.6.x](https://github.com/cashcon57/skse64forModlists/releases?q=AE)**
+- Branch: `master` (you're here)
+
+**Not sure which version you have?** Check your Skyrim executable version or which SKSE you're currently using.
+
+---
+
 ## What Is This?
 
 This is a performance-optimized fork of [SKSE64](https://github.com/ianpatt/skse64) (Skyrim Script Extender) that doesn't treat your 400-plugin modlist like it's still running on a Pentium 4.
 
-**Download:** [Latest Release](https://github.com/cashcon57/skse64forModlists/releases/latest)
+**Downloads:**
+- **[SE 1.5.97 Release](https://github.com/cashcon57/skse64forModlists/releases?q=SE)** ← Most modlists use this
+- **[AE 1.6.x Release](https://github.com/cashcon57/skse64forModlists/releases?q=AE)**
 
 ### TL;DR
 
@@ -315,15 +333,17 @@ That 43x improvement on save loading? That's the difference between making a san
 ## Installation (It's Literally Just Copy-Paste)
 
 ### Requirements
-- Skyrim Special Edition or Anniversary Edition
+- **Skyrim Anniversary Edition 1.6.x** (this branch)
+  - OR use the [SE 1.5.97 version](https://github.com/cashcon57/skse64forModlists/releases?q=SE) for Special Edition
 - Some semblance of disk space (but you already have 400 mods, so...)
 - The ability to extract a ZIP file
 
 ### Steps
 
-1. **Download the latest release:**
-   - [Get it here](https://github.com/cashcon57/skse64forModlists/releases/latest)
-   - It's the ZIP file. You can't miss it.
+1. **Download the correct release for YOUR Skyrim version:**
+   - **For AE 1.6.x:** [Get AE Release](https://github.com/cashcon57/skse64forModlists/releases?q=AE)
+   - **For SE 1.5.97:** [Get SE Release](https://github.com/cashcon57/skse64forModlists/releases?q=SE) ← Most modlists
+   - Check your current SKSE DLL name to know which you need
 
 2. **Backup your current SKSE:**
    ```
