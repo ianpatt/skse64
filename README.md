@@ -1,6 +1,6 @@
 # SKSE64 Performance Optimizations
 
-This branch contains performance optimizations for SKSE64, targeting large modlists with 100+ SKSE plugins.
+This branch contains performance optimizations for SKSE64. Works with any modlist size - benefits scale with plugin count.
 
 ## Summary of Changes
 
@@ -64,14 +64,14 @@ This enables using `BSFixedString` as a key in `std::unordered_map`.
 
 ## Expected Benefits
 
-These optimizations primarily target:
+These optimizations improve:
 
 1. **Frame time consistency** - Reduced microstutters from O(log n) lookups during event dispatch
 2. **1% and 0.1% lows** - More consistent worst-case frame times
-3. **Large modlist scalability** - O(1) lookups scale better than O(n) or O(log n) with 150+ plugins
+3. **Scalability** - O(1) lookups benefit all modlist sizes; improvements scale with plugin count
 4. **Save/load performance** - O(n) instead of O(n²) for UID matching
 
-**Note:** Average FPS improvements are unlikely to be significant. The main benefit is reduced variance in frame times (fewer stutters).
+**Note:** Average FPS improvements are unlikely to be significant. The main benefit is reduced variance in frame times (fewer stutters). Works with any modlist size - small, medium, or large.
 
 ## Testing
 

@@ -210,23 +210,29 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: |
-            # Performance-Optimized SKSE64 for Large Modlists
+            # SKSE64 Performance Optimizations
 
-            **Optimized for large modlists with 150+ SKSE plugins**
+            **Works with any modlist size - benefits scale with plugin count**
 
             ## Downloads
 
             - **Skyrim SE 1.5.97**: `skse-for-modlists-SE-1.5.97-${{ github.ref_name }}.zip`
             - **Skyrim AE 1.6.1170**: `skse-for-modlists-AE-1.6.1170-${{ github.ref_name }}.zip`
 
-            ## Real Performance Improvements
+            ## What This Improves
 
-            Algorithmic optimizations for large modlists:
+            - **Frame time consistency** - Reduced microstutters from O(log n) lookups
+            - **1% and 0.1% lows** - More consistent worst-case frame times
+            - **Scalability** - O(1) operations benefit all setups; improvements scale with plugin count
 
-            - ⚡ **Event dispatch optimization** - O(log n) → O(1) for gameplay events (**3-12% FPS gain**)
-            - ⚡ **Cache-line alignment** - Prevents false sharing (10-30% cache miss reduction)
-            - ⚡ **Plugin lookup optimization** - O(n) → O(1) (~167x faster with 167 plugins)
-            - ⚡ **Serialization optimization** - O(n²) → O(1) (potentially much faster save/load)
+            **Note:** Average FPS is unlikely to change significantly. The benefit is smoother frame times.
+
+            ## Technical Changes
+
+            - All `std::map` → `std::unordered_map` (O(log n) → O(1))
+            - All `std::set` → `std::unordered_set` (O(log n) → O(1))
+            - Cache-line alignment on frequently accessed globals
+            - Larger memory pools for task delegates
             - 💾 **Memory optimizations** - Fewer allocations, better pre-sizing
 
             ## Installation
