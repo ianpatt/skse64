@@ -1,5 +1,37 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.20 - Start from Working Version + Event Dispatch Optimization (January 25, 2026)
+
+### New Approach: Build on What Works!
+
+Instead of reverting everything and re-adding optimizations, we're taking the working v2.0.20-SE-optimized-1 code and adding optimizations ONE AT A TIME.
+
+**Starting Point:**
+- v2.0.20-SE-optimized-1 (confirmed working with Nolvus 400+ plugin modlist)
+- Correct version (2.0.20 for SE)
+- Vanilla SKSE code
+
+**This Version - First Optimization:**
+- Added ONLY event dispatch unordered_map optimization
+- Changed `RegistrationMapHolder` from `std::map` to `std::unordered_map`
+- Added BSFixedString hash function (hashes pointer, not contents)
+- O(log n) → O(1) for all gameplay event dispatch
+
+**Expected Impact:**
+- 3-12% FPS improvement during gameplay
+- Affects EVERY key press, weapon swing, spell cast, menu action
+- Reduced event dispatch overhead = fewer microstutters
+
+**Files Modified:**
+- [PapyrusEvents.h](skse64/PapyrusEvents.h) - Added hash function, changed to unordered_map
+
+**Test Plan:**
+- If this works → add cache-line alignment in v2.0.20.21
+- If this crashes → event dispatch optimization causes the issue
+- Incremental testing identifies exactly what works and what doesn't
+
+---
+
 ## v2.0.20.19 - FINALLY Truly Vanilla: Revert PluginManager & Serialization (January 25, 2026)
 
 ### The ACTUAL Issue: Never Reverted Plugin Loading Optimizations!
