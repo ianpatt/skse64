@@ -115,10 +115,6 @@ public:
 		if (inserted)
 		{
 			policy->AddRef(handle);
-			size_t totalRegs = 0;
-			for (auto& pair : this->m_data)
-				totalRegs += pair.second.size();
-			_MESSAGE("RegistrationMapHolder::Register: handle=%016llX, total registrations=%d", handle, totalRegs);
 		}
 
 		this->Release();
@@ -141,10 +137,6 @@ public:
 		if (inserted)
 		{
 			policy->AddRef(reg.handle);
-			size_t totalRegs = 0;
-			for (auto& pair : this->m_data)
-				totalRegs += pair.second.size();
-			_MESSAGE("RegistrationMapHolder::Register: handle=%016llX, type=%u, total registrations=%d", reg.handle, type, totalRegs);
 		}
 
 		this->Release();
@@ -380,7 +372,6 @@ public:
 		if (inserted)
 		{
 			policy->AddRef(handle);
-			_MESSAGE("RegistrationSetHolder::Register: handle=%016llX, total registrations=%d", handle, this->m_data.size());
 		}
 
 		this->Release();
@@ -403,7 +394,6 @@ public:
 		if (inserted)
 		{
 			policy->AddRef(reg.handle);
-			_MESSAGE("RegistrationSetHolder::Register: handle=%016llX, type=%u, total registrations=%d", reg.handle, type, this->m_data.size());
 		}
 
 		this->Release();
