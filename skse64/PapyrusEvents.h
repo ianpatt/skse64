@@ -8,6 +8,7 @@
 #include <map>
 #include <unordered_map>
 #include <set>
+#include <functional>
 #include "Serialization.h"
 #include "PapyrusVM.h"
 
