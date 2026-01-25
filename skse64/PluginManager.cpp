@@ -8,6 +8,7 @@
 #include "skse64/PapyrusEvents.h"
 #include "skse64_common/BranchTrampoline.h"
 #include "resource.h"
+#include <cctype>
 
 PluginManager	g_pluginManager;
 
@@ -182,7 +183,7 @@ PluginInfo * PluginManager::GetInfoByName(const char * name)
 	if(name && name[0])
 	{
 		std::string lowerName = name;
-		for(char& c : lowerName) c = tolower(c);
+		for(char& c : lowerName) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 
 		auto it = m_pluginsByName.find(lowerName);
 		if(it != m_pluginsByName.end())
@@ -464,7 +465,7 @@ void PluginManager::InstallPlugins(void)
 		{
 			std::string name = m_plugins[i].version.name;
 			// Convert to lowercase for case-insensitive lookup
-			for(char& c : name) c = tolower(c);
+			for(char& c : name) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 			m_pluginsByName[name] = m_plugins[i].internalHandle;
 		}
 	}
@@ -1002,7 +1003,7 @@ PluginHandle PluginManager::LookupHandleFromName(const char* pluginName)
 	if(pluginName && pluginName[0])
 	{
 		std::string lowerName = pluginName;
-		for(char& c : lowerName) c = tolower(c);
+		for(char& c : lowerName) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 
 		auto it = m_pluginsByName.find(lowerName);
 		if(it != m_pluginsByName.end())
