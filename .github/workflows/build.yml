@@ -19,6 +19,12 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Checkout common library
+      uses: actions/checkout@v4
+      with:
+        repository: ianpatt/common
+        path: common
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.3
 
@@ -27,11 +33,19 @@ jobs:
       with:
         cmake-version: '3.27.x'
 
+    - name: Build and install common library
+      run: |
+        cd common
+        cmake -B build -S . -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/common-install"
+        cmake --build build --config Release
+        cmake --install build --config Release
+      shell: pwsh
+
     - name: Configure CMake
       run: |
         mkdir build
         cd build
-        cmake .. -G "Visual Studio 17 2022" -A x64
+        cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${{ github.workspace }}/common-install"
 
     - name: Build Release
       run: |
