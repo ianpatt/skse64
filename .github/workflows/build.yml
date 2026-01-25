@@ -17,6 +17,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
+        path: skse64
         submodules: recursive
 
     - name: Checkout common library
@@ -34,23 +35,16 @@ jobs:
         cmake-version: '3.27.x'
 
     - name: Build and install common library
-      run: |
-        cd common
-        cmake -B build -S . -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/common-install"
-        cmake --build build --config Release
-        cmake --install build --config Release
-      shell: pwsh
+      run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern
+
+    - name: Install common library
+      run: cmake --build common/build --config Release --target install
 
     - name: Configure CMake
-      run: |
-        mkdir build
-        cd build
-        cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${{ github.workspace }}/common-install"
+      run: cmake -B skse64/build -S skse64 -DCMAKE_INSTALL_PREFIX=extern
 
     - name: Build Release
-      run: |
-        cd build
-        cmake --build . --config Release --parallel
+      run: cmake --build skse64/build --config Release --parallel
 
     - name: Package Release
       run: |
@@ -60,14 +54,14 @@ jobs:
         mkdir release_package/Data/SKSE/Plugins
 
         # Copy executables
-        copy build\skse64_loader\Release\skse64_loader.exe release_package\
-        copy build\skse64_steam_loader\Release\skse64_steam_loader.dll release_package\
-        copy build\skse64\Release\skse64_1_6_1170.dll release_package\Data\SKSE\Plugins\
+        copy skse64\build\skse64_loader\Release\skse64_loader.exe release_package\
+        copy skse64\build\skse64_steam_loader\Release\skse64_steam_loader.dll release_package\
+        copy skse64\build\skse64\Release\skse64_1_6_1170.dll release_package\Data\SKSE\Plugins\
 
         # Copy documentation
-        copy README_FORK.md release_package\README.md
-        copy PERFORMANCE_OPTIMIZATIONS.md release_package\
-        copy skse64_license.txt release_package\
+        copy skse64\README_FORK.md release_package\README.md
+        copy skse64\PERFORMANCE_OPTIMIZATIONS.md release_package\
+        copy skse64\skse64_license.txt release_package\
       shell: cmd
 
     - name: Upload Build Artifacts
