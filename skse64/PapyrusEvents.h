@@ -8,6 +8,7 @@
 #include <map>
 #include <unordered_map>
 #include <set>
+#include <unordered_set>
 #include <functional>
 #include "Serialization.h"
 #include "PapyrusVM.h"
@@ -22,6 +23,7 @@ public:
 	D		params;
 
 	bool operator<(const EventRegistration & rhs) const	{ return handle < rhs.handle; }
+	bool operator==(const EventRegistration & rhs) const	{ return handle == rhs.handle; }  // For unordered_set
 
 	bool Save(SKSESerializationInterface * intfc, UInt32 version) const
 	{
@@ -56,6 +58,17 @@ public:
 	void Dump(void) {}
 };
 
+// Hash function for EventRegistration to enable std::unordered_set
+// Events are uniquely identified by their handle
+namespace std {
+	template<typename D>
+	struct hash<EventRegistration<D>> {
+		size_t operator()(const EventRegistration<D>& reg) const {
+			return hash<UInt64>()(reg.handle);
+		}
+	};
+}
+
 class ModCallbackParameters
 {
 public:
@@ -78,9 +91,9 @@ public:
 };
 
 template <typename K, typename D = NullParameters>
-class RegistrationMapHolder : public SafeDataHolder<std::unordered_map<K,std::set<EventRegistration<D>>>>
+class RegistrationMapHolder : public SafeDataHolder<std::unordered_map<K,std::unordered_set<EventRegistration<D>>>>
 {
-	typedef std::set<EventRegistration<D>>	RegSet;
+	typedef std::unordered_set<EventRegistration<D>>	RegSet;  // O(1) lookup/insert/erase
 	typedef std::unordered_map<K,RegSet>	RegMap;
 
 public:
@@ -323,9 +336,9 @@ public:
 };
 
 template <typename D = NullParameters>
-class RegistrationSetHolder : public SafeDataHolder<std::set<EventRegistration<D>>>
+class RegistrationSetHolder : public SafeDataHolder<std::unordered_set<EventRegistration<D>>>
 {
-	typedef std::set<EventRegistration<D>>	RegSet;
+	typedef std::unordered_set<EventRegistration<D>>	RegSet;  // O(1) lookup/insert/erase
 
 public:
 
