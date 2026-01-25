@@ -14,8 +14,9 @@ static const GUID GUID_SysKeyboard	= { 0x6F1D2B61, 0xD5A0, 0x11CF, { 0xBF,0xC7,0
 
 typedef HRESULT (_stdcall * CreateDInputProc)(HINSTANCE, DWORD, REFIID, LPVOID, LPUNKNOWN);
 
-DIHookControl			g_diHookData;
-FramerateTracker		g_framerateTracker;
+// Cache-line aligned - accessed every frame for input processing
+alignas(64) DIHookControl			g_diHookData;
+alignas(64) FramerateTracker		g_framerateTracker;
 static CreateDInputProc	DICreate_RealFunc;
 
 class FakeDirectInputDevice : public IDirectInputDevice8

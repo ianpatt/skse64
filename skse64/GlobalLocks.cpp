@@ -1,4 +1,5 @@
 #include "GlobalLocks.h"
 #include "common/ICriticalSection.h"
 
-ICriticalSection	g_loadGameLock;
+// Cache-line aligned to prevent false sharing during save/load
+alignas(64) ICriticalSection	g_loadGameLock;

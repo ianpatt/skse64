@@ -26,8 +26,9 @@ namespace
 	};
 }
 
-ICriticalSection			g_uiQueueLock;
-std::queue<QueueEntry>		g_uiQueue;
+// Cache-line aligned - accessed very frequently during gameplay
+alignas(64) ICriticalSection			g_uiQueueLock;
+alignas(64) std::queue<QueueEntry>		g_uiQueue;
 
 void UIManager::QueueCommand(UIDelegate* cmd)
 {
