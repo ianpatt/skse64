@@ -20,23 +20,28 @@ This fork addresses algorithmic inefficiencies in vanilla SKSE64 that become bot
    - Impact: **10-30% cache miss reduction** (research estimate)
    - Zero overhead - just alignment padding for globals
 
-3. **Plugin Name Hash Map** - [PluginManager.cpp:461-477](skse64/PluginManager.cpp#L461-L477)
+3. **String Allocation Optimization** - [PluginManager.cpp:185-196](skse64/PluginManager.cpp#L185-L196)
+   - Plugin name lookups use `thread_local` strings to reuse capacity
+   - Eliminates repeated heap allocations during plugin communication
+   - Impact: Reduces allocator overhead for frequent inter-plugin messaging
+
+4. **Plugin Name Hash Map** - [PluginManager.cpp:461-477](skse64/PluginManager.cpp#L461-L477)
    - Changed from O(n) linear search to O(1) hash lookup
    - Affects: Inter-plugin message dispatch
    - Impact: ~167x faster lookups with 167 plugins
 
-4. **Serialization UID Hash Map** - [Serialization.cpp:475-487](skse64/Serialization.cpp#L475-L487)
+5. **Serialization UID Hash Map** - [Serialization.cpp:475-487](skse64/Serialization.cpp#L475-L487)
    - Changed from O(n²) nested loops to O(n) + O(1) hash lookups
    - Affects: Save/load operations
    - Impact: Potentially significant for large modlists (untested)
 
-5. **Memory Pre-allocation**
+6. **Memory Pre-allocation**
    - Plugin vector reserve: 5 → 128 - [PluginManager.cpp:132-133](skse64/PluginManager.cpp#L132-L133)
    - Listener resize: +5 → +32 - [PluginManager.cpp:854](skse64/PluginManager.cpp#L854)
    - String concatenation reserves - [PluginManager.cpp:268](skse64/PluginManager.cpp#L268)
    - Impact: Fewer reallocations during plugin loading
 
-6. **Safety Improvements**
+7. **Safety Improvements**
    - MAX_PLUGINS limit (512) - [PluginManager.h:11](skse64/PluginManager.h#L11)
    - Buffer overflow protection - [PluginManager.cpp:357](skse64/PluginManager.cpp#L357)
    - Corrupted save deletion - [Serialization.cpp:427-431](skse64/Serialization.cpp#L427-L431)
