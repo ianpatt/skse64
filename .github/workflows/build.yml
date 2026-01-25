@@ -64,10 +64,7 @@ jobs:
         # Copy Papyrus script sources
         Copy-Item -Recurse skse64/scripts/modified/* release_package/Data/Scripts/Source/
 
-        # Copy documentation
-        Copy-Item skse64/README.md release_package/
-        Copy-Item skse64/CHANGELOG.md release_package/
-        Copy-Item skse64/PERFORMANCE_OPTIMIZATIONS.md release_package/
+        # Copy documentation (match vanilla SKSE package)
         Copy-Item skse64/skse64_license.txt release_package/
         Copy-Item skse64/skse64_readme.txt release_package/
         Copy-Item skse64/skse64_whatsnew.txt release_package/
