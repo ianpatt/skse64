@@ -16,11 +16,17 @@ jobs:
       matrix:
         include:
           - name: "SE"
+            skse_major: 2
+            skse_minor: 0
+            skse_patch: 20
             runtime_major: 1
             runtime_minor: 5
             runtime_patch: 97
             artifact_name: "skse-for-modlists-SE-1.5.97"
           - name: "AE"
+            skse_major: 2
+            skse_minor: 2
+            skse_patch: 6
             runtime_major: 1
             runtime_minor: 6
             runtime_patch: 1170
@@ -49,13 +55,19 @@ jobs:
       with:
         cmake-version: '3.27.x'
 
-    - name: Set Runtime Version for ${{ matrix.name }}
+    - name: Set Version for ${{ matrix.name }}
       run: |
         $content = Get-Content skse64/cmake/versioning.cmake
+        # Set SKSE version (controls which game addresses are used)
+        $content = $content -replace 'set\(SKSE_VERSION_MAJOR \d+\)', "set(SKSE_VERSION_MAJOR ${{ matrix.skse_major }})"
+        $content = $content -replace 'set\(SKSE_VERSION_MINOR \d+\)', "set(SKSE_VERSION_MINOR ${{ matrix.skse_minor }})"
+        $content = $content -replace 'set\(SKSE_VERSION_PATCH \d+\)', "set(SKSE_VERSION_PATCH ${{ matrix.skse_patch }})"
+        # Set runtime version (game version)
         $content = $content -replace 'set\(RUNTIME_VERSION_MAJOR \d+\)', "set(RUNTIME_VERSION_MAJOR ${{ matrix.runtime_major }})"
         $content = $content -replace 'set\(RUNTIME_VERSION_MINOR \d+\)', "set(RUNTIME_VERSION_MINOR ${{ matrix.runtime_minor }})"
         $content = $content -replace 'set\(RUNTIME_VERSION_PATCH \d+\)', "set(RUNTIME_VERSION_PATCH ${{ matrix.runtime_patch }})"
         $content | Set-Content skse64/cmake/versioning.cmake
+        Write-Host "=== Version Configuration for ${{ matrix.name }} ==="
         Get-Content skse64/cmake/versioning.cmake
       shell: pwsh
 

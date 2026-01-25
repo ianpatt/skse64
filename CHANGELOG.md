@@ -1,5 +1,45 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.12 - CRITICAL FIX: SE/AE Version Mismatch (January 25, 2026)
+
+### Critical Bug Fix
+
+**What Was Wrong:**
+- GitHub Actions workflow only set `RUNTIME_VERSION` but not `SKSE_VERSION`
+- SE builds were using SKSE 2.2.6 code (AE addresses) with runtime 1.5.97 (SE game)
+- This caused **ACCESS_VIOLATION (0xC0000005)** in `Hooks_ObScript_Init`
+- Crash occurred because `g_firstConsoleCommand` pointed to wrong memory address
+
+**Root Cause:**
+- SKSE version number controls which game memory addresses are used
+- SE 1.5.97 requires SKSE 2.0.20 addresses
+- AE 1.6.x requires SKSE 2.2.6 addresses
+- Mismatch between code addresses and actual game = instant crash
+
+**The Fix:**
+- Updated GitHub Actions workflow to set BOTH `SKSE_VERSION` and `RUNTIME_VERSION`
+- SE builds now use: SKSE 2.0.20 + Runtime 1.5.97 ✓
+- AE builds now use: SKSE 2.2.6 + Runtime 1.6.1170 ✓
+
+**Affected Versions:**
+- v2.0.20.6 through v2.0.20.11 - ALL BROKEN (wrong SKSE version for SE)
+- v2.0.20-SE-optimized-1 - WORKING (correct SKSE 2.0.20)
+
+**Files Modified:**
+- [.github/workflows/build.yml](.github/workflows/build.yml) - Matrix now includes SKSE version
+- Build step now sets both SKSE and runtime versions
+
+**Technical Details:**
+Console logging revealed crash in `Hooks_ObScript_Init` at:
+```cpp
+for(ObScriptCommand * iter = g_firstConsoleCommand; ...)
+```
+`g_firstConsoleCommand` address differs between SE and AE. Using AE addresses (SKSE 2.2.6) with SE game (1.5.97) causes null pointer/bad address dereference.
+
+**This explains why ALL optimizations appeared to fail** - they didn't fail, the build was fundamentally broken!
+
+---
+
 ## v2.0.20.11 - Comprehensive Console Logging (January 25, 2026)
 
 ### Debug Console Logging
