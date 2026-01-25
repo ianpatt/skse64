@@ -49,17 +49,27 @@ jobs:
     - name: Package Release
       run: |
         New-Item -ItemType Directory -Force -Path release_package
-        New-Item -ItemType Directory -Force -Path release_package/Data/SKSE/Plugins
+        New-Item -ItemType Directory -Force -Path release_package/Data/Scripts/Source
 
-        # Copy executables
+        # Copy executables to ROOT (not Data folder!)
         Copy-Item skse64/build/skse64_loader/Release/skse64_loader.exe release_package/
         Copy-Item skse64/build/skse64_steam_loader/Release/skse64_steam_loader.dll release_package/
-        Copy-Item skse64/build/skse64/Release/skse64_1_6_1170.dll release_package/Data/SKSE/Plugins/
+
+        # Copy runtime DLL - filename varies by version
+        # For AE 1.6.x: skse64_1_6_1170.dll
+        # For SE 1.5.97: skse64_1_5_97.dll
+        $runtimeDll = Get-ChildItem -Path skse64/build/skse64/Release/skse64_*.dll | Select-Object -First 1
+        Copy-Item $runtimeDll.FullName release_package/
+
+        # Copy Papyrus script sources
+        Copy-Item -Recurse skse64/scripts/modified/* release_package/Data/Scripts/Source/
 
         # Copy documentation
         Copy-Item skse64/README_FORK.md release_package/README.md
         Copy-Item skse64/PERFORMANCE_OPTIMIZATIONS.md release_package/
         Copy-Item skse64/skse64_license.txt release_package/
+        Copy-Item skse64/skse64_readme.txt release_package/
+        Copy-Item skse64/skse64_whatsnew.txt release_package/
       shell: pwsh
 
     - name: Upload Build Artifacts
