@@ -13,7 +13,7 @@
 #include "NiExtraData.h"
 #include "InternalTasks.h"
 
-#include <set>
+#include <unordered_set>
 
 class MatchBySlot : public FormMatcher
 {
@@ -45,7 +45,7 @@ public:
 	bool Matches(TESForm* pForm) const { return m_form == pForm; }
 };
 
-typedef std::set<TESFaction*> FactionRankSet;
+typedef std::unordered_set<TESFaction*> FactionRankSet;  // O(1) lookup
 class CollectUniqueFactions : public Actor::FactionVisitor
 {
 public:

@@ -9,7 +9,7 @@
 
 #include "skse64/PapyrusArgs.h"
 
-#include <set>
+#include <unordered_set>
 
 enum WeaponTypes
 {
@@ -120,7 +120,7 @@ namespace papyrusGameData
 		if (!modInfo || !modInfo->IsActive())
 			return result;
 
-		std::set<TESObjectARMO*> exclude;
+		std::unordered_set<TESObjectARMO*> exclude;  // O(1) lookup
 		if (ignoreSkin) {
 			TESRace * race = NULL;
 			for (UInt32 i = 0; i < dataHandler->races.count; i++)
