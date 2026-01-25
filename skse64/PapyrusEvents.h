@@ -89,12 +89,87 @@ public:
 	}
 };
 
-template <typename K, typename D = NullParameters>
-class RegistrationMapHolder : public SafeDataHolder<std::unordered_map<K,std::set<EventRegistration<D>>>>
+// Performance: Data-oriented storage for event registrations
+// Stores handles and params in contiguous arrays for cache-friendly iteration
+template <typename D>
+class DataOrientedRegistrations
 {
-	typedef std::set<EventRegistration<D>>	RegSet;
+public:
+	std::vector<UInt64> handles;  // All handles in contiguous memory
+	std::vector<D> params;         // All params in contiguous memory
+
+	// Register a new handler (maintains sorted order by handle)
+	bool insert(UInt64 handle, const D& param)
+	{
+		// Binary search for insertion point
+		auto it = std::lower_bound(handles.begin(), handles.end(), handle);
+
+		// Already exists?
+		if (it != handles.end() && *it == handle)
+			return false;
+
+		// Insert at correct position to maintain sorted order
+		size_t index = it - handles.begin();
+		handles.insert(it, handle);
+		params.insert(params.begin() + index, param);
+		return true;
+	}
+
+	// Unregister a handler
+	bool erase(UInt64 handle)
+	{
+		auto it = std::lower_bound(handles.begin(), handles.end(), handle);
+		if (it == handles.end() || *it != handle)
+			return false;
+
+		size_t index = it - handles.begin();
+		handles.erase(it);
+		params.erase(params.begin() + index);
+		return true;
+	}
+
+	// Get registration count
+	size_t size() const { return handles.size(); }
+
+	// Check if empty
+	bool empty() const { return handles.empty(); }
+
+	// Clear all registrations
+	void clear()
+	{
+		handles.clear();
+		params.clear();
+	}
+
+	// Iterator for compatibility with existing code
+	struct Iterator
+	{
+		DataOrientedRegistrations* owner;
+		size_t index;
+
+		EventRegistration<D> operator*() const
+		{
+			EventRegistration<D> reg;
+			reg.handle = owner->handles[index];
+			reg.params = owner->params[index];
+			return reg;
+		}
+
+		Iterator& operator++() { ++index; return *this; }
+		bool operator!=(const Iterator& other) const { return index != other.index; }
+	};
+
+	Iterator begin() { return Iterator{this, 0}; }
+	Iterator end() { return Iterator{this, handles.size()}; }
+};
+
+template <typename K, typename D = NullParameters>
+class RegistrationMapHolder : public SafeDataHolder<std::unordered_map<K,DataOrientedRegistrations<D>>>
+{
+	typedef DataOrientedRegistrations<D>	RegSet;
 	// Performance: Use unordered_map for O(1) event dispatch instead of O(log n)
 	// Critical for input events, action events, and other high-frequency game events
+	// Data-oriented storage: handles and params in contiguous arrays for cache locality
 	typedef std::unordered_map<K,RegSet>	RegMap;
 
 public:
@@ -104,14 +179,14 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = handle;
+		D param_copy;
 		if (params)
-			reg.params = *params;
-		
+			param_copy = *params;
+
 		this->Lock();
 
-		if (this->m_data[key].insert(reg).second)
+		// Performance: Data-oriented storage with contiguous arrays
+		if (this->m_data[key].insert(handle, param_copy))
 			policy->AddRef(handle);
 
 		this->Release();
@@ -123,19 +198,20 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = policy->Create(type, (void *)classType);
+		UInt64 handle = policy->Create(type, (void *)classType);
+		D param_copy;
 		if (params)
-			reg.params = *params;
+			param_copy = *params;
 
 #ifdef _DEBUG
-		_MESSAGE("Executed PapyrusEvents::Register - %016llX", reg.handle);
+		_MESSAGE("Executed PapyrusEvents::Register - %016llX", handle);
 #endif
-		
+
 		this->Lock();
 
-		if (this->m_data[key].insert(reg).second)
-			policy->AddRef(reg.handle);
+		// Performance: Data-oriented storage with contiguous arrays
+		if (this->m_data[key].insert(handle, param_copy))
+			policy->AddRef(handle);
 
 		this->Release();
 	}
@@ -145,12 +221,10 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = handle;
-
 		this->Lock();
 
-		if (this->m_data[key].erase(reg))
+		// Performance: Data-oriented storage with binary search for removal
+		if (this->m_data[key].erase(handle))
 			policy->Release(handle);
 
 		this->Release();
@@ -162,13 +236,13 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = policy->Create(type, (void *)classType);
+		UInt64 handle = policy->Create(type, (void *)classType);
 
 		this->Lock();
 
-		if (this->m_data[key].erase(reg))
-			policy->Release(reg.handle);
+		// Performance: Data-oriented storage with binary search for removal
+		if (this->m_data[key].erase(handle))
+			policy->Release(handle);
 
 		this->Release();
 	}
@@ -178,13 +252,11 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = handle;
-
 		this->Lock();
 
+		// Performance: Data-oriented storage - iterate through all event types
 		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
-			if (iter->second.erase(reg))
+			if (iter->second.erase(handle))
 				policy->Release(handle);
 
 		this->Release();
@@ -196,14 +268,14 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = policy->Create(type, (void *)classType);
+		UInt64 handle = policy->Create(type, (void *)classType);
 
 		this->Lock();
 
+		// Performance: Data-oriented storage - iterate through all event types
 		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
-			if (iter->second.erase(reg))
-				policy->Release(reg.handle);
+			if (iter->second.erase(handle))
+				policy->Release(handle);
 
 		this->Release();
 	}
@@ -248,9 +320,17 @@ public:
 			Serialization::WriteData(intfc, &iter->first);
 			// Reg count
 			intfc->WriteRecordData(&numRegs, sizeof(numRegs));
-			// Regs
-			for (auto elems = iter->second.begin(); elems != iter->second.end(); ++elems)
-				elems->Save(intfc, version);
+
+			// Performance: Data-oriented storage - iterate contiguous arrays
+			for (size_t i = 0; i < numRegs; i++)
+			{
+				// Save handle
+				if (!intfc->WriteRecordData(&iter->second.handles[i], sizeof(UInt64)))
+					return false;
+				// Save params
+				if (!iter->second.params[i].Save(intfc, version))
+					return false;
+			}
 		}
 
 		intfc->OpenRecord('REGE', version);
@@ -286,35 +366,41 @@ public:
 						return false;
 					}
 
+					// Performance: Data-oriented storage - load into contiguous arrays
 					for (UInt32 i=0; i<numRegs; i++)
 					{
-						EventRegistration<D> reg;
-						if (reg.Load(intfc, version))
+						UInt64 handle;
+						D params;
+
+						// Load handle
+						if (!intfc->ReadRecordData(&handle, sizeof(handle)))
 						{
-							VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
-							IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
-
-							UInt64 newHandle = 0;
-
-							// Skip if handle is no longer valid.
-							if (! intfc->ResolveHandle(reg.handle, &newHandle))
-								continue;
-
-							reg.handle = newHandle;
-
-							this->Lock();
-
-							if (this->m_data[curKey].insert(reg).second)
-								policy->AddRef(reg.handle);
-
-							this->Release();
-							
-						}
-						else
-						{
-							_MESSAGE("Error loading regs");
+							_MESSAGE("Error loading handle");
 							return false;
 						}
+
+						// Load params
+						if (!params.Load(intfc, version))
+						{
+							_MESSAGE("Error loading params");
+							return false;
+						}
+
+						VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
+						IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
+
+						UInt64 newHandle = 0;
+
+						// Skip if handle is no longer valid.
+						if (! intfc->ResolveHandle(handle, &newHandle))
+							continue;
+
+						this->Lock();
+
+						if (this->m_data[curKey].insert(newHandle, params))
+							policy->AddRef(newHandle);
+
+						this->Release();
 					}
 
 					break;
@@ -337,9 +423,9 @@ public:
 };
 
 template <typename D = NullParameters>
-class RegistrationSetHolder : public SafeDataHolder<std::set<EventRegistration<D>>>
+class RegistrationSetHolder : public SafeDataHolder<DataOrientedRegistrations<D>>
 {
-	typedef std::set<EventRegistration<D>>	RegSet;
+	typedef DataOrientedRegistrations<D>	RegSet;
 
 public:
 
@@ -348,14 +434,14 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = handle;
+		D param_copy;
 		if (params)
-			reg.params = *params;
-		
+			param_copy = *params;
+
 		this->Lock();
 
-		if (this->m_data.insert(reg).second)
+		// Performance: Data-oriented storage with contiguous arrays
+		if (this->m_data.insert(handle, param_copy))
 			policy->AddRef(handle);
 
 		this->Release();
@@ -367,15 +453,16 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = policy->Create(type, (void *)classType);
+		UInt64 handle = policy->Create(type, (void *)classType);
+		D param_copy;
 		if (params)
-			reg.params = *params;
-		
+			param_copy = *params;
+
 		this->Lock();
 
-		if (this->m_data.insert(reg).second)
-			policy->AddRef(reg.handle);
+		// Performance: Data-oriented storage with contiguous arrays
+		if (this->m_data.insert(handle, param_copy))
+			policy->AddRef(handle);
 
 		this->Release();
 	}
@@ -385,12 +472,10 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = handle;
-
 		this->Lock();
 
-		if (this->m_data.erase(reg))
+		// Performance: Data-oriented storage with binary search for removal
+		if (this->m_data.erase(handle))
 			policy->Release(handle);
 
 		this->Release();
@@ -402,13 +487,13 @@ public:
 		VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
 		IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
 
-		EventRegistration<D> reg;
-		reg.handle = policy->Create(type, (void *)classType);
+		UInt64 handle = policy->Create(type, (void *)classType);
 
 		this->Lock();
 
-		if (this->m_data.erase(reg))
-			policy->Release(reg.handle);
+		// Performance: Data-oriented storage with binary search for removal
+		if (this->m_data.erase(handle))
+			policy->Release(handle);
 
 		this->Release();
 	}
@@ -441,10 +526,17 @@ public:
 
 		// Reg count
 		intfc->WriteRecordData(&numRegs, sizeof(numRegs));
-			
-		// Regs
-		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
-			iter->Save(intfc, version);
+
+		// Performance: Data-oriented storage - iterate contiguous arrays
+		for (size_t i = 0; i < numRegs; i++)
+		{
+			// Save handle
+			if (!intfc->WriteRecordData(&this->m_data.handles[i], sizeof(UInt64)))
+				return false;
+			// Save params
+			if (!this->m_data.params[i].Save(intfc, version))
+				return false;
+		}
 
 		this->Release();
 
@@ -461,35 +553,41 @@ public:
 			return false;
 		}
 
+		// Performance: Data-oriented storage - load into contiguous arrays
 		for (UInt32 i=0; i<numRegs; i++)
 		{
-			EventRegistration<D> reg;
-			if (reg.Load(intfc, version))
+			UInt64 handle;
+			D params;
+
+			// Load handle
+			if (!intfc->ReadRecordData(&handle, sizeof(handle)))
 			{
-				VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
-				IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
-
-				UInt64 newHandle = 0;
-
-				// Skip if handle is no longer valid.
-				if (! intfc->ResolveHandle(reg.handle, &newHandle))
-					continue;
-
-				reg.handle = newHandle;
-
-				this->Lock();
-
-				if (this->m_data.insert(reg).second)
-					policy->AddRef(reg.handle);
-
-				this->Release();
-				
-			}
-			else
-			{
-				_MESSAGE("Error loading regs");
+				_MESSAGE("Error loading handle");
 				return false;
 			}
+
+			// Load params
+			if (!params.Load(intfc, version))
+			{
+				_MESSAGE("Error loading params");
+				return false;
+			}
+
+			VMClassRegistry		* registry =	(*g_skyrimVM)->GetClassRegistry();
+			IObjectHandlePolicy	* policy =		registry->GetHandlePolicy();
+
+			UInt64 newHandle = 0;
+
+			// Skip if handle is no longer valid.
+			if (! intfc->ResolveHandle(handle, &newHandle))
+				continue;
+
+			this->Lock();
+
+			if (this->m_data.insert(newHandle, params))
+				policy->AddRef(newHandle);
+
+			this->Release();
 		}
 
 		return true;
