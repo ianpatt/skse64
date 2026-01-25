@@ -6,22 +6,9 @@
 #include "GameInput.h"
 #include "GameCamera.h"
 #include <map>
-#include <unordered_map>
 #include <set>
 #include "Serialization.h"
 #include "PapyrusVM.h"
-
-// Hash function for BSFixedString to enable unordered_map usage
-// BSFixedString uses StringCache - identical strings share same pointer
-// We hash the pointer address (ultra-fast O(1)) instead of string contents
-namespace std {
-	template<>
-	struct hash<BSFixedString> {
-		size_t operator()(const BSFixedString& str) const {
-			return hash<const char*>()(str.data);
-		}
-	};
-}
 
 template <typename D>
 class EventRegistration
@@ -88,10 +75,10 @@ public:
 };
 
 template <typename K, typename D = NullParameters>
-class RegistrationMapHolder : public SafeDataHolder<std::unordered_map<K,std::set<EventRegistration<D>>>>
+class RegistrationMapHolder : public SafeDataHolder<std::map<K,std::set<EventRegistration<D>>>>
 {
 	typedef std::set<EventRegistration<D>>	RegSet;
-	typedef std::unordered_map<K,RegSet>	RegMap;
+	typedef std::map<K,RegSet>				RegMap;
 
 public:
 
@@ -104,16 +91,13 @@ public:
 		reg.handle = handle;
 		if (params)
 			reg.params = *params;
+		
+		Lock();
 
-		this->Lock();
-
-		bool inserted = this->m_data[key].insert(reg).second;
-		if (inserted)
-		{
+		if (m_data[key].insert(reg).second)
 			policy->AddRef(handle);
-		}
 
-		this->Release();
+		Release();
 	}
 
 	template <typename T>
@@ -127,15 +111,16 @@ public:
 		if (params)
 			reg.params = *params;
 
-		this->Lock();
+#ifdef _DEBUG
+		_MESSAGE("Executed PapyrusEvents::Register - %016llX", reg.handle);
+#endif
+		
+		Lock();
 
-		bool inserted = this->m_data[key].insert(reg).second;
-		if (inserted)
-		{
+		if (m_data[key].insert(reg).second)
 			policy->AddRef(reg.handle);
-		}
 
-		this->Release();
+		Release();
 	}
 
 	void Unregister(K & key, UInt64 handle)
@@ -146,12 +131,12 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = handle;
 
-		this->Lock();
+		Lock();
 
-		if (this->m_data[key].erase(reg))
+		if (m_data[key].erase(reg))
 			policy->Release(handle);
 
-		this->Release();
+		Release();
 	}
 
 	template <typename T>
@@ -163,12 +148,12 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = policy->Create(type, (void *)classType);
 
-		this->Lock();
+		Lock();
 
-		if (this->m_data[key].erase(reg))
+		if (m_data[key].erase(reg))
 			policy->Release(reg.handle);
 
-		this->Release();
+		Release();
 	}
 
 	void UnregisterAll(UInt64 handle)
@@ -179,13 +164,13 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = handle;
 
-		this->Lock();
+		Lock();
 
-		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
+		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
 			if (iter->second.erase(reg))
 				policy->Release(handle);
 
-		this->Release();
+		Release();
 	}
 
 	template <typename T>
@@ -197,47 +182,43 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = policy->Create(type, (void *)classType);
 
-		this->Lock();
+		Lock();
 
-		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
+		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
 			if (iter->second.erase(reg))
 				policy->Release(reg.handle);
 
-		this->Release();
+		Release();
 	}
 
 	template <typename F>
 	void ForEach(K & key, F & functor)
 	{
-		this->Lock();
+		Lock();
 
-		auto handles = this->m_data.find(key);
+		RegMap::iterator handles = m_data.find(key);
 
-		if (handles != this->m_data.end())
-		{
-			for (auto iter = handles->second.begin(); iter != handles->second.end(); ++iter)
-			{
+		if (handles != m_data.end())
+			for (RegSet::iterator iter = handles->second.begin(); iter != handles->second.end(); ++iter)
 				functor(*iter);
-			}
-		}
 
-		this->Release();
+		Release();
 	}
 
 	void Clear(void)
 	{
-		this->Lock();
-		this->m_data.clear();
-		this->Release();
+		Lock();
+		m_data.clear();
+		Release();
 	}
 
 	bool Save(SKSESerializationInterface * intfc, UInt32 type, UInt32 version)
 	{
 		intfc->OpenRecord(type, version);
 
-		this->Lock();
+		Lock();
 
-		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
+		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
 		{
 			UInt32 numRegs = iter->second.size();
 
@@ -251,13 +232,13 @@ public:
 			// Reg count
 			intfc->WriteRecordData(&numRegs, sizeof(numRegs));
 			// Regs
-			for (auto elems = iter->second.begin(); elems != iter->second.end(); ++elems)
+			for (RegSet::iterator elems = iter->second.begin(); elems != iter->second.end(); ++elems)
 				elems->Save(intfc, version);
 		}
 
 		intfc->OpenRecord('REGE', version);
 
-		this->Release();
+		Release();
 
 		return true;
 	}
@@ -304,12 +285,12 @@ public:
 
 							reg.handle = newHandle;
 
-							this->Lock();
+							Lock();
 
-							if (this->m_data[curKey].insert(reg).second)
+							if (m_data[curKey].insert(reg).second)
 								policy->AddRef(reg.handle);
 
-							this->Release();
+							Release();
 							
 						}
 						else
@@ -354,16 +335,13 @@ public:
 		reg.handle = handle;
 		if (params)
 			reg.params = *params;
+		
+		Lock();
 
-		this->Lock();
-
-		bool inserted = this->m_data.insert(reg).second;
-		if (inserted)
-		{
+		if (m_data.insert(reg).second)
 			policy->AddRef(handle);
-		}
 
-		this->Release();
+		Release();
 	}
 
 	template <typename T>
@@ -376,16 +354,13 @@ public:
 		reg.handle = policy->Create(type, (void *)classType);
 		if (params)
 			reg.params = *params;
+		
+		Lock();
 
-		this->Lock();
-
-		bool inserted = this->m_data.insert(reg).second;
-		if (inserted)
-		{
+		if (m_data.insert(reg).second)
 			policy->AddRef(reg.handle);
-		}
 
-		this->Release();
+		Release();
 	}
 
 	void Unregister(UInt64 handle)
@@ -396,12 +371,12 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = handle;
 
-		this->Lock();
+		Lock();
 
-		if (this->m_data.erase(reg))
+		if (m_data.erase(reg))
 			policy->Release(handle);
 
-		this->Release();
+		Release();
 	}
 
 	template <typename T>
@@ -413,50 +388,48 @@ public:
 		EventRegistration<D> reg;
 		reg.handle = policy->Create(type, (void *)classType);
 
-		this->Lock();
+		Lock();
 
-		if (this->m_data.erase(reg))
+		if (m_data.erase(reg))
 			policy->Release(reg.handle);
 
-		this->Release();
+		Release();
 	}
 
 	template <typename F>
 	void ForEach(F & functor)
 	{
-		this->Lock();
+		Lock();
 
-		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
-		{
+		for (RegSet::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
 			functor(*iter);
-		}
 
-		this->Release();
+		Release();
 	}
 
 	void Clear(void)
 	{
-		this->Lock();
-		this->m_data.clear();
-		this->Release();
+		Lock();
+		m_data.clear();
+		Release();
 	}
 
 	bool Save(SKSESerializationInterface * intfc, UInt32 type, UInt32 version)
 	{
 		intfc->OpenRecord(type, version);
 
-		this->Lock();
+		Lock();
 
-		UInt32 numRegs = this->m_data.size();
+		UInt32 numRegs = m_data.size();
 
 		// Reg count
 		intfc->WriteRecordData(&numRegs, sizeof(numRegs));
 			
 		// Regs
-		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
+		for (RegSet::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
 			iter->Save(intfc, version);
 
-		this->Release();
+		Release();
 
 		return true;
 	}
@@ -487,12 +460,12 @@ public:
 
 				reg.handle = newHandle;
 
-				this->Lock();
+				Lock();
 
-				if (this->m_data.insert(reg).second)
+				if (m_data.insert(reg).second)
 					policy->AddRef(reg.handle);
 
-				this->Release();
+				Release();
 				
 			}
 			else

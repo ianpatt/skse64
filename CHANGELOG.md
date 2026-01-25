@@ -1,5 +1,49 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.19 - FINALLY Truly Vanilla: Revert PluginManager & Serialization (January 25, 2026)
+
+### The ACTUAL Issue: Never Reverted Plugin Loading Optimizations!
+
+**v2.0.20.18 STILL CRASHED even with:**
+- Correct version (2.0.20) ✓
+- No console logging ✓
+- No verbose event logging ✓
+- Vanilla PapyrusEvents (std::map, no alignas) ✓
+
+**But it STILL had these optimizations that v2.0.20-SE-optimized-1 didn't have:**
+- ❌ PluginManager: ScanPlugins(), hash map lookups, thread_local strings, error dialogs
+- ❌ PluginManager: alignas(64) on trampoline managers
+- ❌ Serialization: Hash map UID optimization, timing logs, enhanced error handling
+- ❌ Multiple other micro-optimizations we forgot about
+
+**Root Cause:**
+- When reverting "to vanilla," we only reverted PapyrusEvents optimizations
+- We left ALL the PluginManager and Serialization optimizations in place!
+- These were major rewrites added for large modlist performance
+- v2.0.20-SE-optimized-1 worked because it had NONE of these changes
+
+**This Version (v2.0.20.19):**
+- REVERTED: PluginManager.cpp to exact v2.0.20-SE-optimized-1 version
+- REVERTED: PluginManager.h to exact v2.0.20-SE-optimized-1 version
+- REVERTED: Serialization.cpp to exact v2.0.20-SE-optimized-1 version
+- REVERTED: PapyrusEvents.cpp to exact v2.0.20-SE-optimized-1 version
+- REVERTED: PapyrusEvents.h to exact v2.0.20-SE-optimized-1 version
+- KEPT: Correct version (2.0.20 for SE, 2.2.6 for AE)
+
+**Files Modified:**
+- [PluginManager.cpp](skse64/PluginManager.cpp) - Reverted to v2.0.20-SE-optimized-1
+- [PluginManager.h](skse64/PluginManager.h) - Reverted to v2.0.20-SE-optimized-1
+- [Serialization.cpp](skse64/Serialization.cpp) - Reverted to v2.0.20-SE-optimized-1
+- [PapyrusEvents.cpp](skse64/PapyrusEvents.cpp) - Reverted to v2.0.20-SE-optimized-1
+- [PapyrusEvents.h](skse64/PapyrusEvents.h) - Reverted to v2.0.20-SE-optimized-1
+
+**Purpose:**
+- Establish TRULY vanilla baseline that EXACTLY matches v2.0.20-SE-optimized-1
+- This should finally work because it's literally the same code that worked before
+- Once this works, add optimizations back ONE AT A TIME
+
+---
+
 ## v2.0.20.18 - Remove ALL Added Logging (January 25, 2026)
 
 ### The REAL Issue: Verbose Event Logging!

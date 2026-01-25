@@ -9,33 +9,30 @@
 #include "PapyrusEventFunctor.h"
 
 //// Global instances
-// Cache-line aligned to prevent false sharing in multi-threaded event dispatch
-// Modern x86-64 CPUs have 64-byte cache lines - aligning globals to cache boundaries
-// prevents CPU cache thrashing when different threads access different event types
 
-alignas(64) RegistrationMapHolder<BSFixedString>						g_menuOpenCloseRegs;
-alignas(64) RegistrationMapHolder<UInt32>								g_inputKeyEventRegs;
-alignas(64) RegistrationMapHolder<BSFixedString>						g_inputControlEventRegs;
-alignas(64) RegistrationMapHolder<BSFixedString,ModCallbackParameters>	g_modCallbackRegs;
+RegistrationMapHolder<BSFixedString>						g_menuOpenCloseRegs;
+RegistrationMapHolder<UInt32>								g_inputKeyEventRegs;
+RegistrationMapHolder<BSFixedString>						g_inputControlEventRegs;
+RegistrationMapHolder<BSFixedString,ModCallbackParameters>	g_modCallbackRegs;
 
-alignas(64) RegistrationSetHolder<NullParameters>						g_cameraEventRegs;
-alignas(64) RegistrationSetHolder<NullParameters>						g_crosshairRefEventRegs;
-alignas(64) RegistrationMapHolder<UInt32>								g_actionEventRegs;
-alignas(64) RegistrationSetHolder<NullParameters>						g_ninodeUpdateEventRegs;
+RegistrationSetHolder<NullParameters>						g_cameraEventRegs;
+RegistrationSetHolder<NullParameters>						g_crosshairRefEventRegs;
+RegistrationMapHolder<UInt32>								g_actionEventRegs;
+RegistrationSetHolder<NullParameters>						g_ninodeUpdateEventRegs;
 
-alignas(64) EventDispatcher<SKSEModCallbackEvent>	g_modCallbackEventDispatcher;
-alignas(64) EventDispatcher<SKSECameraEvent>		g_cameraEventDispatcher;
-alignas(64) EventDispatcher<SKSECrosshairRefEvent>	g_crosshairRefEventDispatcher;
-alignas(64) EventDispatcher<SKSEActionEvent>		g_actionEventDispatcher;
-alignas(64) EventDispatcher<SKSENiNodeUpdateEvent>	g_ninodeUpdateEventDispatcher;
+EventDispatcher<SKSEModCallbackEvent>	g_modCallbackEventDispatcher;
+EventDispatcher<SKSECameraEvent>		g_cameraEventDispatcher;
+EventDispatcher<SKSECrosshairRefEvent>	g_crosshairRefEventDispatcher;
+EventDispatcher<SKSEActionEvent>		g_actionEventDispatcher;
+EventDispatcher<SKSENiNodeUpdateEvent>	g_ninodeUpdateEventDispatcher;
 
-alignas(64) MenuEventHandler			g_menuEventHandler;
-alignas(64) InputEventHandler			g_inputEventHandler;
-alignas(64) ModCallbackEventHandler		g_modCallbackEventHandler;
-alignas(64) CameraEventHandler			g_cameraEventHandler;
-alignas(64) CrosshairRefEventHandler	g_crosshairRefEventHandler;
-alignas(64) ActionEventHandler			g_actionEventHandler;
-alignas(64) NiNodeUpdateEventHandler	g_ninodeUpdateEventHandler;
+MenuEventHandler			g_menuEventHandler;
+InputEventHandler			g_inputEventHandler;
+ModCallbackEventHandler		g_modCallbackEventHandler;
+CameraEventHandler			g_cameraEventHandler;
+CrosshairRefEventHandler	g_crosshairRefEventHandler;
+ActionEventHandler			g_actionEventHandler;
+NiNodeUpdateEventHandler	g_ninodeUpdateEventHandler;
 
 //// Generic functors
 
@@ -214,6 +211,10 @@ EventResult InputEventHandler::ReceiveEvent(InputEvent ** evns, InputEventDispat
 					else
 						keyCode = keyMask;
 
+					// Valid scancode?
+					if (keyCode >= InputMap::kMaxMacros)
+						continue;
+
 					BSFixedString	control	= *t->GetControlID();
 					float			timer	= t->timer;
 
@@ -225,38 +226,27 @@ EventResult InputEventHandler::ReceiveEvent(InputEvent ** evns, InputEventDispat
 						// Used by scaleform skse.GetLastControl
 						SetLastControlDown(control.data, keyCode);
 
-						// Valid scancode?
-						if (keyCode < InputMap::kMaxMacros) {
-							g_inputKeyEventRegs.ForEach(
-								keyCode,
-								EventQueueFunctor1<SInt32>(BSFixedString("OnKeyDown"), (SInt32)keyCode)
+						g_inputKeyEventRegs.ForEach(
+							keyCode,
+							EventQueueFunctor1<SInt32>(BSFixedString("OnKeyDown"), (SInt32)keyCode)
 							);
-						}
-
-						if (strlen(control.c_str()) > 0) {
-							g_inputControlEventRegs.ForEach(
-								control,
-								EventQueueFunctor1<BSFixedString>(BSFixedString("OnControlDown"), control)
+						g_inputControlEventRegs.ForEach(
+							control,
+							EventQueueFunctor1<BSFixedString>(BSFixedString("OnControlDown"), control)
 							);
-						}
 					}
 					else if (isUp)
 					{
 						SetLastControlUp(control.data, keyCode);
 
-						if (keyCode < InputMap::kMaxMacros) {
-							g_inputKeyEventRegs.ForEach(
-								keyCode,
-								EventQueueFunctor2<SInt32, float>(BSFixedString("OnKeyUp"), (SInt32)keyCode, timer)
+						g_inputKeyEventRegs.ForEach(
+							keyCode,
+							EventQueueFunctor2<SInt32, float>(BSFixedString("OnKeyUp"), (SInt32)keyCode, timer)
 							);
-						}
-
-						if (strlen(control.c_str()) > 0) {
-							g_inputControlEventRegs.ForEach(
-								control,
-								EventQueueFunctor2<BSFixedString, float>(BSFixedString("OnControlUp"), control, timer)
+						g_inputControlEventRegs.ForEach(
+							control,
+							EventQueueFunctor2<BSFixedString, float>(BSFixedString("OnControlUp"), control, timer)
 							);
-						}
 					}
 				}
 				break;

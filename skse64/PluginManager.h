@@ -5,10 +5,9 @@
 #include <mutex>
 #include <unordered_map>
 
-#include "skse64/PluginAPI.h"
-
-// Performance: Maximum plugin limit for safety with large modlists
 #define MAX_PLUGINS 512
+
+#include "skse64/PluginAPI.h"
 
 class PluginManager
 {
@@ -23,6 +22,7 @@ public:
 	const char *	GetPluginNameFromHandle(PluginHandle handle);
 
 	PluginHandle	LookupHandleFromName(const char* pluginName);
+
 
 	UInt32			GetNumPlugins(void);
 
@@ -39,75 +39,30 @@ public:
 private:
 	struct LoadedPlugin
 	{
-		LoadedPlugin();
-
-		std::string dllName;
-
-		HMODULE		handle = 0;
+		// internals
+		HMODULE		handle;
 		PluginInfo	info;
-		UInt32		internalHandle = 0;
 
-		SKSEPluginVersionData	version;
-
-		_SKSEPlugin_Load	load = nullptr;
-
-		const char			* errorState = nullptr;
-		UInt32				errorCode = 0;
+		_SKSEPlugin_Query	query;
+		_SKSEPlugin_Load	load;
 	};
 
 	bool	FindPluginDirectory(void);
-	void	ScanPlugins(void);
 	void	InstallPlugins(void);
 
+	const char *	SafeCallQueryPlugin(LoadedPlugin * plugin, const SKSEInterface * skse);
 	const char *	SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSEInterface * skse);
 
-	void			Sanitize(SKSEPluginVersionData * version);
-	const char *	CheckPluginCompatibility(const SKSEPluginVersionData & version);
-	const char *	CheckAddressLibrary(void);
-
-	void			LogPluginLoadError(const LoadedPlugin & plugin, const char * errStr, UInt32 errCode = 0, bool isError = true);
-	void			ReportPluginErrors();
-	void			UpdateAddressLibraryPrompt();
-
-	void			CallPostLoad();
+	const char *	CheckPluginCompatibility(LoadedPlugin * plugin);
 
 	typedef std::vector <LoadedPlugin>	LoadedPluginList;
 
 	std::string			m_pluginDirectory;
 	LoadedPluginList	m_plugins;
-
-	// Performance: O(1) plugin lookup by name instead of O(n) linear search
 	std::unordered_map<std::string, PluginHandle> m_pluginsByName;
-
-	LoadedPluginList	m_erroredPlugins;
-
-	bool				m_oldAddressLibrary = false;
 
 	static LoadedPlugin		* s_currentLoadingPlugin;
 	static PluginHandle		s_currentPluginHandle;
-
-	static PluginHandle		s_dispatchingPluginHandle;
-};
-
-class PluginErrorDialogBox
-{
-public:
-	PluginErrorDialogBox() = delete;
-	PluginErrorDialogBox(const PluginManager & mgr)
-		:m_owner(mgr) { }
-
-	void	Show();
-
-	bool	ShouldExitGame() { return m_exitGame; }
-
-private:
-	static INT_PTR _DialogProc(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
-	INT_PTR DialogProc(UINT msg, WPARAM wParam, LPARAM lParam);
-
-	HWND m_window = 0;
-	bool m_exitGame = false;
-
-	const PluginManager & m_owner;
 };
 
 class BranchTrampolineManager

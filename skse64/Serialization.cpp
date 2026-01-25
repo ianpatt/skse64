@@ -5,7 +5,6 @@
 #include "skse64_common/skse_version.h"
 #include <vector>
 #include <unordered_map>
-#include <chrono>
 #include <shlobj.h>
 #include "GameData.h"
 #include "skse64/InternalSerialization.h"
@@ -14,7 +13,7 @@
 
 namespace Serialization
 {
-	const char * kSavegamePath = "\\My Games\\" SAVE_FOLDER_NAME "\\";
+	const char * kSavegamePath = "\\My Games\\Skyrim Special Edition\\";
 
 	// file format internals
 
@@ -63,8 +62,8 @@ namespace Serialization
 	typedef std::vector <PluginCallbacks>	PluginCallbackList;
 	PluginCallbackList	s_pluginCallbacks;
 
-	// Performance: Hash map for O(1) UID lookup during load instead of O(n) linear search
-	std::unordered_map<UInt32, UInt32>	s_uidToIndexMap;
+	// Performance optimization: UID to index hash map for O(1) lookup during load
+	std::unordered_map<UInt32, UInt32> s_uidToIndexMap;
 
 	PluginHandle	s_currentPlugin = 0;
 
@@ -104,10 +103,10 @@ namespace Serialization
 	{
 		if(plugin >= s_pluginCallbacks.size())
 		{
-			// Performance: Reserve more space for large modlists (Nolvus v6 has 400+ plugins)
-			size_t newSize = plugin + 1;
-			if(newSize < 256)
-				newSize = 256;
+			UInt32 newSize = plugin + 1;
+			// Pre-allocate reasonable capacity to reduce future reallocations
+			if(s_pluginCallbacks.capacity() < 256 && newSize < 256)
+				s_pluginCallbacks.reserve(256);
 			s_pluginCallbacks.resize(newSize);
 		}
 
@@ -425,11 +424,9 @@ namespace Serialization
 		catch(...)
 		{
 			_ERROR("HandleSaveGame: exception during save");
-
-			// Safety: Close file and delete partial save to prevent corruption
+			// Prevent corrupted save file from being loaded
 			s_currentFile.Close();
 			DeleteFile(s_savePath.c_str());
-			_ERROR("Partial save file deleted to prevent corruption: %s", s_savePath.c_str());
 			return;
 		}
 
@@ -472,23 +469,14 @@ namespace Serialization
 			// reset flags
 			for(PluginCallbackList::iterator iter = s_pluginCallbacks.begin(); iter != s_pluginCallbacks.end(); ++iter)
 				iter->hadData = false;
-			
-			// Performance: Build UID hash map once for O(1) lookups instead of O(n) per chunk
-			_MESSAGE("Building UID hash map for %d plugin callbacks...", s_pluginCallbacks.size());
-			auto start = std::chrono::high_resolution_clock::now();
 
+			// Performance optimization: Build UID to index hash map for O(1) lookup
 			s_uidToIndexMap.clear();
 			for(UInt32 i = 0; i < s_pluginCallbacks.size(); i++)
 			{
 				if(s_pluginCallbacks[i].hadUID)
-				{
 					s_uidToIndexMap[s_pluginCallbacks[i].uid] = i;
-				}
 			}
-
-			auto end = std::chrono::high_resolution_clock::now();
-			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-			_MESSAGE("UID hash map built in %lld microseconds (%d entries)", duration.count(), s_uidToIndexMap.size());
 
 			// iterate through plugin data chunks
 			while(s_currentFile.GetRemain() >= sizeof(PluginHeader))
@@ -499,12 +487,10 @@ namespace Serialization
 
 				UInt32	pluginIdx = kPluginHandle_Invalid;
 
-				// Performance: Use hash map for O(1) lookup instead of O(n) linear search
+				// Performance optimization: O(1) hash map lookup instead of O(n) linear search
 				auto it = s_uidToIndexMap.find(s_pluginHeader.signature);
 				if(it != s_uidToIndexMap.end())
-				{
 					pluginIdx = it->second;
-				}
 
 				try
 				{
@@ -545,18 +531,20 @@ namespace Serialization
 					iter->load(&g_SKSESerializationInterface);
 				}
 			}
+
+			// Clear the hash map after loading is complete
+			s_uidToIndexMap.clear();
 		}
 		catch(...)
 		{
 			_ERROR("HandleLoadGame: exception during load");
+			s_uidToIndexMap.clear();
 
 			// ### this could be handled better, individually catch around each plugin so one plugin can't mess things up for everyone else
 		}
 
 	done:
 		s_currentFile.Close();
-		// Performance: Clear hash map to free memory
-		s_uidToIndexMap.clear();
 	}
 
 	void HandleDeleteSave(std::string saveName)
