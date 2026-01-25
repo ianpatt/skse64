@@ -35,16 +35,16 @@ jobs:
         cmake-version: '3.27.x'
 
     - name: Build and install common library
-      run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern
+      run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern common
 
     - name: Install common library
       run: cmake --build common/build --config Release --target install
 
     - name: Configure CMake
-      run: cmake -B skse64/build -S skse64 -DCMAKE_INSTALL_PREFIX=extern
+      run: cmake -B skse64/build -S skse64 -DCMAKE_INSTALL_PREFIX=extern skse64
 
     - name: Build Release
-      run: cmake --build skse64/build --config Release --parallel
+      run: cmake --build skse64/build --config Release
 
     - name: Package Release
       run: |
