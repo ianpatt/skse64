@@ -24,8 +24,8 @@ extern EventDispatcher<SKSECameraEvent>			g_cameraEventDispatcher;
 extern EventDispatcher<SKSECrosshairRefEvent>	g_crosshairRefEventDispatcher;
 extern EventDispatcher<SKSEActionEvent>			g_actionEventDispatcher;
 
-BranchTrampolineManager g_branchTrampolineManager(g_branchTrampoline);
-BranchTrampolineManager g_localTrampolineManager(g_localTrampoline);
+alignas(64) BranchTrampolineManager g_branchTrampolineManager(g_branchTrampoline);
+alignas(64) BranchTrampolineManager g_localTrampolineManager(g_localTrampoline);
 
 static const SKSEInterface g_SKSEInterface =
 {

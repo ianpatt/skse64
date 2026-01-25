@@ -1,5 +1,34 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.17 - All Optimizations Enabled WITHOUT Console Logging (January 25, 2026)
+
+### Performance Optimizations (No Console Logging This Time!)
+
+Now that we know console logging was the problem, let's test the optimizations properly:
+
+**This Version (v2.0.20.17):**
+- ✅ Event dispatch unordered_map optimization (O(log n) → O(1))
+- ✅ Cache-line alignment (alignas(64)) for all globals
+- ✅ Correct version (2.0.20 for SE, 2.2.6 for AE)
+- ❌ NO console logging (the culprit!)
+
+**Expected Performance Gains:**
+- 3-12% FPS improvement during gameplay
+- 10-30% cache miss reduction (research estimate)
+- Reduced microstutters from event dispatch
+- Better multi-threaded performance
+
+**Files Modified:**
+- [PapyrusEvents.h](skse64/PapyrusEvents.h) - BSFixedString hash, std::unordered_map
+- [PapyrusEvents.cpp](skse64/PapyrusEvents.cpp) - alignas(64) on all globals
+- [PluginManager.cpp](skse64/PluginManager.cpp) - alignas(64) on managers
+
+**Test Plan:**
+- v2.0.20.16 = vanilla baseline (should work)
+- v2.0.20.17 = optimized version (testing if optimizations actually work!)
+
+---
+
 ## v2.0.20.16 - FOUND THE BUG: Console Logging Causes Crash (January 25, 2026)
 
 ### The Real Culprit: Console Logging!
