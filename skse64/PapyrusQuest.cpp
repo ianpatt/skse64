@@ -15,7 +15,7 @@ UInt32 g_invalidateQuestCache;
 
 namespace papyrusQuest
 {
-	ICriticalSection	s_questCacheLock;
+	alignas(64) ICriticalSection	s_questCacheLock;  // Cache-line aligned
 	typedef std::unordered_map<BSFixedString, TESQuest*> QuestCache;  // O(1) lookup
 	static QuestCache s_questCache;
 

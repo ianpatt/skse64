@@ -16,7 +16,7 @@ UInt32 g_invalidateRaceCache = 0;
 namespace papyrusRace
 {
 	typedef std::unordered_map<BSFixedString, TESRace*> RaceCache;  // O(1) lookup
-	static ICriticalSection	s_raceCacheLock;
+	alignas(64) static ICriticalSection	s_raceCacheLock;  // Cache-line aligned
 	static RaceCache s_raceCache;
 
 	TESRace* GetRace(StaticFunctionTag*, BSFixedString editorID)
@@ -48,7 +48,7 @@ namespace papyrusRace
 	}
 
 	typedef std::vector<TESRace*> PlayableRaceCache;
-	static ICriticalSection	s_playableRaceCacheLock;
+	alignas(64) static ICriticalSection	s_playableRaceCacheLock;  // Cache-line aligned
 	static PlayableRaceCache s_playableRaceCache;
 
 	UInt32 GetNumPlayableRaces(StaticFunctionTag * base)

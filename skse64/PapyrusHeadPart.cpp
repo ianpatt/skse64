@@ -9,7 +9,7 @@
 
 namespace papyrusHeadPart
 {
-	ICriticalSection	s_headPartCacheLock;
+	alignas(64) ICriticalSection	s_headPartCacheLock;  // Cache-line aligned
 	typedef std::unordered_map<BSFixedString, BGSHeadPart*> HeadPartCache;  // O(1) lookup
 	static HeadPartCache s_headPartCache;
 
