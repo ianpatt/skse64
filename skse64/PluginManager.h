@@ -7,9 +7,6 @@
 
 #include "skse64/PluginAPI.h"
 
-// Performance: Maximum plugin limit for safety with large modlists
-#define MAX_PLUGINS 512
-
 class PluginManager
 {
 public:
@@ -75,9 +72,6 @@ private:
 
 	std::string			m_pluginDirectory;
 	LoadedPluginList	m_plugins;
-
-	// Performance: O(1) plugin lookup by name instead of O(n) linear search
-	std::unordered_map<std::string, PluginHandle> m_pluginsByName;
 
 	LoadedPluginList	m_erroredPlugins;
 

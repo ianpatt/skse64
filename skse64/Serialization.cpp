@@ -4,7 +4,6 @@
 #include "GameAPI.h"
 #include "skse64_common/skse_version.h"
 #include <vector>
-#include <unordered_map>
 #include <shlobj.h>
 #include "GameData.h"
 #include "skse64/InternalSerialization.h"
@@ -62,9 +61,6 @@ namespace Serialization
 	typedef std::vector <PluginCallbacks>	PluginCallbackList;
 	PluginCallbackList	s_pluginCallbacks;
 
-	// Performance: Hash map for O(1) UID lookup during load instead of O(n) linear search
-	std::unordered_map<UInt32, UInt32>	s_uidToIndexMap;
-
 	PluginHandle	s_currentPlugin = 0;
 
 	Header			s_fileHeader = { 0 };
@@ -102,13 +98,7 @@ namespace Serialization
 	PluginCallbacks * GetPluginInfo(PluginHandle plugin)
 	{
 		if(plugin >= s_pluginCallbacks.size())
-		{
-			// Performance: Reserve more space for large modlists (Nolvus v6 has 400+ plugins)
-			size_t newSize = plugin + 1;
-			if(newSize < 256)
-				newSize = 256;
-			s_pluginCallbacks.resize(newSize);
-		}
+			s_pluginCallbacks.resize(plugin + 1);
 
 		return &s_pluginCallbacks[plugin];
 	}
@@ -424,12 +414,6 @@ namespace Serialization
 		catch(...)
 		{
 			_ERROR("HandleSaveGame: exception during save");
-
-			// Safety: Close file and delete partial save to prevent corruption
-			s_currentFile.Close();
-			DeleteFile(s_savePath.c_str());
-			_ERROR("Partial save file deleted to prevent corruption: %s", s_savePath.c_str());
-			return;
 		}
 
 		s_currentFile.Close();
@@ -472,16 +456,6 @@ namespace Serialization
 			for(PluginCallbackList::iterator iter = s_pluginCallbacks.begin(); iter != s_pluginCallbacks.end(); ++iter)
 				iter->hadData = false;
 			
-			// Performance: Build UID hash map once for O(1) lookups instead of O(n) per chunk
-			s_uidToIndexMap.clear();
-			for(UInt32 i = 0; i < s_pluginCallbacks.size(); i++)
-			{
-				if(s_pluginCallbacks[i].hadUID)
-				{
-					s_uidToIndexMap[s_pluginCallbacks[i].uid] = i;
-				}
-			}
-
 			// iterate through plugin data chunks
 			while(s_currentFile.GetRemain() >= sizeof(PluginHeader))
 			{
@@ -544,8 +518,6 @@ namespace Serialization
 
 	done:
 		s_currentFile.Close();
-		// Performance: Clear hash map to free memory
-		s_uidToIndexMap.clear();
 	}
 
 	void HandleDeleteSave(std::string saveName)
