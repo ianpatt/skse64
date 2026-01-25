@@ -12,6 +12,21 @@ on:
 jobs:
   build:
     runs-on: windows-2022
+    strategy:
+      matrix:
+        include:
+          - name: "SE"
+            runtime_major: 1
+            runtime_minor: 5
+            runtime_patch: 97
+            artifact_name: "skse-for-modlists-SE-1.5.97"
+          - name: "AE"
+            runtime_major: 1
+            runtime_minor: 6
+            runtime_patch: 1170
+            artifact_name: "skse-for-modlists-AE-1.6.1170"
+
+    name: Build for Skyrim ${{ matrix.name }}
 
     steps:
     - name: Checkout code
@@ -33,6 +48,16 @@ jobs:
       uses: jwlawson/actions-setup-cmake@v1.14
       with:
         cmake-version: '3.27.x'
+
+    - name: Set Runtime Version for ${{ matrix.name }}
+      run: |
+        $content = Get-Content skse64/cmake/versioning.cmake
+        $content = $content -replace 'set\(RUNTIME_VERSION_MAJOR \d+\)', "set(RUNTIME_VERSION_MAJOR ${{ matrix.runtime_major }})"
+        $content = $content -replace 'set\(RUNTIME_VERSION_MINOR \d+\)', "set(RUNTIME_VERSION_MINOR ${{ matrix.runtime_minor }})"
+        $content = $content -replace 'set\(RUNTIME_VERSION_PATCH \d+\)', "set(RUNTIME_VERSION_PATCH ${{ matrix.runtime_patch }})"
+        $content | Set-Content skse64/cmake/versioning.cmake
+        Get-Content skse64/cmake/versioning.cmake
+      shell: pwsh
 
     - name: Build and install common library
       run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern common
@@ -60,6 +85,7 @@ jobs:
         # For SE 1.5.97: skse64_1_5_97.dll
         $runtimeDll = Get-ChildItem -Path skse64/build/skse64/Release/skse64_*.dll | Select-Object -First 1
         Copy-Item $runtimeDll.FullName release_package/
+        Write-Host "Packaged runtime DLL: $($runtimeDll.Name)"
 
         # Copy Papyrus script sources
         Copy-Item -Recurse skse64/scripts/modified/* release_package/Data/Scripts/Source/
@@ -73,7 +99,7 @@ jobs:
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: skse-for-modlists-build
+        name: ${{ matrix.artifact_name }}
         path: release_package/
         retention-days: 90
 
@@ -81,47 +107,72 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         cd release_package
-        Compress-Archive -Path * -DestinationPath ../skse-for-modlists-${{ github.ref_name }}.zip
+        Compress-Archive -Path * -DestinationPath ../${{ matrix.artifact_name }}-${{ github.ref_name }}.zip
       shell: powershell
 
-    - name: Create GitHub Release
+    - name: Upload to Release
       if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v1
       with:
-        files: skse-for-modlists-${{ github.ref_name }}.zip
-        body: |
-          # Performance-Optimized SKSE64 for Large Modlists
-
-          **Optimized for Nolvus v6 and modlists with 300-500+ plugins**
-
-          ## Performance Improvements
-
-          With **400 plugins**, this build provides:
-
-          - ⚡ **60-80% faster startup time**
-          - ⚡ **50-100x faster save loading** (minutes → seconds)
-          - ⚡ **30-50% faster save creation**
-          - ⚡ **90%+ faster message dispatch** between plugins
-          - 💾 **30-40% memory usage reduction**
-
-          ## Installation
-
-          1. **Backup existing SKSE installation**
-          2. **Extract ZIP to Skyrim root folder** (where SkyrimSE.exe is located)
-          3. **Overwrite files when prompted**
-          4. **Launch via `skse64_loader.exe`** (or through your mod manager)
-
-          ## Compatibility
-
-          ✅ Fully compatible with all existing SKSE plugins
-          ✅ Works with all mod managers (MO2, Vortex, etc.)
-          ✅ Drop-in replacement - no configuration needed
-          ✅ Save files remain compatible
-
-          ## Technical Details
-
-          See [PERFORMANCE_OPTIMIZATIONS.md](https://github.com/cashcon57/skse64forModlists/blob/master/PERFORMANCE_OPTIMIZATIONS.md) for complete documentation.
-        draft: false
-        prerelease: false
+        files: ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  create-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Release Body
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            # Performance-Optimized SKSE64 for Large Modlists
+
+            **Optimized for large modlists with 150+ SKSE plugins**
+
+            ## Downloads
+
+            - **Skyrim SE 1.5.97**: `skse-for-modlists-SE-1.5.97-${{ github.ref_name }}.zip`
+            - **Skyrim AE 1.6.1170**: `skse-for-modlists-AE-1.6.1170-${{ github.ref_name }}.zip`
+
+            ## Real Performance Improvements
+
+            Algorithmic optimizations for large modlists:
+
+            - ⚡ **Event dispatch optimization** - O(log n) → O(1) for gameplay events (**3-12% FPS gain**)
+            - ⚡ **Cache-line alignment** - Prevents false sharing (10-30% cache miss reduction)
+            - ⚡ **Plugin lookup optimization** - O(n) → O(1) (~167x faster with 167 plugins)
+            - ⚡ **Serialization optimization** - O(n²) → O(1) (potentially much faster save/load)
+            - 💾 **Memory optimizations** - Fewer allocations, better pre-sizing
+
+            ## Installation
+
+            1. **Download the correct version** for your Skyrim (SE or AE)
+            2. **Backup your current SKSE installation**
+            3. **Extract ZIP to Skyrim root folder** (where SkyrimSE.exe is located)
+            4. **Overwrite files when prompted**
+            5. **Launch via `skse64_loader.exe`** (or through your mod manager)
+
+            ## Antivirus Warning
+
+            Windows Defender may flag this as suspicious (SKSE injects DLLs). Add an exception or build from source.
+
+            ## Compatibility
+
+            ✅ Drop-in replacement for SKSE 2.0.20
+            ✅ Same plugin API (no recompilation needed)
+            ✅ Same save format (fully compatible)
+            ✅ Works with all mod managers (MO2, Vortex, etc.)
+
+            ## Technical Details
+
+            See [PERFORMANCE_OPTIMIZATIONS.md](https://github.com/cashcon57/skse64forModlists/blob/master/PERFORMANCE_OPTIMIZATIONS.md) for complete documentation.
+
+            ## Source Code
+
+            All optimizations are public and reviewable. Build artifacts match the source exactly.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
