@@ -1,5 +1,37 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.15 - Revert Optimizations to Isolate Crash (January 25, 2026)
+
+### Investigation Results
+
+**v2.0.20.14 showed correct version (2.0.20) but still crashed!**
+- Version fix worked: Console shows `version = 2.0.20 01050610`
+- But ACCESS_VIOLATION still occurs in `Hooks_ObScript_Init`
+- This proves the version mismatch wasn't the only problem!
+
+**Hypothesis:**
+- v2.0.20-SE-optimized-1 worked (correct version, no optimizations)
+- v2.0.20.14 crashes (correct version, WITH optimizations)
+- Therefore, one of the optimizations causes the crash
+
+**This Version (v2.0.20.15):**
+- REVERTED: Event dispatch unordered_map → back to std::map
+- REVERTED: All alignas(64) cache-line alignment
+- KEPT: Correct version (2.0.20 for SE, 2.2.6 for AE)
+- KEPT: Console logging for debugging
+
+**Purpose:**
+- Test if vanilla SKSE code + correct version works
+- If this works, add optimizations back ONE AT A TIME
+- Isolate which optimization causes the crash
+
+**Files Modified:**
+- [PapyrusEvents.h](skse64/PapyrusEvents.h) - Back to std::map, removed hash function
+- [PapyrusEvents.cpp](skse64/PapyrusEvents.cpp) - Removed all alignas(64)
+- [PluginManager.cpp](skse64/PluginManager.cpp) - Removed all alignas(64)
+
+---
+
 ## v2.0.20.14 - THE ACTUAL FIX: Modify Correct Version File (January 25, 2026)
 
 ### The Real Problem
