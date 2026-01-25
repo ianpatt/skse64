@@ -11,8 +11,7 @@
 #include <cctype>
 #include <chrono>
 
-// Performance: Cache-line alignment to prevent false sharing during plugin message dispatch
-alignas(64) PluginManager	g_pluginManager;
+PluginManager	g_pluginManager;
 
 PluginManager::LoadedPlugin *	PluginManager::s_currentLoadingPlugin = NULL;
 PluginHandle					PluginManager::s_currentPluginHandle = 0;
@@ -24,9 +23,8 @@ extern EventDispatcher<SKSECameraEvent>			g_cameraEventDispatcher;
 extern EventDispatcher<SKSECrosshairRefEvent>	g_crosshairRefEventDispatcher;
 extern EventDispatcher<SKSEActionEvent>			g_actionEventDispatcher;
 
-// Performance: Cache-line alignment for trampoline managers accessed during plugin memory allocation
-alignas(64) BranchTrampolineManager g_branchTrampolineManager(g_branchTrampoline);
-alignas(64) BranchTrampolineManager g_localTrampolineManager(g_localTrampoline);
+BranchTrampolineManager g_branchTrampolineManager(g_branchTrampoline);
+BranchTrampolineManager g_localTrampolineManager(g_localTrampoline);
 
 static const SKSEInterface g_SKSEInterface =
 {
