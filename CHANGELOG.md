@@ -1,5 +1,35 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.18 - Remove ALL Added Logging (January 25, 2026)
+
+### The REAL Issue: Verbose Event Logging!
+
+**v2.0.20.16 STILL CRASHED even with:**
+- Correct version (2.0.20) ✓
+- Vanilla code (std::map, no alignas) ✓
+- No console logging ✓
+
+**Root Cause Found:**
+- We left verbose `_MESSAGE()` logging in PapyrusEvents.h ForEach methods
+- This logging wasn't in original SKSE - we added it for debugging large modlists
+- The logging happens during event dispatch initialization
+- This was breaking the initialization process!
+
+**This Version (v2.0.20.18):**
+- REMOVED: All verbose logging from PapyrusEvents.h ForEach methods
+- KEPT: Vanilla SKSE code (std::map, no alignas)
+- KEPT: Correct version (2.0.20 for SE)
+- This should be TRULY vanilla now!
+
+**Files Modified:**
+- [PapyrusEvents.h](skse64/PapyrusEvents.h) - Removed all _MESSAGE logging from ForEach
+
+**Purpose:**
+- Establish TRULY clean baseline that matches original SKSE
+- Should finally match v2.0.20-SE-optimized-1 behavior
+
+---
+
 ## v2.0.20.17 - All Optimizations Enabled WITHOUT Console Logging (January 25, 2026)
 
 ### Performance Optimizations (No Console Logging This Time!)

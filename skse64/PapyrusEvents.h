@@ -215,17 +215,10 @@ public:
 
 		if (handles != this->m_data.end())
 		{
-			size_t handlerCount = handles->second.size();
-			_MESSAGE("RegistrationMapHolder::ForEach: Dispatching to %d handlers", handlerCount);
-			size_t processed = 0;
 			for (auto iter = handles->second.begin(); iter != handles->second.end(); ++iter)
 			{
 				functor(*iter);
-				processed++;
-				if (processed % 50 == 0)  // Log progress every 50 handlers for large modlists
-					_MESSAGE("RegistrationMapHolder::ForEach: Processed %d / %d handlers", processed, handlerCount);
 			}
-			_MESSAGE("RegistrationMapHolder::ForEach: Completed dispatching %d handlers", handlerCount);
 		}
 
 		this->Release();
@@ -433,17 +426,10 @@ public:
 	{
 		this->Lock();
 
-		size_t handlerCount = this->m_data.size();
-		_MESSAGE("RegistrationSetHolder::ForEach: Dispatching to %d handlers", handlerCount);
-		size_t processed = 0;
 		for (auto iter = this->m_data.begin(); iter != this->m_data.end(); ++iter)
 		{
 			functor(*iter);
-			processed++;
-			if (processed % 50 == 0)  // Log progress every 50 handlers for large modlists
-				_MESSAGE("RegistrationSetHolder::ForEach: Processed %d / %d handlers", processed, handlerCount);
 		}
-		_MESSAGE("RegistrationSetHolder::ForEach: Completed dispatching %d handlers", handlerCount);
 
 		this->Release();
 	}
