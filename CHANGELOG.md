@@ -1,5 +1,40 @@
 # SKSE64 Performance Fork - Changelog
 
+## v2.0.20.11 - Comprehensive Console Logging (January 25, 2026)
+
+### Debug Console Logging
+
+**What Changed:**
+- Added comprehensive console logging throughout SKSE initialization
+- Console window opens automatically when SKSE loads
+- Every initialization step is logged to console in real-time
+- Exception handler catches crashes and displays details in console
+- Console stays open after exceptions to allow debugging
+
+**Purpose:**
+- Debugging startup crashes with large modlists
+- Identifying exactly where initialization fails
+- Providing detailed error information for troubleshooting
+
+**Files Modified:**
+- [skse64.cpp](skse64/skse64.cpp) - Added console allocation and CONSOLE_LOG macro
+- All initialization functions now log their progress
+
+**Technical Details:**
+- `AllocConsole()` called in DllMain (DLL_PROCESS_ATTACH)
+- Console output redirected to stdout/stderr
+- Logging occurs at every step: DllMain → PreInit → global init → Initialize → all Hooks
+- Exception handler displays exception code and waits for user input
+
+**Previous Crash Investigation:**
+- v2.0.20.10: Removed all `alignas(64)` declarations - still crashed
+- v2.0.20.9: Reverted event dispatch unordered_map to std::map - still crashed
+- v2.0.20.8: Fixed verbose logging overhead - still crashed
+- v2.0.20.7: Added verbose logging - caused crash due to expensive map iteration
+- v2.0.20.6: Initial optimizations - crashed on large modlists
+
+---
+
 ## Latest Optimizations (January 24, 2026)
 
 ### String Allocation Micro-Optimization
