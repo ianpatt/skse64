@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -69,7 +70,7 @@ public:
 class SKSEObjectRegistry
 {
 private:
-	typedef std::map<std::string,uintptr_t> FactoryMapT;
+	typedef std::unordered_map<std::string,uintptr_t> FactoryMapT;
 
 public:
 	template <typename T>

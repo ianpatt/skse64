@@ -21,6 +21,7 @@
 #include "GameExtraData.h"
 #include <new>
 #include <list>
+#include <unordered_map>
 #include "PapyrusEvents.h"
 #include "PapyrusVM.h"
 #include "ScaleformState.h"
@@ -825,8 +826,8 @@ public:
 	}
 };
 
-typedef std::list<SInt32>							IndexStorageList;
-typedef std::map<std::string,IndexStorageList>		IndexStorageTable;
+typedef std::list<SInt32>								IndexStorageList;
+typedef std::unordered_map<std::string,IndexStorageList>	IndexStorageTable;
 
 IndexStorageTable	s_indexTable;
 
