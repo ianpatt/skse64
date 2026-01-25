@@ -67,6 +67,27 @@ For **Anniversary Edition 1.6.x**, use the appropriate release.
 3. Extract to Skyrim root folder (where SkyrimSE.exe is located)
 4. Overwrite when prompted
 
+## Antivirus False Positives
+
+**Windows Defender/antivirus may flag this as suspicious.** This is expected because:
+- SKSE injects DLLs into the game process (legitimate game modding technique)
+- Runtime code hooking triggers heuristic detection
+- New builds have low download counts (flagged as "rare")
+- Not code-signed (signing certificates cost $200-400/year)
+
+**This affects vanilla SKSE too** - it's a known issue with all SKSE builds.
+
+**To fix:**
+1. Add exception in Windows Defender for the SKSE folder
+2. Or build from source yourself (see Building from Source below)
+3. Verify the build matches GitHub Actions artifacts
+
+**Why it's safe:**
+- All source code is public and reviewable
+- Only modifies SKSE internals (hash maps, alignment, memory allocation)
+- No network access, no data collection
+- GitHub Actions builds are deterministic and verifiable
+
 ## Compatibility
 
 ✅ Drop-in replacement for SKSE 2.0.20
