@@ -6,24 +6,9 @@
 #include "GameInput.h"
 #include "GameCamera.h"
 #include <map>
-#include <unordered_map>
 #include <set>
 #include "Serialization.h"
 #include "PapyrusVM.h"
-
-// Performance: Hash function for BSFixedString to enable unordered_map
-// BSFixedString uses StringCache, so identical strings have same pointer
-// We can hash the pointer directly for O(1) lookup instead of comparing string contents
-namespace std {
-	template<>
-	struct hash<BSFixedString> {
-		size_t operator()(const BSFixedString& str) const {
-			// Hash the cached string pointer (not contents) since StringCache guarantees
-			// identical strings have the same pointer address
-			return hash<const char*>()(str.data);
-		}
-	};
-}
 
 template <typename D>
 class EventRegistration
@@ -90,12 +75,10 @@ public:
 };
 
 template <typename K, typename D = NullParameters>
-class RegistrationMapHolder : public SafeDataHolder<std::unordered_map<K,std::set<EventRegistration<D>>>>
+class RegistrationMapHolder : public SafeDataHolder<std::map<K,std::set<EventRegistration<D>>>>
 {
 	typedef std::set<EventRegistration<D>>	RegSet;
-	// Performance: Use unordered_map for O(1) event dispatch instead of O(log n)
-	// Critical for input events, action events, and other high-frequency game events
-	typedef std::unordered_map<K,RegSet>	RegMap;
+	typedef std::map<K,RegSet>	RegMap;
 
 public:
 
