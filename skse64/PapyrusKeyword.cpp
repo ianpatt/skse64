@@ -3,16 +3,18 @@
 #include "GameForms.h"
 #include "GameObjects.h"
 #include "GameData.h"
+#include <unordered_map>
 
 #include "common/ICriticalSection.h"
+#include "HashUtil.h"  // BSFixedString hash for unordered_map
 
 //extern UInt32 g_invalidateKeywordCache;
 
 namespace papyrusKeyword
 {
-	typedef std::map <BSFixedString, BGSKeyword *> KeywordCache;
+	typedef std::unordered_map<BSFixedString, BGSKeyword*> KeywordCache;  // O(1) lookup
 
-	static ICriticalSection	s_keywordCacheLock;
+	alignas(64) static ICriticalSection	s_keywordCacheLock;  // Cache-line aligned
 	static KeywordCache s_keywordCache;
 
 	BGSKeyword* GetKeyword(StaticFunctionTag*, BSFixedString keyword)

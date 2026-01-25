@@ -7,8 +7,9 @@
 #include "common/ICriticalSection.h"
 #include <queue>
 
-ICriticalSection			s_taskQueueLock;
-std::queue<TaskDelegate*>	s_tasks;
+// Cache-line aligned for better performance (task queue is accessed frequently)
+alignas(64) ICriticalSection			s_taskQueueLock;
+alignas(64) std::queue<TaskDelegate*>	s_tasks;
 
 static bool IsTaskQueueEmpty()
 {
