@@ -48,21 +48,19 @@ jobs:
 
     - name: Package Release
       run: |
-        mkdir release_package
-        mkdir release_package/Data
-        mkdir release_package/Data/SKSE
-        mkdir release_package/Data/SKSE/Plugins
+        New-Item -ItemType Directory -Force -Path release_package
+        New-Item -ItemType Directory -Force -Path release_package/Data/SKSE/Plugins
 
         # Copy executables
-        copy skse64\build\skse64_loader\Release\skse64_loader.exe release_package\
-        copy skse64\build\skse64_steam_loader\Release\skse64_steam_loader.dll release_package\
-        copy skse64\build\skse64\Release\skse64_1_6_1170.dll release_package\Data\SKSE\Plugins\
+        Copy-Item skse64/build/skse64_loader/Release/skse64_loader.exe release_package/
+        Copy-Item skse64/build/skse64_steam_loader/Release/skse64_steam_loader.dll release_package/
+        Copy-Item skse64/build/skse64/Release/skse64_1_6_1170.dll release_package/Data/SKSE/Plugins/
 
         # Copy documentation
-        copy skse64\README_FORK.md release_package\README.md
-        copy skse64\PERFORMANCE_OPTIMIZATIONS.md release_package\
-        copy skse64\skse64_license.txt release_package\
-      shell: cmd
+        Copy-Item skse64/README_FORK.md release_package/README.md
+        Copy-Item skse64/PERFORMANCE_OPTIMIZATIONS.md release_package/
+        Copy-Item skse64/skse64_license.txt release_package/
+      shell: pwsh
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
