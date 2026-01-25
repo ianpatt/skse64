@@ -128,8 +128,9 @@ bool PluginManager::Init(void)
 	{
 		_MESSAGE("plugin directory = %s", m_pluginDirectory.c_str());
 
-		// avoid realloc
-		m_plugins.reserve(5);
+		// Performance: Reserve space for typical large modlist (was 5, now 128)
+		m_plugins.reserve(128);
+		m_pluginsByName.reserve(128);
 
 		__try
 		{
@@ -177,12 +178,21 @@ UInt32 PluginManager::GetNumPlugins(void)
 
 PluginInfo * PluginManager::GetInfoByName(const char * name)
 {
-	for(LoadedPluginList::iterator iter = m_plugins.begin(); iter != m_plugins.end(); ++iter)
+	// Performance: Use hash map for O(1) lookup instead of O(n) linear search
+	if(name && name[0])
 	{
-		LoadedPlugin	* plugin = &(*iter);
+		std::string lowerName = name;
+		for(char& c : lowerName) c = tolower(c);
 
-		if(plugin->info.name && !_stricmp(name, plugin->info.name))
-			return &plugin->info;
+		auto it = m_pluginsByName.find(lowerName);
+		if(it != m_pluginsByName.end())
+		{
+			PluginHandle handle = it->second;
+			if(handle > 0 && handle <= m_plugins.size())
+			{
+				return &m_plugins[handle - 1].info;
+			}
+		}
 	}
 
 	return NULL;
@@ -254,6 +264,8 @@ bool PluginManager::FindPluginDirectory(void)
 
 	if(!runtimeDirectory.empty())
 	{
+		// Performance: Reserve string capacity before concatenation
+		m_pluginDirectory.reserve(runtimeDirectory.length() + 25);
 		m_pluginDirectory = runtimeDirectory + "Data\\SKSE\\Plugins\\";
 		result = true;
 	}
@@ -266,9 +278,18 @@ void PluginManager::ScanPlugins(void)
 	_MESSAGE("scanning plugin directory %s", m_pluginDirectory.c_str());
 
 	UInt32 handleIdx = 1;	// start at 1, 0 is reserved for internal use
+	UInt32 pluginCount = 0;
 
 	for(IDirectoryIterator iter(m_pluginDirectory.c_str(), "*.dll"); !iter.Done(); iter.Next())
 	{
+		// Safety: Check plugin count limit for large modlists (Nolvus v6 compatibility)
+		if(pluginCount >= MAX_PLUGINS)
+		{
+			_ERROR("Plugin limit reached (%d plugins). Remaining plugins will not be loaded.", MAX_PLUGINS);
+			_ERROR("This is a safety limit. If you need more plugins, increase MAX_PLUGINS in PluginManager.h");
+			break;
+		}
+		pluginCount++;
 		std::string	pluginPath = iter.GetFullPath();
 
 		LoadedPlugin	plugin;
@@ -332,7 +353,8 @@ const char * PluginManager::CheckAddressLibrary(void)
 	}
 
 	char fileName[256];
-	_snprintf_s(fileName, 256, "Data\\SKSE\\Plugins\\versionlib-%d-%d-%d-%d.bin",
+	// Safety: Add _TRUNCATE to prevent buffer overflow
+	_snprintf_s(fileName, 256, _TRUNCATE, "Data\\SKSE\\Plugins\\versionlib-%d-%d-%d-%d.bin",
 		GET_EXE_VERSION_MAJOR(RUNTIME_VERSION),
 		GET_EXE_VERSION_MINOR(RUNTIME_VERSION),
 		GET_EXE_VERSION_BUILD(RUNTIME_VERSION),
@@ -361,7 +383,10 @@ void PluginManager::InstallPlugins(void)
 		s_currentLoadingPlugin = &plugin;
 		s_currentPluginHandle = plugin.internalHandle;
 
-		std::string pluginPath = m_pluginDirectory + plugin.dllName;
+		// Performance: Reserve string capacity before concatenation
+		std::string pluginPath;
+		pluginPath.reserve(m_pluginDirectory.length() + plugin.dllName.length());
+		pluginPath = m_pluginDirectory + plugin.dllName;
 
 		plugin.handle = (HMODULE)LoadLibrary(pluginPath.c_str());
 		if(plugin.handle)
@@ -430,6 +455,18 @@ void PluginManager::InstallPlugins(void)
 		plugin.info.infoVersion = PluginInfo::kInfoVersion;
 		plugin.info.name = plugin.version.name;
 		plugin.info.version = plugin.version.pluginVersion;
+	}
+
+	// Performance: Build hash map for O(1) plugin name lookups
+	for(size_t i = 0; i < m_plugins.size(); i++)
+	{
+		if(m_plugins[i].version.name && m_plugins[i].version.name[0])
+		{
+			std::string name = m_plugins[i].version.name;
+			// Convert to lowercase for case-insensitive lookup
+			for(char& c : name) c = tolower(c);
+			m_pluginsByName[name] = m_plugins[i].internalHandle;
+		}
 	}
 
 	CallPostLoad();
@@ -660,6 +697,9 @@ void PluginManager::ReportPluginErrors()
 
 	std::string message = "A DLL plugin has failed to load correctly. If a new version of Skyrim was just released, the plugin needs to be updated. Please check the mod's webpage for updates.\n";
 
+	// Performance: Reserve space for error message to avoid reallocations
+	message.reserve(1024 + m_erroredPlugins.size() * 200);
+
 	for(auto & plugin : m_erroredPlugins)
 	{
 		message += "\n";
@@ -810,7 +850,8 @@ bool PluginManager::RegisterListener(PluginHandle listener, const char* sender, 
 	UInt32 numPlugins = g_pluginManager.GetNumPlugins() + 1;
 	if (s_pluginListeners.size() < numPlugins)
 	{
-		s_pluginListeners.resize(numPlugins + 5);	// add some extra room to avoid unnecessary re-alloc
+		// Performance: Add more room to reduce reallocs with large modlists (was +5, now +32)
+		s_pluginListeners.resize(numPlugins + 32);
 	}
 
 	_MESSAGE("registering plugin listener for %s at %u of %u", sender, listener, numPlugins);
@@ -957,16 +998,19 @@ PluginHandle PluginManager::LookupHandleFromName(const char* pluginName)
 	if (!_stricmp("SKSE", pluginName))
 		return 0;
 
-	UInt32	idx = 1;
-	for(LoadedPluginList::iterator iter = m_plugins.begin(); iter != m_plugins.end(); ++iter)
+	// Performance: Use hash map for O(1) lookup instead of O(n) linear search
+	if(pluginName && pluginName[0])
 	{
-		LoadedPlugin	* plugin = &(*iter);
-		if(!_stricmp(plugin->version.name, pluginName))
+		std::string lowerName = pluginName;
+		for(char& c : lowerName) c = tolower(c);
+
+		auto it = m_pluginsByName.find(lowerName);
+		if(it != m_pluginsByName.end())
 		{
-			return idx;
+			return it->second;
 		}
-		idx++;
 	}
+
 	return kPluginHandle_Invalid;
 }
 
