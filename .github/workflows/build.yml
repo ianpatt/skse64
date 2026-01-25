@@ -118,9 +118,35 @@ jobs:
     - name: Build Release
       run: cmake --build skse64/build --config Release
 
+    - name: Download Official SKSE for Papyrus Scripts
+      run: |
+        # Download official SKSE to get the compiled .pex files
+        # SE version: skse64_2_00_20.7z
+        # AE version: skse64_2_02_06.7z (for 1.6.1170)
+        if ("${{ matrix.name }}" -eq "SE") {
+          $skseUrl = "https://skse.silverlock.org/beta/skse64_2_00_20.7z"
+          $skseArchive = "skse64_2_00_20.7z"
+          $skseFolder = "skse64_2_00_20"
+        } else {
+          $skseUrl = "https://skse.silverlock.org/beta/skse64_2_02_06.7z"
+          $skseArchive = "skse64_2_02_06.7z"
+          $skseFolder = "skse64_2_02_06"
+        }
+
+        Write-Host "Downloading official SKSE from: $skseUrl"
+        Invoke-WebRequest -Uri $skseUrl -OutFile $skseArchive
+
+        # Extract using 7z
+        7z x $skseArchive -oofficial_skse
+
+        Write-Host "Official SKSE extracted to official_skse/$skseFolder"
+        Get-ChildItem -Path "official_skse/$skseFolder/Data/Scripts" -Filter "*.pex" | Measure-Object | Select-Object -ExpandProperty Count | ForEach-Object { Write-Host "Found $_ .pex files" }
+      shell: pwsh
+
     - name: Package Release
       run: |
         New-Item -ItemType Directory -Force -Path release_package
+        New-Item -ItemType Directory -Force -Path release_package/Data/Scripts
         New-Item -ItemType Directory -Force -Path release_package/Data/Scripts/Source
 
         # Copy executables to ROOT (not Data folder!)
@@ -133,6 +159,16 @@ jobs:
         $runtimeDll = Get-ChildItem -Path skse64/build/skse64/Release/skse64_*.dll | Select-Object -First 1
         Copy-Item $runtimeDll.FullName release_package/
         Write-Host "Packaged runtime DLL: $($runtimeDll.Name)"
+
+        # Copy compiled Papyrus scripts (.pex) from official SKSE
+        if ("${{ matrix.name }}" -eq "SE") {
+          $skseFolder = "skse64_2_00_20"
+        } else {
+          $skseFolder = "skse64_2_02_06"
+        }
+        Copy-Item "official_skse/$skseFolder/Data/Scripts/*.pex" release_package/Data/Scripts/
+        $pexCount = (Get-ChildItem release_package/Data/Scripts/*.pex | Measure-Object).Count
+        Write-Host "Copied $pexCount .pex files to release package"
 
         # Copy Papyrus script sources
         Copy-Item -Recurse skse64/scripts/modified/* release_package/Data/Scripts/Source/
