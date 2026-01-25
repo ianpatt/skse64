@@ -2,32 +2,6 @@
 
 ## Latest Optimizations (January 24, 2026)
 
-### Data-Oriented Event Storage (MAJOR PERFORMANCE BOOST)
-
-**What Changed:**
-- Replaced `std::set` tree structure with contiguous `std::vector` arrays
-- Event handlers now stored in sequential memory (handles + params in separate vectors)
-- Iteration changed from tree traversal to linear memory scan
-
-**Impact:**
-- **2-4x faster event iteration** from cache locality improvements
-- CPU prefetcher can predict next memory access (impossible with tree structure)
-- Eliminates pointer-chasing through scattered tree nodes
-- With 30 input event handlers: single sequential scan vs 30 tree lookups
-- **Expected: 5-10% additional FPS** during event-heavy gameplay
-
-**Files Modified:**
-- [PapyrusEvents.h:92-165](skse64/PapyrusEvents.h#L92-L165) - DataOrientedRegistrations class
-- [PapyrusEvents.h:179-400](skse64/PapyrusEvents.h#L179-L400) - Updated all event methods
-
-**Technical Details:**
-- Handles stored sorted for O(log n) binary search during register/unregister
-- Insert/erase use `std::lower_bound` to maintain sort order
-- Linear layout enables future SIMD batch processing (4-16x further speedup possible)
-- Save/Load rewritten to work directly with vector storage
-
----
-
 ### String Allocation Micro-Optimization
 
 **What Changed:**
