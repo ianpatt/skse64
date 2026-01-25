@@ -5,15 +5,17 @@
 #include "GameForms.h"
 #include "GameData.h"
 #include <vector>
+#include <unordered_map>
 
 #include "common/ICriticalSection.h"
+#include "HashUtil.h"  // BSFixedString hash for unordered_map
 
 UInt32 g_invalidatePlayableRaceCache = 0;
 UInt32 g_invalidateRaceCache = 0;
 
 namespace papyrusRace
 {
-	typedef std::map<BSFixedString, TESRace*> RaceCache;
+	typedef std::unordered_map<BSFixedString, TESRace*> RaceCache;  // O(1) lookup
 	static ICriticalSection	s_raceCacheLock;
 	static RaceCache s_raceCache;
 

@@ -5,8 +5,10 @@
 #include "GameData.h"
 
 #include <algorithm>
+#include <unordered_map>
 
 #include "common/ICriticalSection.h"
+#include "HashUtil.h"  // BSFixedString hash for unordered_map
 
 // needs to be extern and set appropriately when a Quest is constructed
 UInt32 g_invalidateQuestCache;
@@ -14,7 +16,7 @@ UInt32 g_invalidateQuestCache;
 namespace papyrusQuest
 {
 	ICriticalSection	s_questCacheLock;
-	typedef std::map<BSFixedString, TESQuest*> QuestCache;
+	typedef std::unordered_map<BSFixedString, TESQuest*> QuestCache;  // O(1) lookup
 	static QuestCache s_questCache;
 
 	TESQuest* GetQuest(StaticFunctionTag*, BSFixedString editorID)

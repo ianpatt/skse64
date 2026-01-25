@@ -11,18 +11,7 @@
 #include <functional>
 #include "Serialization.h"
 #include "PapyrusVM.h"
-
-// Hash function for BSFixedString to enable std::unordered_map
-// BSFixedString uses StringCache - identical strings share same pointer
-// We hash the pointer address for O(1) lookup
-namespace std {
-	template<>
-	struct hash<BSFixedString> {
-		size_t operator()(const BSFixedString& str) const {
-			return hash<const char*>()(str.data);
-		}
-	};
-}
+#include "HashUtil.h"  // BSFixedString hash for unordered_map
 
 template <typename D>
 class EventRegistration

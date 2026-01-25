@@ -16,10 +16,10 @@
 //#include "NiNodes.h"
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 typedef std::vector<InventoryEntryData*> ExtraDataVec;
-typedef std::map<TESForm*, UInt32> ExtraContainerMap;
+typedef std::unordered_map<TESForm*, UInt32> ExtraContainerMap;  // O(1) lookup
 
 class ExtraContainerReceiver
 {

@@ -2,13 +2,15 @@
 
 #include "GameObjects.h"
 #include "GameData.h"
+#include <unordered_map>
 
 #include "common/ICriticalSection.h"
- 
+#include "HashUtil.h"  // BSFixedString hash for unordered_map
+
 namespace papyrusHeadPart
 {
 	ICriticalSection	s_headPartCacheLock;
-	typedef std::map<BSFixedString, BGSHeadPart*> HeadPartCache;
+	typedef std::unordered_map<BSFixedString, BGSHeadPart*> HeadPartCache;  // O(1) lookup
 	static HeadPartCache s_headPartCache;
 
 	BGSHeadPart* GetHeadPart(StaticFunctionTag*, BSFixedString editorID)
