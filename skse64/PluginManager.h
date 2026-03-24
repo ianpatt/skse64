@@ -13,7 +13,17 @@ public:
 	PluginManager();
 	~PluginManager();
 
-	bool	Init(void);
+	enum
+	{
+		kPhase_Preload = 0,
+		kPhase_Load,
+
+		kPhase_Num,
+	};
+
+	void	Init(void);
+	void	InstallPlugins(UInt32 phase);
+	void	LoadComplete();
 	void	DeInit(void);
 
 	PluginInfo *	GetInfoByName(const char * name);
@@ -46,17 +56,19 @@ private:
 
 		SKSEPluginVersionData	version;
 
-		_SKSEPlugin_Load	load = nullptr;
+		_SKSEPlugin_Load	load[kPhase_Num] = { nullptr };
 
 		const char			* errorState = nullptr;
 		UInt32				errorCode = 0;
+
+		bool	hasLoad = false;
+		bool	hasPreload = false;
 	};
 
 	bool	FindPluginDirectory(void);
 	void	ScanPlugins(void);
-	void	InstallPlugins(void);
 
-	const char *	SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSEInterface * skse);
+	const char *	SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSEInterface * skse, UInt32 phase);
 
 	void			Sanitize(SKSEPluginVersionData * version);
 	const char *	CheckPluginCompatibility(const SKSEPluginVersionData & version);
@@ -81,27 +93,15 @@ private:
 	static PluginHandle		s_currentPluginHandle;
 
 	static PluginHandle		s_dispatchingPluginHandle;
-};
 
-class PluginErrorDialogBox
-{
-public:
-	PluginErrorDialogBox() = delete;
-	PluginErrorDialogBox(const PluginManager & mgr)
-		:m_owner(mgr) { }
+	// Plugin communication interface
+	struct PluginListener {
+		PluginHandle	listener;
+		SKSEMessagingInterface::EventCallback	handleMessage;
+	};
 
-	void	Show();
-
-	bool	ShouldExitGame() { return m_exitGame; }
-
-private:
-	static INT_PTR _DialogProc(HWND window, UINT msg, WPARAM wParam, LPARAM lParam);
-	INT_PTR DialogProc(UINT msg, WPARAM wParam, LPARAM lParam);
-
-	HWND m_window = 0;
-	bool m_exitGame = false;
-
-	const PluginManager & m_owner;
+	typedef std::vector<std::vector<PluginListener> > PluginListeners;
+	static PluginListeners s_pluginListeners;
 };
 
 class BranchTrampolineManager
