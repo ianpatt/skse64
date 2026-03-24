@@ -430,7 +430,7 @@ const char * PluginManager::CheckAddressLibrary(void)
 	}
 
 	char fileName[256];
-	_snprintf_s(fileName, 256, "Data\\SKSE\\Plugins\\versionlib-%d-%d-%d-%d.bin",
+	_snprintf_s(fileName, sizeof(fileName), "Data\\SKSE\\Plugins\\versionlib-%d-%d-%d-%d.bin",
 		GET_EXE_VERSION_MAJOR(RUNTIME_VERSION),
 		GET_EXE_VERSION_MINOR(RUNTIME_VERSION),
 		GET_EXE_VERSION_BUILD(RUNTIME_VERSION),
@@ -806,7 +806,7 @@ bool PluginManager::RegisterListener(PluginHandle listener, const char* sender, 
 	_MESSAGE("registering plugin listener for %s at %u of %u", sender, listener, s_pluginListeners.size());
 
 	// handle > num plugins = invalid
-	if (listener >= g_pluginManager.GetNumPlugins() || !handler) 
+	if (listener >= s_pluginListeners.size() || !handler) 
 	{
 		return false;
 	}

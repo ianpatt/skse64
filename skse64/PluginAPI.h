@@ -359,4 +359,11 @@ struct SKSEPluginVersionData
  *	added to the end, and all old fields will remain compatible with their
  *	previous implementations.
  *	
+ *	If your plugin needs to make modifications before global initializers, add
+ *	and export this:
+ *	
+ *	bool SKSEPlugin_Preload(const F4SEInterface * f4se)
+ *	
+ *	Game and SKSE functionality is limited during preload.
+ *	
  ******************************************************************************/
