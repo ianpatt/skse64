@@ -3,12 +3,33 @@
 #include "GameForms.h"
 #include "GameObjects.h"
 #include "GameRTTI.h"
+#include "GameData.h"
 
 namespace papyrusPerk
 {
 	BGSPerk * GetNextPerk(BGSPerk * perk)
 	{
 		return (perk) ? perk->nextPerk : NULL;
+	}
+
+	UInt32 GetSkillRequirement(BGSPerk *perk, BSFixedString actorvalue)
+	{
+		if (perk && (*perk).conditions)
+		{	constexpr unsigned	NOT_GREATER_OR_EQUAL = 0X9fU;
+			constexpr UInt16	GET_BASE_AV = 0X115;
+			Condition			*current = (*perk).conditions;
+			const UInt32		id = ActorValueList::ResolveActorValueByName(actorvalue.data);
+
+			while (current)
+			{	if ((*current).functionId != GET_BASE_AV
+				|| (((*current).comparisonType) & NOT_GREATER_OR_EQUAL) || (id && (*current).param1 != id) )
+				{	current = (*current).next;
+					continue;
+				}
+				return ((UInt32)(int)*(float*)&(*current).compareValue);
+			}
+		}
+		return (0);
 	}
 
 	UInt32 GetNumEntries(BGSPerk * perk)
@@ -353,6 +374,9 @@ void papyrusPerk::RegisterFuncs(VMClassRegistry* registry)
 {
 	registry->RegisterFunction(
 		new NativeFunction0<BGSPerk, BGSPerk*>("GetNextPerk", "Perk", papyrusPerk::GetNextPerk, registry));
+
+	registry->RegisterFunction(
+		new NativeFunction1<BGSPerk, UInt32, BSFixedString>("GetSkillRequirement", "Perk", papyrusPerk::GetSkillRequirement, registry));
 
 	registry->RegisterFunction(
 		new NativeFunction0<BGSPerk, UInt32>("GetNumEntries", "Perk", papyrusPerk::GetNumEntries, registry));
