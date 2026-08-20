@@ -13,6 +13,7 @@ Options::Options()
 	,m_skipLauncher(true)
 	,m_launchSteam(false)
 	,m_noTimeout(false)
+	,m_waitForDebugger(false)
 	,m_affinity(0)
 {
 	//
@@ -179,6 +180,10 @@ bool Options::Read(int argc, char ** argv)
 				{
 					// deprecated, ignore
 				}
+				else if (!_stricmp(arg, "waitfordebugger"))
+				{
+					m_waitForDebugger = true;
+				}
 				else if(!_stricmp(arg, "-"))
 				{
 					// terminator for arguments
@@ -236,6 +241,7 @@ void Options::PrintUsage(void)
 	_MESSAGE("  -launchsteam - attempt to launch steam if it is not running");
 	_MESSAGE("  -affinity <mask> - set the processor affinity mask");
 	_MESSAGE("  -forcesteamloader - deprecated, no longer needed");
+	_MESSAGE("  -waitfordebugger - wait for a debugger to attach before beginning execution");
 	_MESSAGE("  -- - ignore arguments after this marker");
 }
 

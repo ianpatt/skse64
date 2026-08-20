@@ -3,7 +3,7 @@
 #include "skse64_common/skse_version.h"
 #include <string>
 
-static bool GetFileVersion(const char * path, VS_FIXEDFILEINFO * info, std::string * outProductName, std::string * outProductVersion)
+bool GetFileVersion(const char * path, VS_FIXEDFILEINFO * info, std::string * outProductName, std::string * outProductVersion)
 {
 	bool result = false;
 
@@ -63,6 +63,23 @@ static bool GetFileVersion(const char * path, VS_FIXEDFILEINFO * info, std::stri
 	return result;
 }
 
+void DumpVersionInfo(const VS_FIXEDFILEINFO & info)
+{
+	_MESSAGE("dwSignature = %08X", info.dwSignature);
+	_MESSAGE("dwStrucVersion = %08X", info.dwStrucVersion);
+	_MESSAGE("dwFileVersionMS = %08X", info.dwFileVersionMS);
+	_MESSAGE("dwFileVersionLS = %08X", info.dwFileVersionLS);
+	_MESSAGE("dwProductVersionMS = %08X", info.dwProductVersionMS);
+	_MESSAGE("dwProductVersionLS = %08X", info.dwProductVersionLS);
+	_MESSAGE("dwFileFlagsMask = %08X", info.dwFileFlagsMask);
+	_MESSAGE("dwFileFlags = %08X", info.dwFileFlags);
+	_MESSAGE("dwFileOS = %08X", info.dwFileOS);
+	_MESSAGE("dwFileType = %08X", info.dwFileType);
+	_MESSAGE("dwFileSubtype = %08X", info.dwFileSubtype);
+	_MESSAGE("dwFileDateMS = %08X", info.dwFileDateMS);
+	_MESSAGE("dwFileDateLS = %08X", info.dwFileDateLS);
+}
+
 static bool VersionStrToInt(const std::string & verStr, UInt64 * out)
 {
 	UInt64 result = 0;
@@ -92,19 +109,7 @@ static bool GetFileVersionData(const char * path, UInt64 * out, std::string * ou
 	if(!GetFileVersion(path, &versionInfo, outProductName, &productVersionStr))
 		return false;
 
-	_MESSAGE("dwSignature = %08X", versionInfo.dwSignature);
-	_MESSAGE("dwStrucVersion = %08X", versionInfo.dwStrucVersion);
-	_MESSAGE("dwFileVersionMS = %08X", versionInfo.dwFileVersionMS);
-	_MESSAGE("dwFileVersionLS = %08X", versionInfo.dwFileVersionLS);
-	_MESSAGE("dwProductVersionMS = %08X", versionInfo.dwProductVersionMS);
-	_MESSAGE("dwProductVersionLS = %08X", versionInfo.dwProductVersionLS);
-	_MESSAGE("dwFileFlagsMask = %08X", versionInfo.dwFileFlagsMask);
-	_MESSAGE("dwFileFlags = %08X", versionInfo.dwFileFlags);
-	_MESSAGE("dwFileOS = %08X", versionInfo.dwFileOS);
-	_MESSAGE("dwFileType = %08X", versionInfo.dwFileType);
-	_MESSAGE("dwFileSubtype = %08X", versionInfo.dwFileSubtype);
-	_MESSAGE("dwFileDateMS = %08X", versionInfo.dwFileDateMS);
-	_MESSAGE("dwFileDateLS = %08X", versionInfo.dwFileDateLS);
+	DumpVersionInfo(versionInfo);
 	_MESSAGE("productVersionStr = %s", productVersionStr.c_str());
 
 	UInt64 version = 0;
@@ -287,6 +292,9 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 
 	_MESSAGE("version = %016I64X", version);
 	_MESSAGE("product name = %s", productName.c_str());
+	
+	hookInfo->version = version;
+	hookInfo->packedVersion = MAKE_EXE_VERSION(version >> 48, version >> 32, version >> 16);
 
 	if(productName == "SKSE64")
 	{

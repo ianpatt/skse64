@@ -22,6 +22,7 @@ public:
 	bool	m_skipLauncher;
 	bool	m_launchSteam;
 	bool	m_noTimeout;
+	bool	m_waitForDebugger;
 
 	UInt64	m_affinity;
 

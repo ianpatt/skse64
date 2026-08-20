@@ -4,4 +4,5 @@ set(headers
 	SafeWrite.h
 	Utilities.h
 	skse_version.h
+	CoreInfo.h
 )

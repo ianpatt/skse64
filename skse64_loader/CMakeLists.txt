@@ -88,6 +88,8 @@ target_link_libraries(
 		Shlwapi.lib
 		Version.lib
 		xse::common
+		Wintrust.lib
+		Crypt32.lib
 )
 
 # ---- Configure all targets ----

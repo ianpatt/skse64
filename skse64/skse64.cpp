@@ -3,6 +3,7 @@
 #include "skse64_common/Relocation.h"
 #include "skse64_common/BranchTrampoline.h"
 #include "skse64_common/SafeWrite.h"
+#include "skse64_common/CoreInfo.h"
 #include "skse64/PluginManager.h"
 #include <shlobj.h>
 #include "common/IFileStream.h"
@@ -96,6 +97,32 @@ void WaitForDebugger(void)
 	Sleep(1000 * 2);
 }
 
+bool ShouldWaitForDebugger()
+{
+	const char * env = "SKSE_WAITFORDEBUGGER";
+	const auto printErr = [=]()
+	{
+		const DWORD err = GetLastError();
+		if(err != ERROR_ENVVAR_NOT_FOUND)
+			_ERROR("failed to get %s with error code %u", env, err);
+	};
+
+	std::vector<char> buf;
+	const DWORD len = GetEnvironmentVariableA(env, buf.data(), 0);
+	if(len == 0) {
+		printErr();
+		return false;
+	}
+
+	buf.resize(len, '\0');
+	if(GetEnvironmentVariableA(env, buf.data(), buf.size()) == 0) {
+		printErr();
+		return false;
+	}
+
+	return std::strcmp(buf.data(), "1") == 0;
+}
+
 void SKSE64_PreInit()
 {
 	static bool runOnce = false;
@@ -112,11 +139,12 @@ void SKSE64_PreInit()
 	_MESSAGE("imagebase = %016I64X", GetModuleHandle(NULL));
 	_MESSAGE("reloc mgr imagebase = %016I64X", RelocationManager::s_baseAddr);
 
-#ifdef _DEBUG
-	SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
+	if(ShouldWaitForDebugger())
+	{
+		SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
 
-	WaitForDebugger();
-#endif
+		WaitForDebugger();
+	}
 
 	if(!g_branchTrampoline.Create(1024 * 64))
 	{
@@ -199,5 +227,12 @@ extern "C" {
 
 		return TRUE;
 	}
+
+	__declspec(dllexport) SKSECoreVersionData SKSECore_Version =
+	{
+		SKSECoreVersionData::kVersion,
+
+		RUNTIME_VERSION,
+	};
 
 };
