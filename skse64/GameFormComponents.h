@@ -1332,7 +1332,7 @@ public:
 		virtual bool Accept(BGSPerk * node) = 0;
 	};
 
-	bool VisitPerks(PerkVisitor & visitor)
+	bool VisitPerks(PerkVisitor & visitor, const int depth = 0)
 	{
 		if(visitor.Accept(perk))
 			return true;
@@ -1342,7 +1342,7 @@ public:
 			BGSSkillPerkTreeNode* connector = NULL;
 			connections.GetNthItem(i, connector);
 
-			if(connector->VisitPerks(visitor))
+			if(depth < 32 && connector->VisitPerks(visitor, depth + 1))
 				return true;
 		}
 
