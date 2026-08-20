@@ -55,7 +55,7 @@
 																	// 0x01064921	same version number as steam, possible problem
 #define RUNTIME_VERSION_1_6_1179_GOG	MAKE_EXE_VERSION_EX(1, 6, 1179, RUNTIME_TYPE_GOG)
 																	// 0x010649B1	unique version number
-#define RUNTIME_VERSION_1_7_99	MAKE_EXE_VERSION(1, 6, 318)			// 0x01070630	creations
+#define RUNTIME_VERSION_1_7_99	MAKE_EXE_VERSION(1, 7, 99)			// 0x01070630	creations
 
 #define PACKED_SKSE_VERSION		MAKE_EXE_VERSION(SKSE_VERSION_INTEGER, SKSE_VERSION_INTEGER_MINOR, SKSE_VERSION_INTEGER_BETA)
 
