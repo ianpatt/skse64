@@ -2,17 +2,17 @@
 #include "GameAPI.h"
 
 // 91546BBAE6D61CD8C6D2021DD28BEB01C32E7178+30
-RelocPtr<SettingCollectionList*> g_iniSettingCollection(0x0327E0E0);
+RelocPtr<SettingCollectionList*> g_iniSettingCollection(0x03327860);
 // see ??_7INIPrefSettingCollection@@6B@
-RelocPtr<SettingCollectionList*> g_iniPrefSettingCollection(0x031CC390);
+RelocPtr<SettingCollectionList*> g_iniPrefSettingCollection(0x03275710);
 // CC0A0629D6A4756EA7CC1819A40AE77FB941F585+14
-RelocPtr<SettingCollectionMap*>  g_gameSettingCollection(0x030FD6F0);
+RelocPtr<SettingCollectionMap*>  g_gameSettingCollection(0x031A5370);
 
 // ### we can just look these up
 // D1E741E48E0181F5A2371C8E8BD02C1F0810BADF+0
-RelocPtr<float> g_mapLocalHeight(0x01FD6F58);	// fMapLocalHeight:MapMenu
+RelocPtr<float> g_mapLocalHeight(0x02079F58);	// fMapLocalHeight:MapMenu
 // 2267F2663E2F5F55835C7541D7851DF11A53F787+1A2
-RelocPtr<float> g_localMapMinFrustumWidth(0x02018D80);
+RelocPtr<float> g_localMapMinFrustumWidth(0x020BC358);
 
 UInt32 Setting::GetType(void) const
 {

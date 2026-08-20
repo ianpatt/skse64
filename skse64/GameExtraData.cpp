@@ -6,33 +6,33 @@
 #include "HashUtil.h"
 
 // ??_7ExtraHealth@@6B@
-const RelocPtr<uintptr_t> s_ExtraHealthVtbl(0x01770910);
+const RelocPtr<uintptr_t> s_ExtraHealthVtbl(0x017E9BB8);
 // ??_7ExtraCharge@@6B@
-const RelocPtr<uintptr_t> s_ExtraChargeVtbl(0x01770970);
+const RelocPtr<uintptr_t> s_ExtraChargeVtbl(0x017E9C18);
 // ??_7ExtraCount@@6B@
-const RelocPtr<uintptr_t> s_ExtraCountVtbl(0x01770890);
+const RelocPtr<uintptr_t> s_ExtraCountVtbl(0x017E9B38);
 // ??_7ExtraTextDisplayData@@6B@
-const RelocPtr<uintptr_t> s_ExtraTextDisplayVtbl(0x01771390);
+const RelocPtr<uintptr_t> s_ExtraTextDisplayVtbl(0x017EA638);
 // ??_7ExtraSoul@@6B@
-const RelocPtr<uintptr_t> s_ExtraSoulVtbl(0x017740E0);
+const RelocPtr<uintptr_t> s_ExtraSoulVtbl(0x017ED390);
 // ??_7ExtraOwnership@@6B@
-const RelocPtr<uintptr_t> s_ExtraOwnershipVtbl(0x01770830);
+const RelocPtr<uintptr_t> s_ExtraOwnershipVtbl(0x017E9AD8);
 // ??_7ExtraAliasInstanceArray@@6B@
-const RelocPtr<uintptr_t> s_ExtraAliasInstanceArrayVtbl(0x01771250);
+const RelocPtr<uintptr_t> s_ExtraAliasInstanceArrayVtbl(0x017EA4F8);
 // ??_7ExtraCannotWear@@6B@
-const RelocPtr<uintptr_t> s_ExtraCannotWearVtbl(0x017708F0);
+const RelocPtr<uintptr_t> s_ExtraCannotWearVtbl(0x017E9B98);
 // ??_7ExtraHotkey@@6B@
-const RelocPtr<uintptr_t> s_ExtraHotkeyVtbl(0x017709D0);
+const RelocPtr<uintptr_t> s_ExtraHotkeyVtbl(0x017E9C78);
 // ??_7ExtraForcedTarget@@6B@
-const RelocPtr<uintptr_t> s_ExtraForcedTargetVtbl(0x01771410);
+const RelocPtr<uintptr_t> s_ExtraForcedTargetVtbl(0x017EA6B8);
 // ??_7ExtraReferenceHandle@@6B@
-const RelocPtr<uintptr_t> s_ExtraReferenceHandleVtbl(0x01770A10);
+const RelocPtr<uintptr_t> s_ExtraReferenceHandleVtbl(0x017E9CB8);
 // ??_7ExtraEnchantment@@6B@
-const RelocPtr<uintptr_t> s_ExtraEnchantmentVtbl(0x01770D30);
+const RelocPtr<uintptr_t> s_ExtraEnchantmentVtbl(0x017E9FD8);
 // ??_7ExtraRank@@6B@
-const RelocPtr<uintptr_t> s_ExtraRankVtbl(0x01770870);
+const RelocPtr<uintptr_t> s_ExtraRankVtbl(0x017E9B18);
 // ??_7ExtraUniqueID@@6B@
-const RelocPtr<uintptr_t> s_ExtraUniqueIdVtbl(0x01771450);
+const RelocPtr<uintptr_t> s_ExtraUniqueIdVtbl(0x017EA6F8);
 
 ExtraHealth* ExtraHealth::Create() 
 {

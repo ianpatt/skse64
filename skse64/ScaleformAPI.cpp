@@ -19,7 +19,7 @@ public:
 };
 
 // 2868BB28215776CF08A8F2A297F7911CA4DE127B+1F
-RelocPtr<ScaleformHeap *> g_scaleformHeap(0x03292490);
+RelocPtr<ScaleformHeap *> g_scaleformHeap(0x03275AE0);
 
 void * ScaleformHeap_Allocate(UInt32 size)
 {
@@ -31,5 +31,5 @@ void ScaleformHeap_Free(void * ptr)
 	(*(g_scaleformHeap))->Free(ptr);
 }
 
-RelocAddr<_InvokeFunction> InvokeFunction(0x00FBE900);
-RelocAddr<_GFxAllocateHeap> GFxAllocateHeap(0x0102FBD0);
+RelocAddr<_InvokeFunction> InvokeFunction(0x0117A770);
+RelocAddr<_GFxAllocateHeap> GFxAllocateHeap(0x0117E120);

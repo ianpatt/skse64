@@ -7,18 +7,18 @@
 #include "skse64/NiNodes.h"
 
 // 9993FF829D7004AAE73399E0559CC28B110D4A91+C2
-RelocAddr<_CreateRefHandleByREFR> CreateRefHandleByREFR(0x00179050);
+RelocAddr<_CreateRefHandleByREFR> CreateRefHandleByREFR(0x0017E640);
 // 526D2C6164B5B723ABF2D3B5BF05D3E20C270AA8+2C
-RelocAddr<_LookupREFRByHandle> LookupREFRByHandle(0x001795F0);
+RelocAddr<_LookupREFRByHandle> LookupREFRByHandle(0x0017EBE0);
 // AF5D1D698E25CFB06197DD5322B6F15A13ABF0B3+4D
-RelocAddr<_LookupREFRObjectByHandle> LookupREFRObjectByHandle(0x00179710);
+RelocAddr<_LookupREFRObjectByHandle> LookupREFRObjectByHandle(0x0017ED00);
 
 // AF5D1D698E25CFB06197DD5322B6F15A13ABF0B3+30
-RelocPtr<UInt32> g_invalidRefHandle(0x020F699C);
+RelocPtr<UInt32> g_invalidRefHandle(0x0219E55C);
 
-RelocAddr<_MoveRefrToPosition> MoveRefrToPosition(0x00A447F0);
-RelocAddr<_PlaceAtMe_Native> PlaceAtMe_Native(0x00A2E330);
-RelocAddr<_AddItem_Native> AddItem_Native(0x00A2C110);
+RelocAddr<_MoveRefrToPosition> MoveRefrToPosition(0x00A5D110);
+RelocAddr<_PlaceAtMe_Native> PlaceAtMe_Native(0x00A46B80);
+RelocAddr<_AddItem_Native> AddItem_Native(0x00A44950);
 
 UInt32 GetOrCreateRefrHandle(TESObjectREFR* ref)
 {
@@ -167,7 +167,7 @@ bool Actor::VisitFactions(FactionVisitor & visitor)
 }
 
 // 7C86FE404A52BB28611337DE8714FD037A8B834B+17
-RelocPtr<CrosshairRefHandleHolder*> g_crosshairRefHandleHolder(0x03138ED0);
+RelocPtr<CrosshairRefHandleHolder*> g_crosshairRefHandleHolder(0x031E0B70);
 
 CrosshairRefHandleHolder * CrosshairRefHandleHolder::GetSingleton(void)
 {
