@@ -158,6 +158,9 @@ Function AddItem(Form akItemToAdd, int aiCount = 1, bool abSilent = false) nativ
 ; Adds this reference (which is a map marker) to the map, optionally making it available for fast travel
 Function AddToMap(bool abAllowFastTravel = false) native
 
+; For Containers only. Sets whether or not to allow stolen items to appear in the menu.
+Function SetContainerAllowStolenItems(bool setAllowStolenItems) native
+
 ; Apply an impulse to this reference
 Function ApplyHavokImpulse(float afX, float afY, float afZ, float afMagnitude) native
 
@@ -213,6 +216,9 @@ Function ForceRemoveRagdollFromWorld() native
 
 ; Gets the actor that owns this object (or None if not owned by an Actor)
 ActorBase Function GetActorOwner() native
+
+; Gets the number of items in a container/invetory
+int Function GetAllItemsCount() native
 
 ; Get the current X angle of this object
 float Function GetAngleX() native
@@ -402,6 +408,9 @@ bool Function IsActivationBlocked() native
 ; Returns if the 3d for this object is loaded or not
 bool Function Is3DLoaded() native
 
+; Returns if the container/inventory is empty
+bool Function IsContainerEmpty() native
+
 ; Is this object currently flagged for delete?
 bool Function IsDeleted() native
 
@@ -496,6 +505,9 @@ Function RemoveAllInventoryEventFilters() native
 
 ; Removes all items from this container, transferring it to the other object if passed
 Function RemoveAllItems(ObjectReference akTransferTo = None, bool abKeepOwnership = false, bool abRemoveQuestItems = false) native
+
+; Removes all stolen items, transfering it to the other object if passed.
+Function RemoveAllStolenItems(ObjectReference akTransferTo = None) native
 
 ; Remove an inventory event filter from this reference. Item added/removed events matching the
 ; specified form (or in the specified form list) will no longer be let through.
@@ -757,9 +769,3 @@ int Property Motion_Keyframed = 4 AutoReadOnly
 int Property Motion_Fixed = 5 AutoReadOnly
 int Property Motion_ThinBoxIntertia = 6 AutoReadOnly
 int Property Motion_Character = 7 AutoReadOnly
-
-; added in 1.6.1126
-Bool Function IsContainerEmpty() Native
-Function RemoveAllStolenItems(ObjectReference akTransferTo) Native
-Function SetContainerAllowStolenItems(Bool setAllowStolenItems) Native
-Int Function GetAllItemsCount() Native
