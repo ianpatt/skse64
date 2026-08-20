@@ -71,7 +71,7 @@
 
 typedef void(*_RegisterPapyrusFunctions)(VMClassRegistry ** registry);
 RelocAddr<_RegisterPapyrusFunctions> RegisterPapyrusFunctions(0x00A32340);
-RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x009D5500 + 0xCC3);
+RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x009D5500 + 0xCFB);
 
 RelocAddr<uintptr_t> UnregisterFromSleep_Enter(0x009DA790 + 0x14B);
 RelocAddr<uintptr_t> RevertGlobalData_Enter(0x009E1A40 + 0x22);

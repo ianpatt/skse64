@@ -228,7 +228,6 @@ int main(int argc, char ** argv)
 
 		if(usedCustomRuntimeName)
 		{
-			// hurr durr
 			PrintLoaderError("You have customized the runtime name via SKSE64's .ini file. Version errors can usually be fixed by removing the RuntimeName line from the .ini file.");
 		}
 
