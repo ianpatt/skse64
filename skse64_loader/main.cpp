@@ -69,8 +69,9 @@ void AugmentEnvironment(const std::string& procPath, const std::string& dllPath)
 		return std::string(runtime);
 	};
 
-	SetEnvironmentVariableA("SKSE_DLL", getFilename(dllPath).c_str());
-	SetEnvironmentVariableA("SKSE_RUNTIME", getFilename(procPath).c_str());
+	// breaks old commonlib
+//	SetEnvironmentVariableA("SKSE_DLL", getFilename(dllPath).c_str());
+//	SetEnvironmentVariableA("SKSE_RUNTIME", getFilename(procPath).c_str());
 	SetEnvironmentVariableA("SKSE_WAITFORDEBUGGER", (g_options.m_waitForDebugger ? "1" : "0"));
 }
 
