@@ -292,42 +292,8 @@ public:
 		return VertexFlags((vertexDesc & DESC_MASK_OFFSET) >> 44);
 	}
 	static UInt32 GetVertexSize(UInt64 vertexDesc)
-	{
-		UInt32 vertexSize = 0;
-		VertexFlags flags = GetVertexFlags(vertexDesc);
-		if (flags & VF_VERTEX)
-		{
-			vertexSize += sizeof(float) * 4;
-		}
-		if (flags & VF_UV)
-		{
-			vertexSize += sizeof(UInt16) * 2;
-		}
-		if (flags & VF_UV_2)
-		{
-			vertexSize += sizeof(UInt16) * 2;
-		}
-		if (flags & VF_NORMAL)
-		{
-			vertexSize += sizeof(UInt16) * 2;
-			if (flags & VF_TANGENT)
-			{
-				vertexSize += sizeof(UInt16) * 2;
-			}
-		}
-		if (flags & VF_COLORS)
-		{
-			vertexSize += sizeof(UInt8) * 4;
-		}
-		if (flags & VF_SKINNED)
-		{
-			vertexSize += sizeof(UInt16) * 4 + sizeof(UInt8) * 4;
-		}
-		if (flags & VF_EYEDATA)
-		{
-			vertexSize += sizeof(float);
-		}
-		return vertexSize;
+	{		
+		return (vertexDesc << 2) & 0x3C;
 	}
 
 	// 30

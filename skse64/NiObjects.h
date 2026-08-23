@@ -162,6 +162,37 @@ public:
 		kFlag_OverrideSelectiveTransforms =	0x00000080,
 	};
 
+	enum Flag
+	{
+		kNone = 0,
+		kHidden = 1 << 0,
+		kSelectiveUpdate = 1 << 1,
+		kSelectiveUpdateTransforms = 1 << 2,
+		kSelectiveUpdateController = 1 << 3,
+		kSelectiveUpdateRigid = 1 << 4,
+		kDisplayObject = 1 << 5,
+		kDisableSorting = 1 << 6,
+		kSelectiveUpdateTransformsOverride = 1 << 7,
+		kSaveExternalGeometryData = 1 << 9,
+		kNoDecals = 1 << 10,
+		kAlwaysDraw = 1 << 11,
+		kMeshLOD = 1 << 12,
+		kFixedBound = 1 << 13,
+		kTopFadeNode = 1 << 14,
+		kIgnoreFade = 1 << 15,
+		kNoAnimSyncX = 1 << 16,
+		kNoAnimSyncY = 1 << 17,
+		kNoAnimSyncZ = 1 << 18,
+		kNoAnimSyncS = 1 << 19,
+		kNoDismember = 1 << 20,
+		kNoDismemberValidity = 1 << 21,
+		kRenderUse = 1 << 22,
+		kMaterialsApplied = 1 << 23,
+		kHighDetail = 1 << 24,
+		kForceUpdate = 1 << 25,
+		kPreProcessedNode = 1 << 26
+	};
+
 	struct ControllerUpdateContext
 	{
 		enum

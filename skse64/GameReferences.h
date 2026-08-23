@@ -603,6 +603,7 @@ public:
 	BSTEventSink <void *>	menuModeChangeEvent;		// 2B8 .?AV?$BSTEventSink@VMenuModeChangeEvent@@@@
 	BSTEventSink <void *>	userEventEnabledEvent;		// 2C0 .?AV?$BSTEventSink@VUserEventEnabledEvent@@@@
 	BSTEventSink <void *>	trackedStatsEvent;			// 2C8  BSTEventSink@UTESTrackedStatsEvent@@@@@
+	BSTEventSink <void *>	systemEvent;				// 2D0  BSTEventSink@BSSystemEvent@@@@@
 
 	BSTEventSource <void *>	actorCellEventSource;		// 2D0 .?AV?$BSTEventSource@UBGSActorCellEvent@@@@  
 														// tArray<void*>: 4 PlayerRegionState, BGSPlayerMusicChanger, CellAcousticSpaceListener, PlayerParentCellListener
@@ -907,19 +908,19 @@ public:
 };
 
 STATIC_ASSERT(offsetof(PlayerCharacter, userEventEnabledEvent) == 0x2C8);
-STATIC_ASSERT(offsetof(PlayerCharacter, numPerkPoints) == 0xB09);
-STATIC_ASSERT(offsetof(PlayerCharacter, tintMasks) == 0xB18);
-STATIC_ASSERT(offsetof(PlayerCharacter, overlayTintMasks) == 0xB30);
-STATIC_ASSERT(offsetof(PlayerCharacter, unk3D8) == 0x3E0);
-STATIC_ASSERT(offsetof(PlayerCharacter, lastRiddenHorseHandle) == 0x91C);
-STATIC_ASSERT(offsetof(PlayerCharacter, skills) == 0x9B8);
-STATIC_ASSERT(offsetof(PlayerCharacter, tempPoison) == 0xA08);
-STATIC_ASSERT(offsetof(PlayerCharacter, hostileHandles) == 0x9E0);
-STATIC_ASSERT(offsetof(PlayerCharacter, currentWorldSpace) == 0x630);
-STATIC_ASSERT(offsetof(PlayerCharacter, addedPerks) == 0x4B8);
-STATIC_ASSERT(offsetof(PlayerCharacter, sameWorldSpace) == 0x990);
-STATIC_ASSERT(offsetof(PlayerCharacter, unk890) == 0x898);
-STATIC_ASSERT(sizeof(PlayerCharacter) == 0xBE8);
+STATIC_ASSERT(offsetof(PlayerCharacter, numPerkPoints) == 0xB11);
+STATIC_ASSERT(offsetof(PlayerCharacter, tintMasks) == 0xB20);
+STATIC_ASSERT(offsetof(PlayerCharacter, overlayTintMasks) == 0xB38);
+STATIC_ASSERT(offsetof(PlayerCharacter, unk3D8) == 0x3E8);
+STATIC_ASSERT(offsetof(PlayerCharacter, lastRiddenHorseHandle) == 0x924);
+STATIC_ASSERT(offsetof(PlayerCharacter, skills) == 0x9C0);
+STATIC_ASSERT(offsetof(PlayerCharacter, tempPoison) == 0xA10);
+STATIC_ASSERT(offsetof(PlayerCharacter, hostileHandles) == 0x9E8);
+STATIC_ASSERT(offsetof(PlayerCharacter, currentWorldSpace) == 0x638);
+STATIC_ASSERT(offsetof(PlayerCharacter, addedPerks) == 0x4C0);
+STATIC_ASSERT(offsetof(PlayerCharacter, sameWorldSpace) == 0x998);
+STATIC_ASSERT(offsetof(PlayerCharacter, unk890) == 0x8A0);
+STATIC_ASSERT(sizeof(PlayerCharacter) == 0xBF0);
 
 
 // 140 
