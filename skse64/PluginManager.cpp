@@ -563,7 +563,7 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 				// anyone building after that will hit this error on their own machine
 				// and when 32-bit signed time_t overruns in 2038 we'll need skse128 streaming edition
 				UInt32 buildTime = GetBuildTime(plugin);
-				if(buildTime < 1787270400)	// 2026-08-21 GMT
+				if((buildTime >= 520128000) && (buildTime < 1748217600))	// between the founding of bethesda and 2025-05-26 GMT, see commonlib-shared 804f07c85d3214418699f46b4369ea058d4a410a
 				{
 					// if you are hitting this and support an older version, add it to your compatibleVersions list
 					errorMsg = "must be recompiled for new address library";
