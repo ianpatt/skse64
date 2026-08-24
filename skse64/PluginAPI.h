@@ -316,6 +316,8 @@ struct SKSEPluginVersionData
 		// set this if your plugin either doesn't use any game structures or has put in extraordinary effort
 		// to work with pre and post 1.6.629 structure layout
 		kVersionIndependentEx_NoStructUse = 1 << 0,
+		// set this if you are compatible with the address library encoding used as of 1.7.99+
+		kVersionIndependentEx_AddressLibraryV5 = 1 << 1,
 	};
 
 	UInt32	dataVersion;			// set to kVersion

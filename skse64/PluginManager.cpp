@@ -380,7 +380,7 @@ void PluginManager::ScanPlugins(void)
 					plugin.version = *version;
 					Sanitize(&plugin.version);
 
-					auto * loadStatus = CheckPluginCompatibility(plugin.version);
+					auto * loadStatus = CheckPluginCompatibility(plugin.version, resourceHandle);
 					if(!loadStatus)
 					{
 						// compatible, add to list
@@ -492,7 +492,7 @@ static const MinVersionEntry	kMinVersionList[] =
 	{	NULL, 0, NULL }
 };
 
-const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData & version)
+const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData & version, const HMODULE plugin)
 {
 	__try
 	{
@@ -548,12 +548,28 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 
 		// any claim of version independence?
 		bool versionIndependent = version.versionIndependence & (SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE | SKSEPluginVersionData::kVersionIndependent_Signatures);
+		const char * errorMsg = "disabled, incompatible with current version of the game";
 
 		// verify the address library is there to centralize error message
 		if(version.versionIndependence & SKSEPluginVersionData::kVersionIndependent_AddressLibraryPostAE)
 		{
 			const char * result = CheckAddressLibrary();
 			if(result) return result;
+
+			// address library changed encoding in an incompatible way in 1.7.99+
+			if(!(version.versionIndependenceEx & SKSEPluginVersionData::kVersionIndependentEx_AddressLibraryV5))
+			{
+				// there are some plugins that were built with the new code but without this flag
+				// anyone building after that will hit this error on their own machine
+				// and when 32-bit signed time_t overruns in 2038 we'll need skse128 streaming edition
+				UInt32 buildTime = GetBuildTime(plugin);
+				if(buildTime < 1787270400)	// 2026-08-21 GMT
+				{
+					// if you are hitting this and support an older version, add it to your compatibleVersions list
+					errorMsg = "must be recompiled for new address library";
+					versionIndependent = false;
+				}
+			}
 		}
 		
 		// 1.6.629+ has different structure sizes, make sure the plugin specifies which is used
@@ -589,7 +605,7 @@ const char * PluginManager::CheckPluginCompatibility(const SKSEPluginVersionData
 
 			if(!found)
 			{
-				return "disabled, incompatible with current version of the game";
+				return errorMsg;
 			}
 		}
 

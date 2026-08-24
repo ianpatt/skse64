@@ -205,6 +205,15 @@ bool Is64BitDLL(const HMODULE module)
 	return ntHeader->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64;
 }
 
+UInt32 GetBuildTime(const HMODULE module)
+{
+	auto * base = (const UInt8 *)(uintptr_t(module) & ~3);
+	auto * dosHeader = (const IMAGE_DOS_HEADER *)base;
+	auto * ntHeader = (const IMAGE_NT_HEADERS *)(base + dosHeader->e_lfanew);
+
+	return ntHeader->FileHeader.TimeDateStamp;
+}
+
 #pragma warning (push)
 #pragma warning (disable : 4200)
 struct RTTIType

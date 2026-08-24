@@ -199,6 +199,7 @@ const std::string & GetOSInfoStr();
 void * GetIATAddr(void * module, const char * searchDllName, const char * searchImportName);
 const void * GetResourceLibraryProcAddress(const HMODULE module, const char * exportName);
 bool Is64BitDLL(const HMODULE module);
+UInt32 GetBuildTime(const HMODULE module);
 
 const char * GetObjectClassName(void * objBase);
 void DumpClass(void * theClassPtr, UInt64 nIntsToDump);

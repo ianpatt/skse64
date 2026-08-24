@@ -71,7 +71,7 @@ private:
 	const char *	SafeCallLoadPlugin(LoadedPlugin * plugin, const SKSEInterface * skse, UInt32 phase);
 
 	void			Sanitize(SKSEPluginVersionData * version);
-	const char *	CheckPluginCompatibility(const SKSEPluginVersionData & version);
+	const char *	CheckPluginCompatibility(const SKSEPluginVersionData & version, const HMODULE plugin);
 	const char *	CheckAddressLibrary(void);
 
 	void			LogPluginLoadError(const LoadedPlugin & plugin, const char * errStr, UInt32 errCode = 0, bool isError = true);
