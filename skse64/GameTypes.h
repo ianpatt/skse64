@@ -79,12 +79,12 @@ public:
 	//void LockForRead();
 	//void LockForWrite();
 	MEMBER_FN_PREFIX(BSReadWriteLock);
-	DEFINE_MEMBER_FN(LockForRead, void, 0x00CE2FF0);
-	DEFINE_MEMBER_FN(LockForWrite, void, 0x00CE3070);
-	DEFINE_MEMBER_FN(UnlockRead, void, 0x00CE32B0);
-	DEFINE_MEMBER_FN(UnlockWrite, void, 0x00CE32C0);
-	DEFINE_MEMBER_FN(LockForReadAndWrite, void, 0x00CE3170);
-	DEFINE_MEMBER_FN(TryLockForWrite, bool, 0x00CE3260);
+	DEFINE_MEMBER_FN(LockForRead, void, 0x00CE3250);
+	DEFINE_MEMBER_FN(LockForWrite, void, 0x00CE32D0);
+	DEFINE_MEMBER_FN(UnlockRead, void, 0x00CE3510);
+	DEFINE_MEMBER_FN(UnlockWrite, void, 0x00CE3520);
+	DEFINE_MEMBER_FN(LockForReadAndWrite, void, 0x00CE33D0);
+	DEFINE_MEMBER_FN(TryLockForWrite, bool, 0x00CE34C0);
 };
 STATIC_ASSERT(sizeof(BSReadWriteLock) == 0x8);
 
@@ -127,14 +127,14 @@ public:
 		const char	* data;
 
 		MEMBER_FN_PREFIX(Ref);
-		DEFINE_MEMBER_FN(ctor, Ref *, 0x00EB0D30, const char * buf);
+		DEFINE_MEMBER_FN(ctor, Ref *, 0x00EB0F90, const char * buf);
 		// 31D79EFB15D5E4B34BD32D03A46EAFF65C28ACFB+CB
-		DEFINE_MEMBER_FN(ctor_ref, Ref *, 0x00EB0DE0, const Ref & rhs);
-		DEFINE_MEMBER_FN(Set, Ref *, 0x00EB0EC0, const char * buf);
+		DEFINE_MEMBER_FN(ctor_ref, Ref *, 0x00EB1040, const Ref & rhs);
+		DEFINE_MEMBER_FN(Set, Ref *, 0x00EB1120, const char * buf);
 		// 31D79EFB15D5E4B34BD32D03A46EAFF65C28ACFB+41
-		DEFINE_MEMBER_FN(Set_ref, Ref *, 0x00EB0F80, const Ref & rhs);
+		DEFINE_MEMBER_FN(Set_ref, Ref *, 0x00EB11E0, const Ref & rhs);
 		// 46F6DC561A3C9677037E58B55951C58A08E41C47+4A
-		DEFINE_MEMBER_FN(Release, void, 0x00EB2100);
+		DEFINE_MEMBER_FN(Release, void, 0x00EB2360);
 
 		Ref();
 		Ref(const char * buf);

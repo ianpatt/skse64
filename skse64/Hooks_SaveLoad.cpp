@@ -124,13 +124,13 @@ UInt8 TESQuest::NewGame_Hook(UInt8 * unk1, UInt8 unk2)
 	return ret;
 }
 
-RelocAddr <uintptr_t> SaveGame_HookTarget_Enter(0x00622590 + 0x2B3);
-RelocAddr <uintptr_t> LoadGame_HookTarget_Enter(0x00627B80 + 0x34F);
+RelocAddr <uintptr_t> SaveGame_HookTarget_Enter(0x006227F0 + 0x2B3);
+RelocAddr <uintptr_t> LoadGame_HookTarget_Enter(0x00627DE0 + 0x34F);
 // 691ACD40B8430FBDA081477DEB2A9948ACC235F1+11F
-RelocAddr <uintptr_t> ProcessEvents_Enter(0x00658610 + 0x9A);
-RelocAddr <uintptr_t> NewGame_Enter(0x00958F00 + 0x59);
-RelocAddr <uintptr_t> DeleteSaveGame_Enter(0x00614360 + 0x77);
-RelocAddr <uintptr_t> DeleteSaveGame_Enter2(0x00614430 + 0x17);
+RelocAddr <uintptr_t> ProcessEvents_Enter(0x00658870 + 0x9A);
+RelocAddr <uintptr_t> NewGame_Enter(0x00959160 + 0x59);
+RelocAddr <uintptr_t> DeleteSaveGame_Enter(0x006145C0 + 0x77);
+RelocAddr <uintptr_t> DeleteSaveGame_Enter2(0x00614690 + 0x17);
 
 void Hooks_SaveLoad_Commit(void)
 {

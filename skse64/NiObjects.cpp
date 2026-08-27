@@ -6,10 +6,10 @@ RelocPtr<float> g_worldToCamMatrix(0x032566D0);
 // 2789403034E226069B9EC04A8AC7BD367AF61384+13E
 RelocPtr<NiRect<float>> g_viewPort(0x03257C78);
 
-RelocAddr<_WorldPtToScreenPt3_Internal> WorldPtToScreenPt3_Internal(0x00EF0F20);
+RelocAddr<_WorldPtToScreenPt3_Internal> WorldPtToScreenPt3_Internal(0x00EF1180);
 
-RelocAddr<_NiAllocate> NiAllocate(0x00EAC530);
-RelocAddr<_NiFree> NiFree(0x00EAC7D0);
+RelocAddr<_NiAllocate> NiAllocate(0x00EAC790);
+RelocAddr<_NiFree> NiFree(0x00EACA30);
 
 void NiRefObject::IncRef(void)
 {

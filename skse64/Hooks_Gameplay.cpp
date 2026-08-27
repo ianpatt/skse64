@@ -12,7 +12,7 @@ static UInt32 g_forceContainerCategorization = 0;
 
 // 3E214CA2A0E6118E008E7407BDE8964B392CE849+9C
 RelocPtr<UInt32 *> g_containerMode(0x032560B8);
-RelocAddr<uintptr_t> kHook_ContainerMode_Base(0x00912480);
+RelocAddr<uintptr_t> kHook_ContainerMode_Base(0x009126E0);
 uintptr_t kHook_ContainerMode_Start = kHook_ContainerMode_Base + 0xAE;
 uintptr_t kHook_ContainerMode_Categories = kHook_ContainerMode_Base + 0xB7;
 uintptr_t kHook_ContainerMode_NoCategories = kHook_ContainerMode_Base + 0xCB;
@@ -28,14 +28,14 @@ uintptr_t kHook_BGSKeyword_Create_Return = kHook_BGSKeyword_Base + 6;
 
 // 4C1457C3040DCD34A7E7B2326F1EA2023930C56B+71
 RelocAddr <char *> g_gameVersion(0x01802510);
-RelocAddr <uintptr_t> kHook_ShowVersion_Offset(0x009A6710 + 0x78);
+RelocAddr <uintptr_t> kHook_ShowVersion_Offset(0x009A6970 + 0x78);
 static char		kHook_ShowVersion_FormatString[] =
 "%s.%d (SKSE64 " __PREPRO_TOKEN_STR__(SKSE_VERSION_INTEGER) "."
 __PREPRO_TOKEN_STR__(SKSE_VERSION_INTEGER_MINOR) "."
 __PREPRO_TOKEN_STR__(SKSE_VERSION_INTEGER_BETA) " rel "
 __PREPRO_TOKEN_STR__(SKSE_VERSION_RELEASEIDX) ")";
 
-RelocAddr<uintptr_t> kHook_Crosshair_LookupREFRByHandle_Enter(0x00757810 + 0x88);
+RelocAddr<uintptr_t> kHook_Crosshair_LookupREFRByHandle_Enter(0x00757A70 + 0x88);
 
 NiPointer<TESObjectREFR>	g_curCrosshairRef;
 
@@ -64,7 +64,7 @@ TESObjectREFR* Hooks_Gameplay_GetCrosshairRef()
 
 static UInt8 s_disableMapMenuMouseWheel = 1;
 
-RelocAddr<uintptr_t> kHook_MapMenuMouseWheel_Enter(0x009947D0 + 0x187);
+RelocAddr<uintptr_t> kHook_MapMenuMouseWheel_Enter(0x00994A30 + 0x187);
 
 void Hooks_Gameplay_EnableMapMenuMouseWheel(bool enable)
 {

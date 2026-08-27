@@ -44,7 +44,7 @@ RelocAddr<_GetRightHandSlot> GetRightHandSlot(0x0038FA40);
 // 
 RelocAddr<_GetLeftHandSlot> GetLeftHandSlot(0x0038FA30);
 RelocAddr<_LookupActorValueByName> LookupActorValueByName(0x00443320);
-RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x0096BC10);
+RelocAddr<_UpdatePlayerTints> UpdatePlayerTints(0x0096BE70);
 RelocAddr<_GetActorBaseOverlays> GetActorBaseOverlays(0x003C8D00);
 RelocAddr<_GetNumActorBaseOverlays> GetNumActorBaseOverlays(0x003C8D90);
 
@@ -60,7 +60,7 @@ RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x003A4E00);
 // 63503D87B68DB4A4C8A2BE534A75246035A76798+82
 RelocPtr<FacePresetList> g_facePresetList(0x0209C860);	// aNosetype
 
-RelocAddr<_HasLOS> HasLOS(0x009D1790);
+RelocAddr<_HasLOS> HasLOS(0x009D19F0);
 
 class LoadedModFinder
 {
