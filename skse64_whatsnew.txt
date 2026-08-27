@@ -1,3 +1,7 @@
+2.3.1
+- fix PlayerCharacter functions
+- better compatibility reporting for plugins that need to be rebuilt due to the address library change
+
 2.3.0
 - support for 1.7.99
 
