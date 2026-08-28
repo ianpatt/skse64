@@ -231,6 +231,7 @@ void PluginManager::LoadComplete()
 	}
 
 	ReportPluginErrors();
+	m_erroredPlugins.clear();
 
 	// make fake PluginInfo structs after m_plugins is locked
 	for(auto & plugin : m_plugins)
@@ -241,6 +242,10 @@ void PluginManager::LoadComplete()
 	}
 
 	CallPostLoad();
+
+	// in case someone crashes in postload
+	ReportPluginErrors();
+	m_erroredPlugins.clear();
 }
 
 void PluginManager::DeInit(void)
