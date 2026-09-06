@@ -641,7 +641,7 @@ namespace Serialization
 		case GFxValue::kType_String:
 		{
 			const char* t = val->GetString();
-			return WriteData(intfc, &t);
+			return WriteData<const char>(intfc, t);
 		}
 		default:
 			// Unsupported
