@@ -1,5 +1,9 @@
 Perk Function GetNextPerk() native
 
+;Returns the required skill level necessary to acquire this perk
+;e.g Flurry.GetSkillRequirement("OneHanded")
+int Function GetSkillRequirement(string actorvalue) native
+
 int Function GetNumEntries() native
 
 int Function GetNthEntryRank(int n) native
