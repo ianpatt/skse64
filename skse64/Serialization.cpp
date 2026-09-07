@@ -575,9 +575,14 @@ namespace Serialization
 	template <>
 	bool WriteData<std::string>(SKSESerializationInterface * intfc, const std::string * str)
 	{
-		UInt16 len = str->length();
-		if (len > 256)
+		// check the true length before narrowing to UInt16: a string longer than
+		// 65535 would wrap (e.g. 65536 -> 0) and pass the `> 256` check, silently
+		// writing an empty/short payload while returning "success"
+		size_t totalLen = str->length();
+		if (totalLen > 256)
 			return false;
+
+		UInt16 len = (UInt16)totalLen;
 
 		if (! intfc->WriteRecordData(&len, sizeof(len)))
 			return false;
@@ -608,9 +613,14 @@ namespace Serialization
 	template <>
 	bool WriteData<const char>(SKSESerializationInterface * intfc, const char* str)
 	{
-		UInt16 len = strlen(str);
-		if (len > 256)
+		// check the true length before narrowing to UInt16: a string longer than
+		// 65535 would wrap (e.g. 65536 -> 0) and pass the `> 256` check, silently
+		// writing an empty/short payload while returning "success"
+		size_t totalLen = strlen(str);
+		if (totalLen > 256)
 			return false;
+
+		UInt16 len = (UInt16)totalLen;
 
 		if (! intfc->WriteRecordData(&len, sizeof(len)))
 			return false;
