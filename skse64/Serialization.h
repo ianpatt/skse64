@@ -69,7 +69,10 @@ namespace Serialization
 	template <typename T>
 	bool ReadData(SKSESerializationInterface * intfc, T * data)
 	{
-		return intfc->ReadRecordData(data, sizeof(T)) > 0;
+		// require the full transfer: a short read (fewer than sizeof(T) bytes
+		// left in the chunk) means the record is truncated/corrupt, and treating
+		// the partially-filled `data` as valid would silently corrupt the plugin
+		return intfc->ReadRecordData(data, sizeof(T)) == sizeof(T);
 	}
 
 	template <> bool WriteData<BSFixedString>(SKSESerializationInterface * intfc, const BSFixedString * data);

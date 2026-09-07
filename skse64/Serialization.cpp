@@ -559,13 +559,13 @@ namespace Serialization
 		char buf[257] = { 0 };
 		UInt16 len = 0;
 
-		if (! intfc->ReadRecordData(&len, sizeof(len)))
+		if (intfc->ReadRecordData(&len, sizeof(len)) != sizeof(len))
 			return false;
 
 		if (len > 256)
 			return false;
 
-		if (! intfc->ReadRecordData(buf, len))
+		if (intfc->ReadRecordData(buf, len) != len)
 			return false;
 
 		*str = BSFixedString(buf);
@@ -592,13 +592,13 @@ namespace Serialization
 		char buf[257] = { 0 };
 		UInt16 len = 0;
 
-		if (! intfc->ReadRecordData(&len, sizeof(len)))
+		if (intfc->ReadRecordData(&len, sizeof(len)) != sizeof(len))
 			return false;
 
 		if (len > 256)
 			return false;
 
-		if (! intfc->ReadRecordData(buf, len))
+		if (intfc->ReadRecordData(buf, len) != len)
 			return false;
 
 		*str = std::string(buf);
