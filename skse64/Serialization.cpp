@@ -623,6 +623,29 @@ namespace Serialization
 	bool WriteData<GFxValue>(SKSESerializationInterface* intfc, const GFxValue* val)
 	{
 		UInt32 type = val->GetType();
+
+		// validate the variant BEFORE committing the 4-byte type tag, so a
+		// logical write failure (an unsupported type, or a string too long to
+		// serialize) leaves no orphan tag in the open chunk for the reader to
+		// choke on: the read side consumes the tag first, then fails on the
+		// missing/short payload (a torn record)
+		switch (type)
+		{
+		case GFxValue::kType_Bool:
+		case GFxValue::kType_Number:
+			break; // fixed-width, always writable
+		case GFxValue::kType_String:
+		{
+			const char * s = val->GetString();
+			if (!s || strlen(s) > 256)
+				return false;
+			break;
+		}
+		default:
+			// Unsupported
+			return false;
+		}
+
 		if (! WriteData(intfc, &type))
 			return false;
 
@@ -640,15 +663,11 @@ namespace Serialization
 		}
 		case GFxValue::kType_String:
 		{
-			const char* t = val->GetString();
-			return WriteData<const char>(intfc, t);
+			return WriteData<const char>(intfc, val->GetString());
 		}
 		default:
-			// Unsupported
-			return false;
+			return false; // unreachable (validated above)
 		}
-
-		return false;
 	}
 
 	template <>
