@@ -14,7 +14,7 @@ bool Function ModObjectiveGlobal(float afModValue, GlobalVariable aModGlobal, in
 	UpdateCurrentInstanceGlobal(aModGlobal)
 	if aiObjectiveID >= 0
 		; display/complete objectives automatically
-		if afTargetValue > -1
+		if afTargetValue > -1.0
 			if (abCountingUp && aModGlobal.value >= afTargetValue) || (!abCountingUp && aModGlobal.value <= afTargetValue)
 				if (abCompleteObjective)
 					; complete objective
