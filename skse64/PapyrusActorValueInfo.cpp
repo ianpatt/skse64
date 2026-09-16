@@ -15,43 +15,19 @@ public:
 
 	virtual bool Accept(BGSPerk * perk)
 	{
-		if(perk)
+		if(perk && !GetPerkAdded(perk))
 		{
-			bool addPerk = true;
-			if(m_actor) {
-				if(!CALL_MEMBER_FN(m_actor, HasPerk)(perk))
-					addPerk = m_unowned;
-				else
-					addPerk = !m_unowned;
-			}
-
-			if(addPerk) {
-				AddPerk(perk);
-			}
-
-			if(m_allRanks) {
-				BGSPerk * nextPerk = perk->nextPerk;
-				while(nextPerk) {
-					addPerk = true;
-					if(m_actor) {
-						if(!CALL_MEMBER_FN(m_actor, HasPerk)(nextPerk))
-							addPerk = m_unowned;
-						else
-							addPerk = !m_unowned;
-					}
-
-					if(addPerk) {
-						AddPerk(nextPerk);
-					}
-
-					nextPerk = nextPerk->nextPerk;
-				}
-			}
+			do
+			{	if (!m_actor || (!CALL_MEMBER_FN(m_actor, HasPerk)(perk) ? m_unowned : !m_unowned) )
+					AddPerk(perk);
+				perk = m_allRanks ? perk->nextPerk : nullptr;
+			}	while (perk);
 		}
 
 		return false;
 	}
 	virtual void AddPerk(BGSPerk * perk) = 0;
+	virtual bool GetPerkAdded(BGSPerk *perk) = 0;
 };
 
 class PerkFormListVisitor : public MatchSkillPerks
@@ -67,6 +43,13 @@ public:
 	{
 		CALL_MEMBER_FN(m_formList, AddFormToList)(perk);
 	}
+
+	virtual bool GetPerkAdded(BGSPerk *perk)
+	{
+		TESForm *base = perk;
+
+		return ((*m_formList).forms.GetItemIndex(base) > -1);
+	}
 };
 
 class PerkArrayVisitor : public MatchSkillPerks
@@ -80,6 +63,17 @@ public:
 	virtual void AddPerk(BGSPerk * perk)
 	{
 		m_perks->push_back(perk);
+	}
+	virtual bool GetPerkAdded(BGSPerk *perk)
+	{
+		std::vector<BGSPerk*>::const_iterator offbounds = (*m_perks).cend();
+
+		for (std::vector<BGSPerk*>::const_iterator i = (*m_perks).cbegin(); i != offbounds; ++i)
+		{	if (*i != perk)
+				continue ;
+			return (true);
+		}
+		return (false);
 	}
 };
 
