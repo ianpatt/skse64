@@ -644,6 +644,16 @@ public:
 		m_listHead.item = item;
 	}
 
+	bool Remove(T *item)
+	{
+		_Node *prev = nullptr;
+		_Node *curr = &m_listHead;
+
+		while (curr && (*curr).item != item)
+			prev = curr, curr = (*curr).next;
+		return (curr &&	(*curr).Remove(prev) );
+	}
+
 	void Push(T * item)
 	{
 		_Node * tail = Tail();
@@ -822,11 +832,11 @@ public:
 	{
 		T* pRemoved = NULL;
 		if (n == 0) {
-			pRemoved =  m_listHead.RemoveMe();
+			pRemoved =  m_listHead.Remove(nullptr);
 		} else if (n > 0) {
 			NodePos nodePos = GetNthNode(n);
 			if (nodePos.node && nodePos.index == n) {
-				pRemoved = nodePos.node->RemoveMe();
+				pRemoved = nodePos.node->Remove(GetNthNode(n - 1).node);
 			}
 		}
 		return pRemoved;
