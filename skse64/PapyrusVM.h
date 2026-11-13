@@ -290,7 +290,7 @@ public:
 
 	// More...
 
-	VMStackInfo* GetStackInfo(UInt32 stackId);
+	bool HasStack(UInt32 stackId);
 
 	void LogError(const char* message, UInt32 stackId)   { PrintToDebugLog(message, stackId, kLogLevel_Error); }
 	void LogWarning(const char* message, UInt32 stackId) { PrintToDebugLog(message, stackId, kLogLevel_Warning); }

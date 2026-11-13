@@ -51,7 +51,7 @@ void SKSEPersistentObjectStorage::CleanDroppedStacks()
 		if (e.obj == NULL)
 			continue;
 
-		if (registry->GetStackInfo(e.owningStackId) != NULL)
+		if (registry->HasStack(e.owningStackId))
 			continue;
 
 		// Stack no longer active, drop this entry
