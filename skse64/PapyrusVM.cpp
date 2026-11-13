@@ -165,20 +165,13 @@ UInt32 VMValue::GetUnmangledType(void)
 	return (type & 1) ? kType_Unk0B : kType_Identifier;
 }
 
-VMStackInfo* VMClassRegistry::GetStackInfo(UInt32 stackId)
+bool VMClassRegistry::HasStack(UInt32 stackId)
 {
-	VMStackInfo* result = NULL;
-
 	stackLock.Lock();
 
 	VMStackTableItem* item = allStacks.Find(&stackId);
 
-	if (item != NULL &&
-		item->data != NULL &&
-		item->data->unkData != NULL)
-	{
-		result = item->data->unkData->stackInfo;
-	}	
+	bool result = item != NULL && item->data != NULL;
 
 	stackLock.Release();
 
